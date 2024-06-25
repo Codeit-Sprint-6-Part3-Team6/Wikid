@@ -18,6 +18,7 @@
       "@context/*": ["./src/context/*"],
       "@lib/*": ["./src/lib/*"],
       "@styles/*": ["./src/styles/*"],
+      "@types/*": ["./src/types/*"],
       "@images/*": ["./public/images/*"],
       "@icons/*": ["./public/icons/*"]
     }

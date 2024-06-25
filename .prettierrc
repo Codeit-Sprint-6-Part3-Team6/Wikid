@@ -16,6 +16,7 @@
     "^@hooks/",
     "^@context/",
     "^@lib/",
+    "^@types/",
     "^@styles/",
     "^@images/",
     "^@icons/*"
