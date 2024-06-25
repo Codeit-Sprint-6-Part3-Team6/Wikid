@@ -1,3 +1,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* font color */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray100: #f9f9f9;
+  --color-gray200: #f9f9f9;
+  --color-gray300: #c6cada;
+  --color-gray400: #8f95b2;
+  --color-gray500: #474d66;
+  --color-gray600: #3b415b;
+  --color-green100: #eef9f6;
+  --color-green200: #4cbfa4;
+  --color-green300: #32a68a;
+  --color-red100: #fbeded;
+  --color-red100: #d14343;
+  --color-purple: #8e66ff;
+  --color-yellow: #fdd181;
+}
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6em;
+  color: var(--color-gray500);
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img {
+  max-width: 100%;
+  vertical-align: top;
+}
+button {
+  cursor: pointer;
+  background: transparent;
+}
+button,
+input,
+textarea {
+  box-sizing: border-box;
+  outline: 0;
+  border: 0;
+  font-family: "Pretendard";
+}
+textarea {
+  resize: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+.inner {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+/* 태블릿 */
+@media all and (max-width: 1199px) {
+  .inner {
+    width: auto;
+    margin: 0 60px;
+  }
+}
+
+/* 모바일 */
+@media all and (max-width: 767px) {
+  .inner {
+    margin: 0 20px;
+  }
+}
