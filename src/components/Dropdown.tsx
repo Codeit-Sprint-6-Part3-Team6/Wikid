@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
   return (
     <div className="relative cursor-pointer items-center" ref={dropdownRef}>
       <div
-        className="flex h-[45px] max-w-[140px] cursor-pointer items-center justify-between rounded-lg bg-gray-50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-100"
+        className="flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg bg-gray-50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-100"
         onClick={toggleDropdown}
       >
         {selectedOption}
@@ -52,11 +52,11 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
         />
       </div>
       {isOpen && (
-        <div className="absolute top-full mt-1.5 w-[140px] rounded-lg border border-gray-300 bg-white text-gray-800">
-          {options.map((option) => (
+        <div className="absolute top-full mt-1.5 w-[140px] rounded-lg bg-white p-1.5 text-gray-800">
+          {options.map((option, index) => (
             <div
               key={option}
-              className="hover:text-green300 m-2 mt-0 cursor-pointer py-2.5 text-center transition-all duration-500 hover:bg-green-50"
+              className={`hover:text-green300 cursor-pointer border-solid py-2.5 text-center transition-all duration-500 hover:bg-green-50 ${index !== options.length - 1 ? "border-b border-solid border-gray-100" : ""}`}
               onClick={() => handleOptionClick(option)}
             >
               {option}
