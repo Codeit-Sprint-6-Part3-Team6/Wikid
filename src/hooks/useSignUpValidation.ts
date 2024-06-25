@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// 회원가입 폼 데이터 타입 정의
 interface SignUpFormData {
   name: string;
   email: string;
@@ -9,6 +10,7 @@ interface SignUpFormData {
   passwordConfirmation: string;
 }
 
+// 회원가입 폼 각 input에 대한 오류 메시지를 담을 객체 타입 정의
 interface SignUpErrors {
   name?: string;
   email?: string;
@@ -17,6 +19,7 @@ interface SignUpErrors {
 }
 
 const useSignUpValidation = () => {
+  // 폼 데이터 및 오류 상태 초기화
   const [formData, setFormData] = useState<SignUpFormData>({
     name: "",
     email: "",
@@ -26,6 +29,7 @@ const useSignUpValidation = () => {
 
   const [errors, setErrors] = useState<SignUpErrors>({});
 
+  // 회원가입 폼 유효성 검사 함수
   const validateSignUpForm = () => {
     let validationErrors: SignUpErrors = {};
 
@@ -52,23 +56,27 @@ const useSignUpValidation = () => {
     } else if (formData.password !== formData.passwordConfirmation) {
       validationErrors.passwordConfirmation = "비밀번호가 일치하지 않습니다.";
     }
-
+    // 검증 결과를 오류 상태에 업데이트하고 리턴
     setErrors(validationErrors);
     return validationErrors;
   };
 
+  // input 값 변경 이벤트 처리
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // 오류가 있었다면 해당 필드의 오류 초기화
     if (name in errors) {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
     }
   };
 
+  // input 포커스 아웃(Blur) 이벤트 처리
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let errorMessage = "";
 
+    // 각 input에 따른 검증 로직 설정
     switch (name) {
       case "name":
         errorMessage =
@@ -106,18 +114,22 @@ const useSignUpValidation = () => {
         errorMessage = "";
     }
 
+    // 검증 결과를 오류 상태에 업데이트
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
+  // 폼 제출 이벤트 처리
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validateSignUpForm();
+    // 검증 결과에 따른 처리 로직 (임시로 콘솔에 로그 출력)
     if (Object.keys(validationErrors).length === 0) {
       // 실제 회원가입 성공 시 처리하는 로직을 작성해주세요. (서버로 데이터 전송, 리디렉션 등)
       console.log("회원가입 성공");
     }
   };
 
+  // 오류 상태 초기화 함수
   const clearErrors = () => setErrors({});
 
   return {

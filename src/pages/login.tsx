@@ -5,6 +5,7 @@ const LoginPage: React.FC = () => {
   const { formData, errors, handleChange, handleBlur, handleSubmit } =
     useLoginValidation();
 
+  // 테스트용 코드입니다.
   return (
     <div className="flex h-screen items-center justify-center">
       <form className="w-[400px]" onSubmit={handleSubmit}>
@@ -32,9 +33,9 @@ const LoginPage: React.FC = () => {
         {errors.password && (
           <p className="text-xs italic text-red-500">{errors.password}</p>
         )}
-        <button // 테스트용으로 만든 버튼입니다.
+        <button
           type="submit"
-          className="bg-green300 hover:bg-green200 mt-4 rounded-lg px-4 py-2 font-bold text-white"
+          className="bg-green300 hover:bg-green200 mt-4 w-[400px] rounded-lg px-4 py-2 font-bold text-white transition-all duration-500"
         >
           로그인
         </button>

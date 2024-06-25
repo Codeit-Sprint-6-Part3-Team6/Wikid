@@ -22,6 +22,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
     setIsOpen(false);
   };
 
+  // 드롭다운 영역 외 클릭을 감지해서 드롭다운 닫음
   const handleDropdown = (e: MouseEvent) => {
     if (
       dropdownRef.current &&
@@ -41,13 +42,14 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
   return (
     <div className="relative cursor-pointer items-center" ref={dropdownRef}>
       <div
-        className="flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg bg-gray-50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-100"
+        className="bg-gray50 flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200"
         onClick={toggleDropdown}
       >
         {selectedOption}
         <img
           src={dropdownIcon}
           alt="드롭다운 아이콘"
+          // isOpen 상태에 따라 아이콘 회전 애니메이션 추가
           className={`ml-2 transform transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`}
         />
       </div>

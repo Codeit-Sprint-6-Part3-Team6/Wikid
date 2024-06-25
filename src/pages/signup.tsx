@@ -6,6 +6,7 @@ const SignUpPage: React.FC = () => {
   const { formData, errors, handleChange, handleBlur, handleSubmit } =
     useSignUpValidation();
 
+  // 테스트용 코드입니다.
   return (
     <div className="flex h-screen items-center justify-center">
       <form className="w-[400px]" onSubmit={handleSubmit}>
@@ -61,7 +62,7 @@ const SignUpPage: React.FC = () => {
         )}
         <button
           type="submit"
-          className="bg-green300 hover:bg-green200 mt-4 rounded-lg px-4 py-2 font-bold text-white"
+          className="bg-green300 hover:bg-green200 mt-4 w-[400px] rounded-lg px-4 py-2 font-bold text-white transition-all duration-500"
         >
           회원가입
         </button>
