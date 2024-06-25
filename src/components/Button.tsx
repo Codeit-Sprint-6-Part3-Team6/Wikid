@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonProps {
   text: string;
-  color: string;
+  color: "green" | "white";
   disabled?: boolean;
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
