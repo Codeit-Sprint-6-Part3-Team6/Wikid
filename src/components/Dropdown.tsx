@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 
+// 드롭다운 옵션들이 상황에 따라 달라지기 때문에 prop으로 받도록 설정
+// prop으로 내려주는 옵션 개수에 제한 없음
 interface DropdownProps {
   options: string[];
 }
@@ -11,18 +13,21 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // 드롭다운 열기/닫기 토글 함수
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
+  // 드롭다운 옵션 변경 함수
   const handleDropdownChange = (option: string) => {
     setSelectedOption(option);
   };
 
+  // 옵션 클릭 시 실행되는 함수, 드롭다운 옵션 변경 후 드롭다운 닫음
   const handleOptionClick = (option: string) => {
     handleDropdownChange(option);
     setIsOpen(false);
   };
 
-  // 드롭다운 영역 외 클릭을 감지해서 드롭다운 닫음
+  // 드롭다운 영역 외부 클릭을 감지해서 드롭다운 닫음
   const handleDropdown = (e: MouseEvent) => {
     if (
       dropdownRef.current &&
@@ -42,7 +47,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
   return (
     <div className="relative cursor-pointer items-center" ref={dropdownRef}>
       <div
-        className="bg-gray50 flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200"
+        className="flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200"
         onClick={toggleDropdown}
       >
         {selectedOption}
@@ -55,10 +60,11 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
       </div>
       {isOpen && (
         <div className="absolute top-full mt-1.5 w-[140px] rounded-lg bg-white p-1.5 text-gray-800">
+          {/* 드롭다운 옵션 목록 */}
           {options.map((option, index) => (
             <div
               key={option}
-              className={`hover:text-green300 cursor-pointer border-solid py-2.5 text-center transition-all duration-500 hover:bg-green-50 ${index !== options.length - 1 ? "border-b border-solid border-gray-100" : ""}`}
+              className={`cursor-pointer border-solid py-2.5 text-center transition-all duration-500 hover:bg-green-50 hover:text-green300 ${index !== options.length - 1 ? "border-b border-solid border-gray-100" : ""}`}
               onClick={() => handleOptionClick(option)}
             >
               {option}
