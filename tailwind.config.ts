@@ -7,6 +7,7 @@ const config: Config = {
       colors: {
         black: "var(--color-black)",
         white: "var(--color-white)",
+        gray50: "var(--color-gray50)",
         gray100: "var(--color-gray100)",
         gray200: "var(--color-gray200)",
         gray300: "var(--color-gray300)",
