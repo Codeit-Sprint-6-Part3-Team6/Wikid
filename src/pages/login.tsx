@@ -10,7 +10,6 @@ const LoginPage: React.FC = () => {
     <div className="flex h-screen items-center justify-center">
       <form className="w-[400px]" onSubmit={handleSubmit}>
         <Input
-          label="이메일"
           type="email"
           name="email"
           placeholder="이메일을 입력해 주세요"
@@ -22,7 +21,6 @@ const LoginPage: React.FC = () => {
           <p className="text-xs italic text-red-500">{errors.email}</p>
         )}
         <Input
-          label="비밀번호"
           type="password"
           name="password"
           placeholder="비밀번호를 입력해 주세요"
@@ -35,7 +33,7 @@ const LoginPage: React.FC = () => {
         )}
         <button
           type="submit"
-          className="bg-green300 hover:bg-green200 mt-4 w-[400px] rounded-lg px-4 py-2 font-bold text-white transition-all duration-500"
+          className="mt-4 w-[400px] rounded-lg bg-green300 px-4 py-2 font-bold text-white transition-all duration-500 hover:bg-green200"
         >
           로그인
         </button>
