@@ -9,7 +9,7 @@ const SignUpPage: React.FC = () => {
   // 테스트용 코드입니다.
   return (
     <div className="flex h-screen items-center justify-center">
-      <form className="w-[400px]" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <Input
           type="text"
           name="name"
@@ -17,10 +17,8 @@ const SignUpPage: React.FC = () => {
           value={formData.name}
           onChange={handleChange}
           onBlur={handleBlur}
+          error={errors.name}
         />
-        {errors.name && (
-          <p className="text-xs italic text-red-500">{errors.name}</p>
-        )}
         <Input
           type="email"
           name="email"
@@ -28,10 +26,8 @@ const SignUpPage: React.FC = () => {
           value={formData.email}
           onChange={handleChange}
           onBlur={handleBlur}
+          error={errors.email}
         />
-        {errors.email && (
-          <p className="text-xs italic text-red-500">{errors.email}</p>
-        )}
         <Input
           type="password"
           name="password"
@@ -39,10 +35,8 @@ const SignUpPage: React.FC = () => {
           value={formData.password}
           onChange={handleChange}
           onBlur={handleBlur}
+          error={errors.password}
         />
-        {errors.password && (
-          <p className="text-xs italic text-red-500">{errors.password}</p>
-        )}
         <Input
           type="password"
           name="passwordConfirmation"
@@ -50,12 +44,8 @@ const SignUpPage: React.FC = () => {
           value={formData.passwordConfirmation}
           onChange={handleChange}
           onBlur={handleBlur}
+          error={errors.passwordConfirmation}
         />
-        {errors.passwordConfirmation && (
-          <p className="text-xs italic text-red-500">
-            {errors.passwordConfirmation}
-          </p>
-        )}
         <button
           type="submit"
           className="mt-4 w-[400px] rounded-lg bg-green300 px-4 py-2 font-bold text-white transition-all duration-500 hover:bg-green200"
