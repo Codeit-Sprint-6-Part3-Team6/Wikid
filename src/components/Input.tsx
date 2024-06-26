@@ -4,25 +4,27 @@ const searchIcon = "/icons/ic_search.svg";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: "text" | "email" | "password" | "search";
-  name: string;
+  name?: string; // 선택적 prop, 유효성 검사에 사용(로그인, 회원가입, 질문 모달 답변 확인 등)
   value: string;
-  error?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  error?: string; // 선택적 prop, 유효성 검사에 사용
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
 }
 
 const Input: React.FC<InputProps> = ({
   type = "text",
-  name,
+  name = "",
   value,
   error,
-  onChange,
-  onBlur,
+  onChange = () => {},
+  onBlur = () => {},
   ...rest
 }) => {
+  // 공통 클래스 설정
   const commonClasses =
     "w-full bg-gray-50 transition-all duration-500 rounded-lg px-5 py-2.5 hover:bg-gray-200 focus:bg-white";
 
+  // 입력 필드 클래스 설정 (에러 여부에 따라 다르게 적용)
   const inputClass =
     `max-w-[400px] ${commonClasses} ` +
     (error
@@ -35,7 +37,7 @@ const Input: React.FC<InputProps> = ({
   const inputElement =
     type === "search" ? (
       <div
-        className={`group flex max-w-[800px] ${commonClasses} focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-200`}
+        className={`group flex max-w-[800px] gap-4 ${commonClasses} focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-200`}
       >
         <img src={searchIcon} alt="검색 아이콘" />
         <input
