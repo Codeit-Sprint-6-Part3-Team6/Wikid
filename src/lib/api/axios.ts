@@ -19,7 +19,7 @@ instance.interceptors.response.use(
       originalRequest._retry = true; // 무한 루프 방지 플래그 설정
       try {
         // 토큰 새로고침 요청
-        await instance.post("/auth/token/refresh", undefined, {
+        await instance.post("/6-6/auth/refresh-token", undefined, {
           headers: { "Content-Type": "application/json" },
         });
         return instance(originalRequest);
