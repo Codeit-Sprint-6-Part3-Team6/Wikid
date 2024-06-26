@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Camera, X } from "lucide-react";
 
+// ImageUploadModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type ImageUploadModalProps = {
   modalSwitch: boolean;
   toggleModal: () => {};
@@ -10,7 +11,8 @@ export default function ImageUploadModal(
   modalSwitch,
   toggleModal,
 ): ImageUploadModalProps {
-  // modalState를 modalSwitch로 대체해 주세요.
+  // modalSwitch를 prop으로 전달받으면, 아래의 modalState 일체를 삭제시키고 modalSwitch로 대체하면 됩니다.
+  // return문 가장 첫번째에 있는 modalState도 modalSwitch로 바꿔주세요.
   const [modalState, setModalState] = useState<boolean>(true);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
 
@@ -19,7 +21,7 @@ export default function ImageUploadModal(
     setPreviewImageUrl(insertedImageURL);
   };
 
-  // handleExitButtonClick을 modalSwitch로 대체해 주세요.
+  // toggleModal을 prop으로 받으면, 아래의 handleExitButtonClick을 삭제하고, 해당 버튼의 onClick={toggleModal}으로 설정해주세요.
   const handleExitButtonClick = () => {
     setModalState(!modalState);
   };

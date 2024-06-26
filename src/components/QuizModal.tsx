@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, LockKeyhole } from "lucide-react";
 
+// QuizModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type QuizModalProps = {
   securityQuestion: string;
   securityAnswer: string;
@@ -20,7 +21,7 @@ export default function QuizModal({
   modalSwitch,
   toggleModal,
 }: QuizModalProps) {
-  // modalSwitch를 prop으로 전달받으면, 아래의 modal state 일체를 삭제시키고 modalSwitch로 대체하면 됩니다.
+  // modalSwitch를 prop으로 전달받으면, 아래의 modalState 일체를 삭제시키고 modalSwitch로 대체하면 됩니다.
   // return문 가장 첫번째에 있는 modalState도 modalSwitch로 바꿔주세요.
   const [modalState, setModalState] = useState(true);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);

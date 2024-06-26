@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 
+// AlarmModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type AlarmModalProps = {
   type: "disconnected" | "unsaving";
   modalSwitch: boolean;
@@ -8,6 +9,8 @@ type AlarmModalProps = {
 };
 
 export default function AlarmModal({ type }: AlarmModalProps) {
+  // modalSwitch를 prop으로 전달받으면, 아래의 modalState 일체를 삭제시키고 modalSwitch로 대체하면 됩니다.
+  // return문 가장 첫번째에 있는 modalState도 modalSwitch로 바꿔주세요.
   const [modalState, setModalState] = useState(true);
 
   const colorVariants = {
@@ -15,7 +18,8 @@ export default function AlarmModal({ type }: AlarmModalProps) {
     unsaving: "bg-[#D14343]",
   };
 
-  const handleToggle = () => {
+  // toggleModal을 prop으로 받으면, 아래의 handleExitButtonClick을 삭제하고, 해당 버튼의 onClick={toggleModal}으로 설정해주세요.
+  const handleExitButtonClick = () => {
     setModalState(!modalState);
   };
 
@@ -25,7 +29,7 @@ export default function AlarmModal({ type }: AlarmModalProps) {
         <div className="fixed inset-0 flex items-center justify-center bg-[#474D664D]">
           <div className="flex h-[215px] w-[335px] flex-col justify-center gap-4 rounded-xl bg-white p-5 shadow-xl sm:w-[395px]">
             <button
-              onClick={handleToggle}
+              onClick={handleExitButtonClick}
               className="place-self-end text-[#8F95B2]"
             >
               <X />
