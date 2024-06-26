@@ -3,7 +3,7 @@ import TextEditor from "@components/TextEditor";
 function WikiPage() {
   return (
     <div>
-      <TextEditor />
+      <TextEditor type="wiki" />
     </div>
   );
 }

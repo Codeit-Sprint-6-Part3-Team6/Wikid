@@ -38,3 +38,16 @@ button.ql-active {
 .quill > .ql-container {
   border: none !important;
 }
+
+.ql-toolbar::after,
+.ql-formats::after {
+  content: none !important;
+}
+
+.wiki .ql-editor {
+  font-size: 16px !important;
+}
+
+.article .ql-editor {
+  font-size: 20px !important;
+}
