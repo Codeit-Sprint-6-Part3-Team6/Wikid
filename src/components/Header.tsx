@@ -13,14 +13,23 @@ const HeaderLoggedOut: React.FC = () => {
         <Link href="/">
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
         </Link>
-        <Link href="/wikilist" className="text-[var(--color-gray800)]">
+        <Link
+          href="/wikilist"
+          className="text-[14px] font-normal text-[var(--color-gray800)]"
+        >
           위키목록
         </Link>
-        <Link href="/boards" className="text-[var(--color-gray800)]">
+        <Link
+          href="/boards"
+          className="text-[14px] font-normal text-[var(--color-gray800)]"
+        >
           자유게시판
         </Link>
       </div>
-      <Link href="/login" className="text-[var(--color-gray600)]">
+      <Link
+        href="/login"
+        className="text-[14px] font-normal text-[var(--color-gray600)]"
+      >
         로그인
       </Link>
     </div>
@@ -34,10 +43,16 @@ const HeaderLoggedIn: React.FC = () => {
         <Link href="/">
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
         </Link>
-        <Link href="/wikilist" className="text-[var(--color-gray800)]">
+        <Link
+          href="/wikilist"
+          className="text-[14px] font-normal text-[var(--color-gray800)]"
+        >
           위키목록
         </Link>
-        <Link href="/boards" className="text-[var(--color-gray800)]">
+        <Link
+          href="/boards"
+          className="text-[14px] font-normal text-[var(--color-gray800)]"
+        >
           자유게시판
         </Link>
       </div>
