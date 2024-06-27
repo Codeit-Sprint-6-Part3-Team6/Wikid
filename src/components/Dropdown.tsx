@@ -4,11 +4,12 @@ import { useEffect, useState, useRef } from "react";
 // prop으로 내려주는 옵션 개수에 제한 없음
 interface DropdownProps {
   options: string[];
+  onClick?: (option: string) => void;
 }
 
 const dropdownIcon = "/icons/ic_arrow_down.svg";
 
-const Dropdown: React.FC<DropdownProps> = ({ options }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, onClick }) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -25,6 +26,9 @@ const Dropdown: React.FC<DropdownProps> = ({ options }) => {
   const handleOptionClick = (option: string) => {
     handleDropdownChange(option);
     setIsOpen(false);
+    if (onClick) {
+      onClick(option);
+    }
   };
 
   // 드롭다운 영역 외부 클릭을 감지해서 드롭다운 닫음
