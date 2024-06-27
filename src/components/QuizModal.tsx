@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { X, LockKeyhole } from "lucide-react";
 
-// QuizModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type QuizModalProps = {
   securityQuestion: string;
   securityAnswer: string;
-  modalSwitch: boolean;
-  toggleModal: () => {};
+  isOpen: boolean;
+  handleIsOpen: () => void;
+  onClick: () => void;
 };
 
+// showWarningMessage값에 따라 input field에 다른 styling을 적용
 const styleVariants = {
   basic:
     "focus:ring-1 w-full rounded-lg bg-[#F7F7FA] p-2 px-5 py-3 text-[#8F95B2]",
@@ -18,51 +19,45 @@ const styleVariants = {
 export default function QuizModal({
   securityQuestion,
   securityAnswer,
-  modalSwitch,
-  toggleModal,
+  isOpen,
+  handleIsOpen,
+  onClick,
 }: QuizModalProps) {
-  // modalSwitch를 prop으로 전달받으면, 아래의 modalState 일체를 삭제시키고 modalSwitch로 대체하면 됩니다.
-  // return문 가장 첫번째에 있는 modalState도 modalSwitch로 바꿔주세요.
-  const [modalState, setModalState] = useState(true);
-  const [userAnswer, setUserAnswer] = useState<string | null>(null);
-  const [warningSwitch, setWarningSwitch] = useState<boolean>(false);
+  const [userAnswer, setUserAnswer] = useState<string | "">("");
+  const [showWarningMessage, setShowWarningMessage] = useState<boolean>(false);
 
+  // 정답을 입력하고 버튼을 클릭했을 때 onClick Event를 발생시키거나 WarningMessage를 호출
   const handleSumbit = (e) => {
     e.preventDefault();
-    if (userAnswer !== securityAnswer) {
-      setWarningSwitch(true);
-      return;
+
+    if (userAnswer === securityAnswer) {
+      onClick();
     } else {
-      // userAnswer == securityAnswer일 때 logic을 작성해주세요.
+      setShowWarningMessage(true);
     }
   };
-
-  // toggleModal을 prop으로 받으면, 아래의 handleExitButtonClick을 삭제하고, 해당 버튼의 onClick={toggleModal}으로 설정해주세요.
-  const handleExitButtonClick = () => {
-    setModalState(!modalState);
-  };
-
   const handleInput = (e) => {
     setUserAnswer(e.target.value);
   };
 
+  // 정답을 다시 입력하는 경우 showWarningMessage의 상태값을 false로 변경
   useEffect(() => {
-    setWarningSwitch(false);
+    setShowWarningMessage(false);
   }, [userAnswer]);
 
   return (
     <>
-      {modalState && (
+      {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-[#474D664D]">
           <div className="flex w-[335px] flex-col rounded-lg bg-white p-5 text-black shadow-2xl backdrop-blur-md sm:min-w-[395px]">
             <header className="flex flex-col items-center gap-3">
               <button
                 className="mb-2 place-self-end text-[#8F95B2]"
-                onClick={handleExitButtonClick}
+                onClick={handleIsOpen}
               >
                 <X />
               </button>
-              <div className="text-re rounded-full bg-[#F7F7FA] p-3 motion-reduce:animate-bounce">
+              <div className="rounded-full bg-[#F7F7FA] p-3 motion-reduce:animate-bounce">
                 <LockKeyhole />
               </div>
               <p className="mb-7 text-center text-[#8F95B2]">
@@ -84,15 +79,17 @@ export default function QuizModal({
                   onChange={handleInput}
                   placeholder="답안을 입력해 주세요"
                   className={
-                    warningSwitch ? styleVariants.warning : styleVariants.basic
+                    showWarningMessage
+                      ? styleVariants.warning
+                      : styleVariants.basic
                   }
                 ></input>
-                {warningSwitch && (
+                {showWarningMessage && (
                   <p className="mt-3 text-[12px] text-[#D14343]">
                     정답이 아닙니다. 다시 시도해 주세요.
                   </p>
                 )}
-                <button className="mt-6 w-full rounded-xl bg-[#4CBFA4] p-3 text-white">
+                <button onClick={onClick} className="mt-6 w-full rounded-xl bg-[#4CBFA4] p-3 text-white">
                   확인
                 </button>
               </form>
