@@ -5,7 +5,7 @@ const searchIcon = "/icons/ic_search.svg";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: "text" | "email" | "password" | "search";
   name?: string; // 선택적 prop, 유효성 검사에 사용(로그인, 회원가입, 질문 모달 답변 확인 등)
-  value: string;
+  value?: string;
   error?: string; // 선택적 prop, 유효성 검사에 사용
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
