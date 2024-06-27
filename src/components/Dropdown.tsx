@@ -10,7 +10,7 @@ interface DropdownProps {
 
 const dropdownIcon = "/icons/ic_arrow_down.svg";
 
-const Dropdown: React.FC<DropdownProps> = ({ options, onClick, type }) => {
+const Dropdown = ({ options, onClick, type }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
