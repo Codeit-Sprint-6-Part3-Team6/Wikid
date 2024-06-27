@@ -3,6 +3,7 @@ import React from "react";
 interface ButtonProps {
   text: string;
   color: "green" | "white";
+  type: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
@@ -10,11 +11,13 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   text,
   color,
+  type,
   className,
   disabled,
 }) => {
   return (
     <button
+      type={type}
       className={`${className} rounded-[10px] border-[1px] border-solid border-[var(--color-green200)] ${disabled ? "cursor-not-allowed border-[var(--color-gray300)] bg-[var(--color-gray300)] opacity-100" : ""}} text-center ${color === "green" ? "bg-[var(--color-green200)] text-[var(--color-white)]" : "bg-[var(--color-white) text-[var(--color-green200)]"} `}
     >
       {text}
