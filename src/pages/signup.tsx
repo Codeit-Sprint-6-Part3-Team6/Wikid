@@ -2,7 +2,7 @@ import React from "react";
 import Input from "@components/Input";
 import useSignUpValidation from "@hooks/useSignUpValidation";
 
-const SignUpPage: React.FC = () => {
+const SignUpPage = () => {
   const { formData, errors, handleChange, handleBlur, handleSubmit } =
     useSignUpValidation();
 

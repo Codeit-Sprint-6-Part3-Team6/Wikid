@@ -1,7 +1,7 @@
 import Input from "@components/Input";
 import useLoginValidation from "@hooks/useLoginValidation";
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   const { formData, errors, handleChange, handleBlur, handleSubmit } =
     useLoginValidation();
 
