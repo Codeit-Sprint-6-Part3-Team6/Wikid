@@ -5,11 +5,12 @@ import { useEffect, useState, useRef } from "react";
 interface DropdownProps {
   options: string[];
   onClick?: (option: string) => void;
+  type?: "sort" | string; // 추가된 type prop
 }
 
 const dropdownIcon = "/icons/ic_arrow_down.svg";
 
-const Dropdown: React.FC<DropdownProps> = ({ options, onClick }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, onClick, type }) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,12 +49,14 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onClick }) => {
     };
   }, []);
 
+  // 스타일 클래스 정의
+  const containerClass = `relative cursor-pointer items-center ${type === "sort" ? "w-[140px]" : "w-auto"}`;
+  const dropdownButtonClass = `flex h-[45px] ${type === "sort" ? "w-[140px]" : "w-full"} cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200`;
+  const dropdownMenuClass = `absolute top-full mt-1.5 ${type === "sort" ? "w-[140px]" : "w-full"} rounded-lg bg-white p-1.5 text-gray-800`;
+
   return (
-    <div className="relative cursor-pointer items-center" ref={dropdownRef}>
-      <div
-        className="flex h-[45px] w-[140px] cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200"
-        onClick={toggleDropdown}
-      >
+    <div className={containerClass} ref={dropdownRef}>
+      <div className={dropdownButtonClass} onClick={toggleDropdown}>
         {selectedOption}
         <img
           src={dropdownIcon}
@@ -63,7 +66,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onClick }) => {
         />
       </div>
       {isOpen && (
-        <div className="absolute top-full mt-1.5 w-[140px] rounded-lg bg-white p-1.5 text-gray-800">
+        <div className={dropdownMenuClass}>
           {/* 드롭다운 옵션 목록 */}
           {options.map((option, index) => (
             <div
