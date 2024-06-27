@@ -2,16 +2,36 @@ import React, { InputHTMLAttributes } from "react";
 
 const searchIcon = "/icons/ic_search.svg";
 
-// label이 있는 input도 있고 없는 input도 있기 때문에 prop으로 받도록 설정
-// label prop이 제공된 경우 input 위에 레이블을 렌더링하고, 제공되지 않은 경우 input만 렌더링되고 레이블은 렌더링되지 않음
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
   type?: "text" | "email" | "password" | "search";
+  name?: string; // 선택적 prop, 유효성 검사에 사용(로그인, 회원가입, 질문 모달 답변 확인 등)
+  value: string;
+  error?: string; // 선택적 prop, 유효성 검사에 사용
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
 }
 
-const Input: React.FC<InputProps> = ({ label, type = "text", ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  type = "text",
+  name = "",
+  value,
+  error,
+  onChange = () => {},
+  onBlur = () => {},
+  ...rest
+}) => {
+  // 공통 클래스 설정
   const commonClasses =
     "w-full bg-gray-50 transition-all duration-500 rounded-lg px-5 py-2.5 hover:bg-gray-200 focus:bg-white";
+
+  // 입력 필드 클래스 설정 (에러 여부에 따라 다르게 적용)
+  const inputClass =
+    `max-w-[400px] ${commonClasses} ` +
+    (error
+      ? "bg-red100"
+      : value && !error
+        ? "bg-white ring-2 ring-green300"
+        : "bg-gray-50 hover:bg-gray-200 focus:bg-white");
 
   // type이 "search"일 때 검색 아이콘과 함께 렌더링되는 input
   const inputElement =
@@ -29,23 +49,21 @@ const Input: React.FC<InputProps> = ({ label, type = "text", ...rest }) => {
       </div>
     ) : (
       // 그 외의 경우는 같은 input으로 렌더링
-      <input
-        type={type}
-        className={`max-w-[400px] focus:ring-1 focus:ring-gray-200 ${commonClasses}`}
-        {...rest}
-      />
+      <div>
+        <input
+          type={type}
+          name={name}
+          className={`${inputClass} + focus:ring-1 focus:ring-gray-200`}
+          onChange={onChange}
+          onBlur={onBlur}
+          value={value}
+          {...rest}
+        />
+        {error && <p className="mt-2.5 text-sm text-red300">{error}</p>}
+      </div>
     );
 
-  return (
-    <div className="flex w-full flex-col gap-2.5">
-      {label && (
-        <label htmlFor={rest.id} className="mt-6 text-gray-800">
-          {label}
-        </label>
-      )}
-      {inputElement}
-    </div>
-  );
+  return <div>{inputElement}</div>;
 };
 
 export default Input;

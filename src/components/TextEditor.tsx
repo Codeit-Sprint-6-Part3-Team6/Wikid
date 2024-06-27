@@ -1,6 +1,6 @@
-import { ChangeEventHandler, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import ArticleEditorToolbar from "./addboard/ArticleEditorToolbar";
 import WikiEditorToolbar from "./wikipage/WikiEditorToolbar";
 
 //SSR을 하지 않는 컴포넌트 생성
@@ -36,43 +36,61 @@ if (typeof window !== "undefined") {
     '<img src="/icons/ic_video.svg" class="h-6 w-6" alt="insertVideoLink" />';
   icons["link"] =
     '<img src="/icons/ic_link.svg" class="h-6 w-6" alt="pasteLink" />';
+  icons["color"] =
+    '<img src="/icons/ic_coloring.svg" class="h-6 w-6" alt="coloring" />';
 }
 
 const modules = {
   toolbar: {
     container: "#toolbar",
-    // container: [
-    //   [],
-    //   ["bold", "italic", "underline"],
-    //   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    //   [{ list: "bullet" }, { list: "ordered" }],
-    //   [{ align: [] }],
-    //   ["image", "video", "link"],
-    // ],
   },
 };
 
-function TextEditor({
-  content,
-  onChange,
-}: {
-  content: string;
-  onChange: ChangeEventHandler;
-}) {
-  // const handleChange = (e) => {
-  //   setContent(e.target.value);
-  // };
+const wikiFormats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "size",
+  "align",
+  "image",
+  "video",
+  "link",
+];
 
+const articleFormats = [
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "list",
+  "image",
+  "color",
+  "link",
+];
+
+interface TextEditorProps {
+  type: string;
+  content: string;
+  onChange: (value: string) => void;
+}
+
+function TextEditor({ type, content, onChange }: TextEditorProps) {
   return (
-    <div className="h-[876px] w-[1120px]">
-      <WikiEditorToolbar />
+    <div
+      className={`${type} h-[876px] !w-[${type === "wiki" ? 1120 : 1060}px] ${type === "article" ? "px-[30px]" : ""}`}
+    >
+      {type === "wiki" && <WikiEditorToolbar />}
       <QuillNoSSRWrapper
         style={{ height: "756px" }}
         theme="snow"
+        placeholder={`${type === "wiki" ? "추천 헤더 : 개요, 취미, 취향, 여담" : "본문을 입력해주세요"}`}
         modules={modules}
+        formats={type === "wiki" ? wikiFormats : articleFormats}
         value={content}
-        // onChange={handleChange}
+        onChange={onChange}
       />
+      {type === "article" && <ArticleEditorToolbar />}
     </div>
   );
 }
