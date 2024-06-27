@@ -2,8 +2,19 @@ import Input from "@components/Input";
 import useLoginValidation from "@hooks/useLoginValidation";
 
 const LoginPage = () => {
-  const { formData, errors, handleChange, handleBlur, handleSubmit } =
+  const { formData, errors, handleChange, handleBlur, validateLoginForm } =
     useLoginValidation();
+
+  // 폼 제출 이벤트 처리
+  // 실제 로그인 성공 시 처리하는 로직을 작성해주세요. (리디렉션 등)
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const validationErrors = validateLoginForm();
+    if (Object.keys(validationErrors).length === 0) {
+      // if (Object.keys(validationErrors).length === 0): 객체의 키 배열을 반환하는 코드로, length === 0은 오류가 없다는 것을 의미함
+      console.log("로그인 성공"); // <-- 여기에 로직을 작성해주시면 됩니다.
+    }
+  };
 
   // 테스트용 코드입니다.
   return (
