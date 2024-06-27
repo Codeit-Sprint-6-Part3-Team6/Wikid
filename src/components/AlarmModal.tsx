@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { X } from "lucide-react";
+import Button from "./Button";
 
 // AlarmModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type AlarmModalProps = {
-  buttonColor: "red" | "green";
+  type: "confirm" | "alert";
   isOpen: boolean;
   handleIsOpen: () => {};
   heading: "";
@@ -13,14 +14,8 @@ type AlarmModalProps = {
   onClick: () => {};
 };
 
-// 원하는 색깔이 있으시면 여기에 변수를 선언하고 사용하시면 됩니다. 위의 AlarmModalProps도 수정해주세요.
-const colorVariants = {
-  green: "bg-[#4CBFA4]",
-  red: "bg-[#D14343]",
-};
-
 export default function AlarmModal({
-  buttonColor,
+  type,
   isOpen,
   handleIsOpen,
   heading,
@@ -45,12 +40,13 @@ export default function AlarmModal({
             <p className="text-[14px] text-[#8F95B2] sm:text-[16px]">
               {message}
             </p>
-            <button
+            <Button
               onClick={onClick}
-              className={`mt-3 place-self-end rounded-xl p-3 px-5 py-2 text-[14px] text-white ${colorVariants[buttonColor]}`}
-            >
-              {buttonText}
-            </button>
+              text={buttonText}
+              color={type == "confirm" ? "green" : "white"}
+              type={"button"}
+              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none bg-[#D14343]` : ""}`}
+            />
           </div>
         </div>
       )}

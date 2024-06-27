@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, LockKeyhole } from "lucide-react";
+import Button from "./Button";
+import Input from "./Input";
 
 type QuizModalProps = {
   securityQuestion: string;
@@ -9,41 +11,31 @@ type QuizModalProps = {
   onClick: () => void;
 };
 
-// showWarningMessage값에 따라 input field에 다른 styling을 적용
-const styleVariants = {
-  basic:
-    "focus:ring-1 w-full rounded-lg bg-[#F7F7FA] p-2 px-5 py-3 text-[#8F95B2]",
-  warning: "w-full rounded-lg p-2 px-5 py-3 text-[#8F95B2] bg-[#FBEDED]",
-};
+// 유효성 검사는 나중에 hook이 생기면 Hook으로 교체합니다
+// const styleVariants = {
+//   basic:
+//     "focus:ring-1 w-full rounded-lg bg-[#F7F7FA] p-2 px-5 py-3 text-[#8F95B2]",
+//   warning: "w-full rounded-lg p-2 px-5 py-3 text-[#8F95B2] bg-[#FBEDED]",
+// };
 
 export default function QuizModal({
+  handleIsOpen,
+  onClick,
   securityQuestion,
   securityAnswer,
   isOpen,
-  handleIsOpen,
-  onClick,
 }: QuizModalProps) {
-  const [userAnswer, setUserAnswer] = useState<string | "">("");
+  const [userAnswer, setUserAnswer] = useState<string>("");
   const [showWarningMessage, setShowWarningMessage] = useState<boolean>(false);
 
-  // 정답을 입력하고 버튼을 클릭했을 때 onClick Event를 발생시키거나 WarningMessage를 호출
-  const handleSumbit = (e) => {
-    e.preventDefault();
-
-    if (userAnswer === securityAnswer) {
-      onClick();
-    } else {
-      setShowWarningMessage(true);
-    }
-  };
   const handleInput = (e) => {
     setUserAnswer(e.target.value);
   };
 
-  // 정답을 다시 입력하는 경우 showWarningMessage의 상태값을 false로 변경
-  useEffect(() => {
-    setShowWarningMessage(false);
-  }, [userAnswer]);
+  // // 유효성 검사는 나중에 hook이 생기면 hook으로 교체합니다.
+  // useEffect(() => {
+  //   setShowWarningMessage(false);
+  // }, [userAnswer]);
 
   return (
     <>
@@ -66,32 +58,32 @@ export default function QuizModal({
               </p>
             </header>
             <main>
-              <form onSubmit={handleSumbit}>
+              <form>
                 <label
                   htmlFor="security-answer"
                   className="mb-2 block text-xl font-semibold text-[#474D66]"
                 >
                   {securityQuestion}
                 </label>
-                <input
-                  id="security-answer"
+                <Input
                   value={userAnswer}
                   onChange={handleInput}
-                  placeholder="답안을 입력해 주세요"
-                  className={
-                    showWarningMessage
-                      ? styleVariants.warning
-                      : styleVariants.basic
-                  }
-                ></input>
+                  placeholder={"답안을 입력해 주세요"}
+                  id="security-answer"
+                />
+                {/* 유효성 검사는 나중에 hook이 생기면 hook으로 교체합니다.
                 {showWarningMessage && (
                   <p className="mt-3 text-[12px] text-[#D14343]">
                     정답이 아닙니다. 다시 시도해 주세요.
                   </p>
-                )}
-                <button onClick={onClick} className="mt-6 w-full rounded-xl bg-[#4CBFA4] p-3 text-white">
-                  확인
-                </button>
+                )} */}
+                <Button
+                  onClick={onClick}
+                  text="확인"
+                  color="green"
+                  type="button"
+                  className="mt-6 h-[40px] w-[355px]"
+                />
               </form>
             </main>
             <footer className="mt-5 flex items-center justify-center text-center text-[12px] text-[#8F95B2]">

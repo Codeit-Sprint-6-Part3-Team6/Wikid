@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Camera, X } from "lucide-react";
+import Button from "./Button";
 
 type ImageUploadModalProps = {
   isOpen: boolean;
@@ -8,7 +9,7 @@ type ImageUploadModalProps = {
 };
 
 export default function ImageUploadModal({
-  isOpen,
+  isOpen = true,
   handleIsOpen,
   onClick,
 }: ImageUploadModalProps) {
@@ -53,15 +54,20 @@ export default function ImageUploadModal({
                   ></img>
                 )}
               </label>
+              {/* 보이지 않는 input이라서 공통 component를 사용하지 않고 기존의 input으로 남겨두겠습니다. */}
               <input
                 id="file-input"
                 type="file"
                 className="hidden"
                 onChange={handlePreview}
               ></input>
-              <button className="mt-3 place-self-end rounded-xl bg-[#C6CADA] p-3 px-5 py-2 text-[14px] text-white">
-                삽입하기
-              </button>
+              <Button
+                type="button"
+                text="삽입하기"
+                color="white"
+                onClick={onClick}
+                className="mt-3 place-self-end border-none bg-gray-300 px-5 py-3 text-white"
+              />
             </form>
           </div>
         </div>
