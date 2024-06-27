@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
-
-const searchIcon = "/icons/ic_search.svg";
+import Image from "next/image";
+import searchIcon from "@icons/ic_search.svg";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: "text" | "email" | "password" | "search";
@@ -47,7 +47,7 @@ const Input = ({
   const inputElement =
     type === "search" ? (
       <div className={searchContainerClass}>
-        <img src={searchIcon} alt="검색 아이콘" />
+        <Image src={searchIcon} alt="검색 아이콘" />
         <input
           type="search"
           className={searchInputClass}

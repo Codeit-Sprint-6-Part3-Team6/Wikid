@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
+import dropdownIcon from "@icons/ic_arrowDown.svg";
 
 // 드롭다운 옵션들이 상황에 따라 달라지기 때문에 prop으로 받도록 설정
-// prop으로 내려주는 옵션 개수에 제한 없음
 interface DropdownProps {
   options: string[];
   onClick?: (option: string) => void;
   type?: "sort" | string; // 추가된 type prop
 }
-
-const dropdownIcon = "/icons/ic_arrow_down.svg";
 
 const Dropdown = ({ options, onClick, type }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0]);
@@ -49,7 +48,6 @@ const Dropdown = ({ options, onClick, type }: DropdownProps) => {
     };
   }, []);
 
-  // 스타일 클래스 정의
   const containerClass = `relative cursor-pointer items-center ${type === "sort" ? "w-[140px]" : "w-auto"}`;
   const dropdownButtonClass = `flex h-[45px] ${type === "sort" ? "w-[140px]" : "w-full"} cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200`;
   const dropdownMenuClass = `absolute top-full mt-1.5 ${type === "sort" ? "w-[140px]" : "w-full"} rounded-lg bg-white p-1.5 text-gray-800`;
@@ -58,7 +56,7 @@ const Dropdown = ({ options, onClick, type }: DropdownProps) => {
     <div className={containerClass} ref={dropdownRef}>
       <div className={dropdownButtonClass} onClick={toggleDropdown}>
         {selectedOption}
-        <img
+        <Image
           src={dropdownIcon}
           alt="드롭다운 아이콘"
           // isOpen 상태에 따라 아이콘 회전 애니메이션 추가
@@ -67,7 +65,6 @@ const Dropdown = ({ options, onClick, type }: DropdownProps) => {
       </div>
       {isOpen && (
         <div className={dropdownMenuClass}>
-          {/* 드롭다운 옵션 목록 */}
           {options.map((option, index) => (
             <div
               key={option}
