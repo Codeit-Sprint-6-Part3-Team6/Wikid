@@ -1,0 +1,18 @@
+POST https://wikied-api.vercel.app/6-6/auth/signUp
+Content-Type: application/json
+
+{
+    "name": "signUpTest",
+    "email": "signUpTest@email.com",
+    "password": "signUpTest",
+    "passwordConfirmation":"signUpTest"
+}
+
+###
+POST https://wikied-api.vercel.app/6-6/auth/signIn
+Content-Type: application/json
+
+{
+    "email": "signUpTest@email.com",
+    "password": "signUpTest"
+}

@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </noscript>
       </Head>
-      <Header isLoggedIn={true} profileIconSrc={ProfileIconTest} />
+      <Header isLoggedIn={false} profileIconSrc={ProfileIconTest} />
       <Component {...pageProps} />
     </>
   );

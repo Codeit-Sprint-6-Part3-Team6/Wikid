@@ -7,7 +7,7 @@ interface IconButtonProps {
   className?: string;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ src, alt, className }) => {
+const IconButton = ({ src, alt, className }: IconButtonProps) => {
   return (
     <button>
       <Image src={src} alt={alt} className={`${className}`} />

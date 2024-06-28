@@ -6,7 +6,7 @@ import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
 
-const HeaderLoggedOut: React.FC = () => {
+const HeaderLoggedOut = () => {
   return (
     <div>
       <Link
@@ -23,7 +23,7 @@ interface HeaderLoggedInProps {
   profileIconSrc?: string | StaticImageData;
 }
 
-const HeaderLoggedIn: React.FC<HeaderLoggedInProps> = ({ profileIconSrc }) => {
+const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
   return (
     <div className="flex items-center gap-[24px]">
       <IconButton
@@ -45,7 +45,7 @@ interface HeaderProps {
   profileIconSrc?: string | StaticImageData;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn, profileIconSrc }) => {
+const Header = ({ isLoggedIn, profileIconSrc }: HeaderProps) => {
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">
       <div className="flex items-center gap-[40px]">
