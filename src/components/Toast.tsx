@@ -9,7 +9,7 @@ interface ToastProps {
   type: string;
 }
 
-const Toast: React.FC<ToastProps> = ({ children, show, type }) => {
+const Toast = ({ children, show, type }: ToastProps) => {
   const icon = type === "green" ? greenIcon : redIcon;
   const className =
     type === "green"

@@ -2,9 +2,20 @@ import React from "react";
 import Input from "@components/Input";
 import useSignUpValidation from "@hooks/useSignUpValidation";
 
-const SignUpPage: React.FC = () => {
-  const { formData, errors, handleChange, handleBlur, handleSubmit } =
+const SignUpPage = () => {
+  const { formData, errors, handleChange, handleBlur, validateSignUpForm } =
     useSignUpValidation();
+
+  // 폼 제출 이벤트 처리
+  // 실제 회원가입 성공 시 처리하는 로직을 작성해주세요. (서버로 데이터 전송, 리디렉션 등)
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const validationErrors = validateSignUpForm();
+    if (Object.keys(validationErrors).length === 0) {
+      // if (Object.keys(validationErrors).length === 0): 객체의 키 배열을 반환하는 코드로, length === 0은 오류가 없다는 것을 의미함
+      console.log("회원가입 성공"); // <-- 여기에 로직을 작성해주시면 됩니다.
+    }
+  };
 
   // 테스트용 코드입니다.
   return (
