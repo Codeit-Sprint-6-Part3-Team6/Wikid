@@ -3,23 +3,24 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import useLoginValidation from "@hooks/useLoginValidation";
+import axios from "@lib/api/axios";
 
 const LoginForm = () => {
-  const { formData, errors, handleChange, handleBlur } = useLoginValidation(); // handleSubmit 일단 빼둠
+  const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const router = useRouter();
-
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { email, password } = values;
+    const { email, password } = formData;
 
     // useAuth 필요
     // await login({ email, password })
+    await axios.post("/auth/signIn", {
+      email,
+      password,
+    });
 
+    console.log("로그인");
     router.push("/"); // 로그인 성공 후 메인페이지로 이동
   }
 

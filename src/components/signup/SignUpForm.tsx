@@ -6,32 +6,23 @@ import useSignUpValidation from "@hooks/useSignUpValidation";
 import axios from "@lib/api/axios";
 
 const SignUpForm = () => {
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    passwordRepeat: "",
-  });
   const router = useRouter();
-  const { formData, errors, handleChange, handleBlur } = useSignUpValidation(); // handleSubmit 일단 지움
+  const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // 비밀번호 != 비밀번호 확인
-    if (values.password != values.passwordRepeat) {
-      console.log("비밀번호가 일치하지 않습니다");
-      return;
-    }
-    const { name, email, password } = values;
+    const { name, email, password, passwordConfirmation } = formData;
 
     await axios.post("/auth/signUp", {
       name,
       email,
       password,
+      passwordConfirmation,
     });
 
-    router.push("/login");
+    console.log("회원가입");
+    router.push("/login"); // 회원가입 성공 후 로그인 페이지로 이동
   }
 
   return (
