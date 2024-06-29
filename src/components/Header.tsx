@@ -1,8 +1,9 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import Button from "./Button";
 import IconButton from "./IconButton";
-import { useAuth } from "@context/AuthProvider";
+import { useAuth } from "@context/AuthContext";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
@@ -42,12 +43,11 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
 };
 
 interface HeaderProps {
-  isLoggedIn: boolean;
   profileIconSrc?: string | StaticImageData;
 }
 
-const Header = ({ isLoggedIn, profileIconSrc }: HeaderProps) => {
-  // const { user } = useAuth();
+const Header = ({ profileIconSrc }: HeaderProps) => {
+  const { isLoggedIn } = useAuth();
 
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">

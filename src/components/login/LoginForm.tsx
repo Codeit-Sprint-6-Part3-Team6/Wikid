@@ -1,30 +1,25 @@
-import { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import useLoginValidation from "@hooks/useLoginValidation";
-import { useAuth } from "@context/AuthProvider";
+import { useAuth } from "@context/AuthContext";
 import axios from "@lib/api/axios";
 
 const LoginForm = () => {
-  const { data: session } = useSession();
-
   const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const router = useRouter();
-  // const { login } = useAuth();
+  const { login } = useAuth();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = formData;
 
-    // await login({ email, password });
     await axios.post("auth/signIn", {
       email,
       password,
     });
 
-    console.log("로그인");
+    login();
     router.push("/"); // 로그인 성공 후 메인페이지로 이동
   }
 
@@ -63,7 +58,6 @@ const LoginForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-[400px]"
-          onClick={() => signIn()}
         />
       </form>
     </div>
