@@ -71,11 +71,11 @@ const articleFormats = [
 
 interface TextEditorProps {
   type: string;
-  content: string;
+  content?: string;
   onChange: (value: string) => void;
 }
 
-function TextEditor({ type, content, onChange }: TextEditorProps) {
+function TextEditor({ type, content = "", onChange }: TextEditorProps) {
   return (
     <div
       className={`${type} h-[876px] !w-[${type === "wiki" ? 1120 : 1060}px] ${type === "article" ? "px-[30px]" : ""}`}

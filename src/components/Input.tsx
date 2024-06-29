@@ -56,7 +56,8 @@ const Input = ({
         />
       </div>
     ) : (
-      <div>
+      // 그 외의 경우는 같은 input으로 렌더링
+      <div className="w-full">
         <input
           type={type}
           name={name}
@@ -66,11 +67,11 @@ const Input = ({
           value={value}
           {...rest}
         />
-        {error && <p className="mt-2.5 text-sm text-red300">{error}</p>}
+        {error && <p className="text-red300 mt-2.5 text-sm">{error}</p>}
       </div>
     );
 
-  return <div>{inputElement}</div>;
+  return inputElement;
 };
 
 export default Input;
