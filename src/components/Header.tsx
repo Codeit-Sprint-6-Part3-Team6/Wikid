@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
+import LinkButton from "./LinkButton";
 import { useAuth } from "@context/AuthContext";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
@@ -38,6 +39,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
 
   return (
     <div className="flex items-center gap-[24px]">
+      <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
       <Button
         text="임시 로그아웃 버튼"
         color="green"
