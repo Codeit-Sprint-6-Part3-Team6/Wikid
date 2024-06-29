@@ -4,12 +4,18 @@ import Image from "next/image";
 interface IconButtonProps {
   src: string;
   alt: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ src, alt, className }) => {
+const IconButton: React.FC<IconButtonProps> = ({
+  src,
+  alt,
+  onClick,
+  className,
+}) => {
   return (
-    <button>
+    <button type="button" onClick={onClick}>
       <Image src={src} alt={alt} className={`${className}`} />
     </button>
   );

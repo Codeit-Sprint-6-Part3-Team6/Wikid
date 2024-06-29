@@ -9,6 +9,8 @@ type ProfileCardProps = {
   profileImage: string | null;
   isEditMode: boolean;
   onFocusOut: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDeleteClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function ProfileCard({
@@ -16,6 +18,8 @@ function ProfileCard({
   profileImage,
   isEditMode,
   onFocusOut: onBlur,
+  onFileChange,
+  onDeleteClick,
 }: ProfileCardProps) {
   const className = isEditMode ? "w-[400px] px-[40px]" : "w-[320px] px-[30px]";
 
@@ -24,7 +28,11 @@ function ProfileCard({
       className={`${className} flex flex-col items-center gap-[60px] rounded-[10px] pb-[30px] pt-[60px] shadow-[0_4px_20px_0_#00000014]`}
     >
       {isEditMode ? (
-        <ProfileImageEditor imageUrl={profileImage} />
+        <ProfileImageEditor
+          imageUrl={profileImage}
+          onChange={onFileChange}
+          onClick={onDeleteClick}
+        />
       ) : (
         <ProfileImage imageUrl={profileImage} />
       )}
