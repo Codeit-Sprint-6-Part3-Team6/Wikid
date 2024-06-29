@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
@@ -14,10 +15,16 @@ const LoginForm = () => {
     e.preventDefault();
     const { email, password } = formData;
 
-    await axios.post("auth/signIn", {
+    const response = await axios.post("auth/signIn", {
       email,
       password,
     });
+
+    const { accessToken, refreshToken } = response.data;
+
+    // httpOnly 속성은 서버에서 생성한 쿠키에 대해서만 적용됨, secure: true를 해도 적용되지 않음
+    Cookies.set("accessToken", accessToken, { secure: true });
+    Cookies.set("refreshToken", refreshToken, { secure: true });
 
     login();
     router.push("/"); // 로그인 성공 후 메인페이지로 이동

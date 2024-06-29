@@ -1,6 +1,8 @@
 import React from "react";
+import Cookies from "js-cookie";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import { useAuth } from "@context/AuthContext";
@@ -26,8 +28,22 @@ interface HeaderLoggedInProps {
 }
 
 const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  async function handleClick() {
+    Cookies.remove("accessToken");
+    logout();
+  }
+
   return (
     <div className="flex items-center gap-[24px]">
+      <Button
+        text="임시 로그아웃 버튼"
+        color="green"
+        type="button"
+        onClick={handleClick}
+      />
       <IconButton
         src={AlarmIcon}
         alt="알람 아이콘"
