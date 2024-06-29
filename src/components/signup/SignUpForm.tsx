@@ -14,7 +14,7 @@ const SignUpForm = () => {
 
     const { name, email, password, passwordConfirmation } = formData;
 
-    await axios.post("/auth/signUp", {
+    await axios.post("auth/signUp", {
       name,
       email,
       password,
@@ -22,7 +22,7 @@ const SignUpForm = () => {
     });
 
     console.log("회원가입");
-    router.push("/login"); // 회원가입 성공 후 로그인 페이지로 이동
+    router.push("login"); // 회원가입 성공 후 로그인 페이지로 이동
   }
 
   return (

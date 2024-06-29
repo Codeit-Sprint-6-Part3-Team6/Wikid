@@ -2,6 +2,7 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import IconButton from "./IconButton";
+import { useAuth } from "@context/AuthProvider";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
@@ -46,6 +47,8 @@ interface HeaderProps {
 }
 
 const Header = ({ isLoggedIn, profileIconSrc }: HeaderProps) => {
+  // const { user } = useAuth();
+
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">
       <div className="flex items-center gap-[40px]">

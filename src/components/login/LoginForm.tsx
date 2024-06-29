@@ -1,21 +1,25 @@
 import { useState } from "react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import useLoginValidation from "@hooks/useLoginValidation";
+import { useAuth } from "@context/AuthProvider";
 import axios from "@lib/api/axios";
 
 const LoginForm = () => {
+  const { data: session } = useSession();
+
   const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const router = useRouter();
+  // const { login } = useAuth();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = formData;
 
-    // useAuth 필요
-    // await login({ email, password })
-    await axios.post("/auth/signIn", {
+    // await login({ email, password });
+    await axios.post("auth/signIn", {
       email,
       password,
     });
@@ -59,6 +63,7 @@ const LoginForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-[400px]"
+          onClick={() => signIn()}
         />
       </form>
     </div>

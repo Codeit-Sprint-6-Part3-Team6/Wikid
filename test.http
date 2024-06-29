@@ -1,3 +1,4 @@
+### 회원가입
 POST https://wikied-api.vercel.app/6-6/auth/signUp
 Content-Type: application/json
 
@@ -8,7 +9,7 @@ Content-Type: application/json
     "passwordConfirmation":"signUpTest"
 }
 
-###
+### 로그인
 POST https://wikied-api.vercel.app/6-6/auth/signIn
 Content-Type: application/json
 
@@ -16,3 +17,18 @@ Content-Type: application/json
     "email": "signUpTest@email.com",
     "password": "signUpTest"
 }
+
+### 로그인
+POST https://wikied-api.vercel.app/6-6/auth/signIn
+Content-Type: application/json
+
+{
+    "email": "stophyun@email.com",
+    "password": "stophyun123"
+}
+
+### 토큰 갱신
+POST https://wikied-api.vercel.app/6-6/auth/refresh-token
+Content-Type: application/json
+
+{"refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc1LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6InJlZnJlc2giLCJpYXQiOjE3MTk1ODAwOTEsImV4cCI6MTcyMDE4NDg5MSwiaXNzIjoic3Atd2lraWVkIn0.Dyj16x1oihm08Lq59fzU5v5jyV8Lqv1BMTEaoLhe_Ng"}
