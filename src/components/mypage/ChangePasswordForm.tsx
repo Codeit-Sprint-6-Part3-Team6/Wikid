@@ -1,29 +1,70 @@
+import React, { useState } from "react";
+import Cookies from "js-cookie";
 import Button from "@components/Button";
 import Input from "@components/Input";
+import axios from "@lib/api/axios";
 
 const ChangePasswordForm = () => {
+  const [values, setValues] = useState({
+    currentPassword: "",
+    password: "",
+    passwordConfirmation: "",
+  });
+
+  const accessToken = Cookies.get("accessToken");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const { currentPassword, password, passwordConfirmation } = values;
+
+    await axios.patch(
+      "users/me/password",
+      {
+        currentPassword,
+        password,
+        passwordConfirmation,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
   return (
-    <form className="flex w-[400px] flex-col gap-[10px]">
+    <form
+      className="flex w-[400px] flex-col gap-[10px]"
+      onSubmit={handleSubmit}
+    >
       <div className="flex flex-col gap-[10px]">
         <label>비밀번호 변경</label>
         <div className="flex flex-col gap-[8px]">
           <Input
             type="password"
-            name="formerPassword"
-            // value="formerPassword"
+            name="currentPassword"
+            value={values.currentPassword}
             placeholder="기존 비밀번호"
+            onChange={handleChange}
           />
           <Input
             type="password"
-            name="newPassword"
-            // value="newPassword"
+            name="password"
+            value={values.password}
             placeholder="새 비밀번호"
+            onChange={handleChange}
           />
           <Input
             type="password"
-            name="newPassword"
-            // value="newPassword"
+            name="passwordConfirmation"
+            value={values.passwordConfirmation}
             placeholder="새 비밀번호 확인"
+            onChange={handleChange}
           />
         </div>
       </div>
