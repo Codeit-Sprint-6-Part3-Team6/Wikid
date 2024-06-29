@@ -14,6 +14,7 @@ const config: Config = {
         gray400: "var(--color-gray400)",
         gray500: "var(--color-gray500)",
         gray600: "var(--color-gray600)",
+        gray800: "var(--color-gray800)",
         green100: "var(--color-green100)",
         green200: "var(--color-green200)",
         green300: "var(--color-green300)",
