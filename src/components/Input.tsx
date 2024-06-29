@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
-
-const searchIcon = "/icons/ic_search.svg";
+import Image from "next/image";
+import searchIcon from "@icons/ic_search.svg";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: "text" | "email" | "password" | "search";
@@ -11,7 +11,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   type = "text",
   name = "",
   value,
@@ -19,30 +19,38 @@ const Input: React.FC<InputProps> = ({
   onChange = () => {},
   onBlur = () => {},
   ...rest
-}) => {
+}: InputProps) => {
   // 공통 클래스 설정
   const commonClasses =
-    "w-full bg-gray-50 transition-all duration-500 rounded-lg px-5 py-2.5 hover:bg-gray-200 focus:bg-white";
+    "w-full bg-gray50 transition-all duration-500 hover:bg-gray-200 focus:bg-white";
 
-  // 입력 필드 클래스 설정 (에러 여부에 따라 다르게 적용)
+  // 컨테이너 클래스 설정
+  const containerClass = "rounded-lg px-5 py-2.5";
+
+  // 검색 input 컨테이너 클래스 설정
+  const searchContainerClass = `
+    ${commonClasses} ${containerClass}
+    group flex max-w-[800px] gap-4
+    focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-200
+  `;
+
+  // 검색 input 클래스 설정
+  const searchInputClass = `${commonClasses} group-hover:bg-gray-200 group-focus:bg-white`;
+
+  // 일반 input 클래스 설정 (에러 여부에 따라 다르게 적용)
+  const errorClass = "bg-red100 hover:bg-red100";
+  const successClass = "bg-white ring-2 ring-green300";
   const inputClass =
-    `max-w-[400px] ${commonClasses} ` +
-    (error
-      ? "bg-red100"
-      : value && !error
-        ? "bg-white ring-2 ring-green300"
-        : "bg-gray-50 hover:bg-gray-200 focus:bg-white");
+    `max-w-[400px] ${commonClasses} ${containerClass} ` +
+    (error ? errorClass : value && !error ? successClass : "");
 
-  // type이 "search"일 때 검색 아이콘과 함께 렌더링되는 input
   const inputElement =
     type === "search" ? (
-      <div
-        className={`group flex max-w-[800px] gap-4 ${commonClasses} focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-200`}
-      >
-        <img src={searchIcon} alt="검색 아이콘" />
+      <div className={searchContainerClass}>
+        <Image src={searchIcon} alt="검색 아이콘" />
         <input
           type="search"
-          className={`w-full bg-gray-50 transition-all duration-500 focus:bg-white group-hover:bg-gray-200`}
+          className={searchInputClass}
           placeholder="검색어를 입력해 주세요"
           {...rest}
         />
@@ -53,7 +61,7 @@ const Input: React.FC<InputProps> = ({
         <input
           type={type}
           name={name}
-          className={`${inputClass} + focus:ring-1 focus:ring-gray-200`}
+          className={`${inputClass} focus:ring-1 focus:ring-gray-200`}
           onChange={onChange}
           onBlur={onBlur}
           value={value}

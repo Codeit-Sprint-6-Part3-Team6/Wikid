@@ -81,16 +81,6 @@ const useLoginValidation = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
-  // 폼 제출 이벤트 처리
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validateLoginForm();
-    // 검증 결과에 따른 처리 로직 (임시로 콘솔에 로그 출력)
-    if (Object.keys(validationErrors).length === 0) {
-      // 실제 로그인 성공 시 처리하는 로직을 작성해주세요. (리디렉션 등)
-      console.log("로그인 성공");
-    }
-  };
   // 오류 상태 초기화 함수
   const clearErrors = () => setErrors({});
 
@@ -100,7 +90,6 @@ const useLoginValidation = () => {
     setErrors,
     handleChange,
     handleBlur,
-    handleSubmit,
     clearErrors,
     validateLoginForm,
   };
