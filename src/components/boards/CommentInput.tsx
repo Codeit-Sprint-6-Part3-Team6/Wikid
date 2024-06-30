@@ -28,6 +28,16 @@ const CommentInput = ({
     inputCounter(e, setInputCount, setContent);
   };
 
+  const handleSave = () => {
+    if (content.trim()) {
+      onSaveComment(content);
+      if (type === "create") {
+        setContent("");
+        setInputCount(0); // 댓글 등록 후 input 초기화
+      }
+    }
+  };
+
   return (
     <div
       className={`${className} mx-auto flex min-h-[120px] w-full flex-wrap justify-end gap-[10px] rounded-lg bg-gray50 px-[15px] py-[13px]`}
@@ -62,6 +72,7 @@ const CommentInput = ({
                 ? "h-[30px] w-[55px] text-[12px]"
                 : "h-[45px] w-[120px]"
             }`}
+            onClick={handleSave}
           />
         </div>
       </div>
