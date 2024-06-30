@@ -66,3 +66,23 @@ export const editComment = async (
     throw err;
   }
 };
+
+export const deleteComment = async (
+  commentId: number,
+): Promise<CommentType> => {
+  try {
+    const res = await axios.delete<CommentType>(
+      `/api/6-6/comments/${commentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${hardCodedToken}`,
+        },
+      },
+    );
+
+    return res.data;
+  } catch (err: any) {
+    console.error("댓글 삭제 실패", err);
+    throw err;
+  }
+};

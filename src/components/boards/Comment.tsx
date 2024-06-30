@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import CommentCard from "./CommentCard";
 import CommentInput from "./CommentInput";
-import { getComments, editComment, postComment } from "@lib/api/commentApi";
+import {
+  getComments,
+  editComment,
+  postComment,
+  deleteComment,
+} from "@lib/api/commentApi";
 import { CommentType } from "@lib/types/commentType";
 
 interface CommentProps {
@@ -50,6 +55,18 @@ const Comment = ({ boardId }: CommentProps) => {
     }
   };
 
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      await deleteComment(commentId);
+      const filteredComments = comments.filter(
+        (comment) => comment.id !== commentId,
+      );
+      setComments(filteredComments);
+    } catch (err) {
+      console.error("댓글 삭제 실패", err);
+    }
+  };
+
   if (isLoading) {
     return <div className="mt-8 text-center">로딩 중 ...</div>;
   }
@@ -68,6 +85,7 @@ const Comment = ({ boardId }: CommentProps) => {
           key={comment.id}
           comment={comment}
           onEditComment={handleEditComment}
+          onDeleteComment={handleDeleteComment}
         />
       ))}
     </section>

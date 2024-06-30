@@ -3,7 +3,7 @@ import Button from "@components/Button";
 import { inputCounter } from "@utils/inputCounter";
 
 interface CommentInputProps {
-  onSaveComment?: (content: string) => void;
+  onSaveComment: (content: string) => void;
   onCancelEdit?: () => void;
   initialContent?: string;
   className?: string;
