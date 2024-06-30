@@ -39,11 +39,13 @@ const ChangePasswordForm = () => {
 
   return (
     <form
-      className="flex w-[400px] flex-col gap-[10px]"
+      className="flex w-[400px] flex-col gap-[16px]"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-[10px]">
-        <label>비밀번호 변경</label>
+        <label className="text-[14px] font-normal text-gray500">
+          비밀번호 변경
+        </label>
         <div className="flex flex-col gap-[8px]">
           <Input
             type="password"

@@ -32,7 +32,7 @@ const LoginForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-[50px]">
-      <h1 className="text-gray800 text-[24px] font-semibold">로그인</h1>
+      <h1 className="text-[24px] font-semibold text-gray500">로그인</h1>
       <form className="flex flex-col gap-[24px]" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-[32px]">
           <div className="flex flex-col gap-[10px]">
