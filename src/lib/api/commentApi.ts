@@ -42,3 +42,27 @@ export const postComment = async (
     throw err;
   }
 };
+
+export const editComment = async (
+  commentId: number,
+  newContent: string,
+): Promise<CommentType> => {
+  try {
+    const res = await axios.patch<CommentType>(
+      `/api/6-6/comments/${commentId}`,
+      {
+        content: newContent,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${hardCodedToken}`,
+        },
+      },
+    );
+
+    return res.data;
+  } catch (err: any) {
+    console.error("댓글 수정 실패", err);
+    throw err;
+  }
+};
