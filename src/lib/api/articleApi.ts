@@ -13,6 +13,7 @@ export const getArticle = async (
   }
 };
 
+// 로그인 기능 구현 후 수정 예정
 export const hardCodedToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY2LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTc3OTk0NywiZXhwIjoxNzE5NzgxNzQ3LCJpc3MiOiJzcC13aWtpZWQifQ.Iktk6VxCatE0d_JER0lmKssbCLUxRRgbsDKt24KrhfM";
 
@@ -61,6 +62,38 @@ export const editArticle = async (
     return res.data;
   } catch (err: any) {
     console.error("게시글 수정 실패", err);
+    throw err;
+  }
+};
+
+// 수정 필요
+export const postArticle = async (
+  title: string,
+  image: string,
+  content: string,
+): Promise<ArticleType> => {
+  try {
+    const res = await axios.post<ArticleType>(
+      `/api/6-6/articles`,
+      {
+        title,
+        image,
+        content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${hardCodedToken}`,
+        },
+      },
+    );
+
+    console.log("게시글 등록 성공", res.data);
+    return res.data;
+  } catch (err: any) {
+    console.error(
+      "게시글 등록 실패",
+      err.response ? err.response.data : err.message,
+    );
     throw err;
   }
 };
