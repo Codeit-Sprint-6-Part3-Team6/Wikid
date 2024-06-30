@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import CardContainer from "@components/CardContainer";
 import LinkButton from "@components/LinkButton";
+import Comment from "@components/boards/Comment";
 import { formatDate } from "@utils/dateFormatter";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
 import { ArticleType } from "@lib/types/articleType";
@@ -120,6 +121,7 @@ const ArticlePage = () => {
         color="white"
         className="h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300"
       />
+      {boardId && typeof boardId === "string" && <Comment boardId={boardId} />}
     </div>
   );
 };
