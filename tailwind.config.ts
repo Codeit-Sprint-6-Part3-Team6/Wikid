@@ -14,6 +14,7 @@ const config: Config = {
         gray400: "var(--color-gray400)",
         gray500: "var(--color-gray500)",
         gray600: "var(--color-gray600)",
+        gray800: "var(--color-gray800)",
         green100: "var(--color-green100)",
         green200: "var(--color-green200)",
         green300: "var(--color-green300)",
@@ -21,6 +22,15 @@ const config: Config = {
         red300: "var(--color-red300)",
         purple: "var(--color-purple)",
         yellow: "var(--color-yellow)",
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: "0", transform: "translate3d(0, 20%, 0)" },
+          to: { opacity: "1", transform: "translate3d(0, 0, 0)" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.5s",
       },
     },
   },
