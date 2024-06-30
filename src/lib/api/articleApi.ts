@@ -35,3 +35,32 @@ export const deleteArticle = async (
     throw err;
   }
 };
+
+export const editArticle = async (
+  targetId: string | string[],
+  newTitle: string,
+  newImage: string,
+  newContent: string,
+): Promise<ArticleType> => {
+  try {
+    const res = await axios.patch<ArticleType>(
+      `/api/6-6/articles/${targetId}`,
+      {
+        title: newTitle,
+        image: newImage,
+        content: newContent,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${hardCodedToken}`,
+        },
+      },
+    );
+
+    console.log("게시글 수정 성공", res.data);
+    return res.data;
+  } catch (err: any) {
+    console.error("게시글 수정 실패", err);
+    throw err;
+  }
+};

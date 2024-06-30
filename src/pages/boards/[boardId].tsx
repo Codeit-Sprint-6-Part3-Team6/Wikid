@@ -36,6 +36,20 @@ const ArticlePage = () => {
     }
   }, [boardId]);
 
+  const handleEditArticle = () => {
+    if (article) {
+      router.push({
+        pathname: "/addboard",
+        query: {
+          id: boardId,
+          title: article.title,
+          image: article.image,
+          content: article.content,
+        },
+      });
+    }
+  };
+
   const handleDeleteArticle = async () => {
     if (!boardId) return;
     if (confirm("게시글을 삭제하시겠습니까?"))
@@ -69,6 +83,7 @@ const ArticlePage = () => {
               text="수정하기"
               color="green"
               type="button"
+              onClick={handleEditArticle}
               className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
             />
             <Button
