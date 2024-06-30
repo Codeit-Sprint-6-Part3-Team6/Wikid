@@ -5,11 +5,11 @@ import redIcon from "@icons/ic_toast_red.svg";
 
 interface ToastProps {
   children?: ReactNode;
-  show: boolean;
+  isToastOpened: boolean;
   type: string;
 }
 
-const Toast = ({ children, show, type }: ToastProps) => {
+const Toast = ({ children, isToastOpened, type }: ToastProps) => {
   const icon = type === "green" ? greenIcon : redIcon;
   const className =
     type === "green"
@@ -18,8 +18,8 @@ const Toast = ({ children, show, type }: ToastProps) => {
 
   return (
     <>
-      {show && (
-        <div className="fixed inset-x-0 top-7 flex justify-center">
+      {isToastOpened && (
+        <div className="animate-fadeIn fixed inset-x-0 top-[120px] z-10 flex justify-center">
           <div
             className={`flex h-12 items-center gap-4 rounded-lg border border-solid px-5 ${className}`}
           >

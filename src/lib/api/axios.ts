@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const instance = axios.create({
   baseURL: "https://wikied-api.vercel.app/6-6/",
-  withCredentials: false, // request 보낼 때 항상 쿠키를 쓰도록 설정
+  withCredentials: false, // request 보낼 때 항상 쿠키를 쓰도록 설정: false 하니까 cors 안뜸
 });
 
 // interceptor
