@@ -20,6 +20,8 @@ const LoginForm = () => {
       password,
     });
 
+    // response로 받아온 accessToken, refreshToken은
+    // js-cookie 라이브러리를 활용하여 직접 cookie에 저장
     const { accessToken, refreshToken } = response.data;
 
     // httpOnly 속성은 서버에서 생성한 쿠키에 대해서만 적용됨, secure: true를 해도 적용되지 않음

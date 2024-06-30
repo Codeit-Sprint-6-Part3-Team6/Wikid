@@ -21,7 +21,6 @@ const SignUpForm = () => {
       passwordConfirmation,
     });
 
-    console.log("회원가입");
     router.push("login"); // 회원가입 성공 후 로그인 페이지로 이동
   }
 

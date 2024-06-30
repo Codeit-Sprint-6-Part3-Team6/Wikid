@@ -33,7 +33,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
   const { logout } = useAuth();
 
   async function handleClick() {
-    Cookies.remove("accessToken");
+    Cookies.remove("accessToken"); // accessToken을 삭제하는 방식으로 로그아웃 구현
     logout();
   }
 

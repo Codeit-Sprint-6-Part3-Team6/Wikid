@@ -11,7 +11,7 @@ const ChangePasswordForm = () => {
     passwordConfirmation: "",
   });
 
-  const accessToken = Cookies.get("accessToken");
+  const accessToken = Cookies.get("accessToken"); // 쿠키에 저장해둔 accessToken 불러오기
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,7 +26,8 @@ const ChangePasswordForm = () => {
       },
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          // 쿠키에 저장을 한다고 하긴 했는데 자동으로 보내지진 않아서 임의로 추가해주어야 합니다 ㅜ
+          Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 포함해서 보내기
         },
       },
     );

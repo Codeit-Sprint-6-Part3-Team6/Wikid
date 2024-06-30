@@ -1,5 +1,7 @@
 // contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import Cookies from "js-cookie";
+import axios from "@lib/api/axios";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -11,6 +13,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
+}
+
+interface loginTestProps {
+  email: string;
+  password: string;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
