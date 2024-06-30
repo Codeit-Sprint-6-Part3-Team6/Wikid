@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CommentCard from "./CommentCard";
 import CommentInput from "./CommentInput";
-import { getComments, postComment } from "@lib/api/commentApi";
+import { getComments, editComment, postComment } from "@lib/api/commentApi";
 import { CommentType } from "@lib/types/commentType";
 
 interface CommentProps {
@@ -38,6 +38,18 @@ const Comment = ({ boardId }: CommentProps) => {
     }
   };
 
+  const handleEditComment = async (commentId: number, newContent: string) => {
+    try {
+      const updatedComment = await editComment(commentId, newContent);
+      const updatedComments = comments.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment,
+      );
+      setComments(updatedComments);
+    } catch (err) {
+      console.error("댓글 수정 실패", err);
+    }
+  };
+
   if (isLoading) {
     return <div className="mt-8 text-center">로딩 중 ...</div>;
   }
@@ -52,7 +64,11 @@ const Comment = ({ boardId }: CommentProps) => {
         className="mb-[42px] mt-[14px]"
       />
       {comments.map((comment) => (
-        <CommentCard key={comment.id} comment={comment} />
+        <CommentCard
+          key={comment.id}
+          comment={comment}
+          onEditComment={handleEditComment}
+        />
       ))}
     </section>
   );

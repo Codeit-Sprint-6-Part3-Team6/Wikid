@@ -38,6 +38,10 @@ const CommentInput = ({
     }
   };
 
+  const handleCancel = () => {
+    if (onCancelEdit) onCancelEdit();
+  };
+
   return (
     <div
       className={`${className} mx-auto flex min-h-[120px] w-full flex-wrap justify-end gap-[10px] rounded-lg bg-gray50 px-[15px] py-[13px]`}
@@ -61,6 +65,7 @@ const CommentInput = ({
               text="취소"
               color="white"
               className="h-[30px] w-[55px] rounded-md bg-white text-[12px]"
+              onClick={handleCancel}
             />
           )}
           <Button

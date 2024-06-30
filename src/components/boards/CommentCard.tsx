@@ -11,16 +11,25 @@ import profileIcon from "@icons/ic_profile.svg";
 interface CommentCardProps {
   comment: CommentType;
   onEditComment: (commentId: number, newContent: string) => void;
-  onDeleteComment: (commentId: number) => void;
 }
 
-const CommentCard = ({
-  comment,
-  onEditComment,
-  onDeleteComment,
-}: CommentCardProps) => {
+const CommentCard = ({ comment, onEditComment }: CommentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+
+  const handleEdit = async (newContent: string) => {
+    try {
+      await onEditComment(comment.id, newContent);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("댓글 수정에 실패했습니다.", error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditContent(comment.content); // 수정 취소 시 내용 초기화
+  };
 
   return (
     <CardContainer className="mb-[24px] items-start py-[22px]">
@@ -39,6 +48,8 @@ const CommentCard = ({
             <CommentInput
               type="edit"
               initialContent={comment.content}
+              onSaveComment={handleEdit}
+              onCancelEdit={handleCancelEdit}
               className="mb-[10px]"
             />
           ) : (
