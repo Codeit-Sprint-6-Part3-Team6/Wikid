@@ -1,11 +1,13 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface ButtonProps {
   text: string;
   color: "green" | "white";
   type: "button" | "submit" | "reset";
   disabled?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?:
+    | (() => void)
+    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>);
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
 
@@ -20,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`${className} rounded-[10px] border-[1px] border-solid border-[var(--color-green200)] ${disabled ? "cursor-not-allowed border-[var(--color-gray300)] bg-[var(--color-gray300)] opacity-100" : ""}} text-center ${color === "green" ? "bg-[var(--color-green200)] text-[var(--color-white)]" : "bg-[var(--color-white) text-[var(--color-green200)]"} `}
+      className={`${className} rounded-[10px] border-[1px] border-solid border-[var(--color-green200)] text-sm font-semibold leading-6 ${disabled ? "cursor-not-allowed border-[var(--color-gray300)] bg-[var(--color-gray300)] opacity-100" : ""}} text-center ${color === "green" ? "bg-[var(--color-green200)] text-[var(--color-white)]" : "bg-[var(--color-white) text-[var(--color-green200)]"} `}
       onClick={onClick}
     >
       {text}
