@@ -9,6 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string; // 선택적 prop, 유효성 검사에 사용
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
+  className?: string; // 다른 스타일 속성 추가할 때 사용
 }
 
 const Input = ({
@@ -18,6 +19,7 @@ const Input = ({
   error,
   onChange = () => {},
   onBlur = () => {},
+  className,
   ...rest
 }: InputProps) => {
   // 공통 클래스 설정
@@ -61,13 +63,13 @@ const Input = ({
         <input
           type={type}
           name={name}
-          className={`${inputClass} focus:ring-1 focus:ring-gray-200`}
+          className={`${inputClass} ${className} focus:ring-1 focus:ring-gray-200`}
           onChange={onChange}
           onBlur={onBlur}
           value={value}
           {...rest}
         />
-        {error && <p className="text-red300 mt-2.5 text-sm">{error}</p>}
+        {error && <p className="mt-2.5 text-sm text-red300">{error}</p>}
       </div>
     );
 
