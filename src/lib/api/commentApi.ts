@@ -1,5 +1,5 @@
 import axios from "axios";
-import { hardCodedToken } from "./articleApi";
+import { getAccessToken } from "./articleApi";
 import { CommentType } from "@lib/types/commentType";
 
 export const getComments = async (
@@ -31,7 +31,7 @@ export const postComment = async (
       commentData,
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
@@ -55,7 +55,7 @@ export const editComment = async (
       },
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
@@ -75,7 +75,7 @@ export const deleteComment = async (
       `/api/6-6/comments/${commentId}`,
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
