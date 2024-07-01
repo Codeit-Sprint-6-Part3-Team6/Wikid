@@ -1,9 +1,24 @@
 import axios, { AxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 
 const instance = axios.create({
   baseURL: "https://wikied-api.vercel.app/6-6/",
   withCredentials: false, // request 보낼 때 항상 쿠키를 쓰도록 설정: false 하니까 cors 안뜸
 });
+
+// 요청 인터셉터
+instance.interceptors.request.use(
+  (config) => {
+    const accessToken = Cookies.get("accessToken"); // 쿠키에서 액세스 토큰 가져오기
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 // interceptor
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
