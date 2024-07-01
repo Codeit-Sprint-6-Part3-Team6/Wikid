@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "@components/Button";
-import { inputCounter } from "@utils/inputCounter";
+import { inputCounter } from "@lib/inputCounter";
 
 interface CommentInputProps {
   onSaveComment: (content: string) => void;

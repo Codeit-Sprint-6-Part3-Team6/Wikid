@@ -15,7 +15,7 @@ export const getArticle = async (
 
 // 로그인 기능 구현 후 수정 예정
 export const hardCodedToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTc4NTI3NiwiZXhwIjoxNzE5Nzg3MDc2LCJpc3MiOiJzcC13aWtpZWQifQ.hyP2226pgXlIg3bI3J04_H8dxPQR3VVvG6fijDb7WtI";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgxNDM0NywiZXhwIjoxNzE5ODE2MTQ3LCJpc3MiOiJzcC13aWtpZWQifQ.Qj1fzb9e-Y6pyFoSRQ3rL5zif3htQ9mxOKtNxNvg3Ec";
 
 export const deleteArticle = async (
   targetId: string | string[],

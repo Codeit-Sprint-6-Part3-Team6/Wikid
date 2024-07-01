@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
-import CardContainer from "@components/CardContainer";
 import { CommentType } from "../../lib/types/commentType";
+import CardContainer from "./CardContainer";
 import CommentInput from "./CommentInput";
-import { formatDate } from "@utils/dateFormatter";
+import { formatDate } from "@lib/dateFormatter";
 import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 import profileIcon from "@icons/ic_profile.svg";

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import LinkButton from "@components/LinkButton";
 import CardContainer from "@components/article/CardContainer";
-import Comment from "@components/boards/Comment";
+import Comment from "@components/article/Comment";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
