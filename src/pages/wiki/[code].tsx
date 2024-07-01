@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import { GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 import LinkCopyButton from "@components/LinkCopyButton";
 import TextEditor from "@components/TextEditor";
+import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import { getImageUrl } from "@lib/api/imageApi";
 import { getProfile, patchProfile } from "@lib/api/profileApi";
@@ -37,6 +39,8 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   const [content, setContent] = useState(initialProfile.content); // 나중에 저장할 때 한 번에 바꿔서 send
   const [profileImage, setProfileImage] = useState(initialProfile.image); // 나중에 저장할 때 한 번에 바꿔서 send
   const [isEditMode, setIsEditMode] = useState(false);
+  const router = useRouter();
+  let purifiedContent: string | TrustedHTML = "";
 
   const handleWikiContentChange = (value: string) => {
     setContent(value);
@@ -64,7 +68,13 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   };
 
   const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (profileImage !== null) {
+    if (
+      initialProfile === profile && //항상 최신
+      initialProfile.content === content && //업데이트필요
+      initialProfile.image === profileImage //업데이트필요
+    ) {
+      alert("변경사항이 없습니다.");
+    } else if (profileImage !== initialProfile.image && profileImage !== null) {
       const res = await fetch(profileImage);
       const blob = await res.blob(); // blob: binary large object, 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용
       const parts = blob.type.split("/"); // type 문자열로부터 확장자 추출
@@ -72,11 +82,24 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
         type: blob.type,
       });
       const imageUrl = (await getImageUrl(imageFile)).url;
+
       setProfile((prevProfile) => ({
         ...prevProfile,
-        // content: content,
         content,
         image: imageUrl,
+      }));
+    } else if (profileImage === null) {
+      //이미지 삭제함
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        content,
+        image: profileImage,
+      }));
+    } else {
+      // 이미지는 변화가 없는데 소개글만 바뀜
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        content,
       }));
     }
   };
@@ -84,6 +107,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   const sendEditedProfile = async (profile: Profile) => {
     try {
       await patchProfile(profile);
+      router.reload();
     } catch (error) {
       console.error(error);
     }
@@ -95,11 +119,23 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
     }
   }, [profile]);
 
+  useEffect(() => {
+    purifiedContent = DOMPurify.sanitize(content);
+  }, []);
+
   return (
     <div>
       <LinkCopyButton link="https://www.wikied.kr/wikicode" /> {/*test code*/}
       <button type="button" onClick={handleSubmitClick}>
         test
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setIsEditMode(true);
+        }}
+      >
+        수정모드
       </button>
       {isEditMode ? (
         <TextEditor
@@ -108,11 +144,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
           onChange={handleWikiContentChange}
         />
       ) : (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: content,
-          }}
-        />
+        <ContentPresenter content={initialProfile.content} />
       )}
       {profile && (
         <ProfileCard

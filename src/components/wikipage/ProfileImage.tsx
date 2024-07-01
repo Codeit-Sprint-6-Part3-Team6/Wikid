@@ -7,13 +7,14 @@ type ProfileImageProps = {
 
 function ProfileImage({ imageUrl }: ProfileImageProps) {
   return (
-    <div className="relative h-[200px] w-[200px] rounded-full">
+    <div className="relative h-[200px] w-[200px] rounded-full object-cover">
       <Image
         src={imageUrl === null ? defaultProfile : imageUrl}
         alt="Profile"
         className="rounded-full"
         fill
-        objectFit="cover"
+        priority
+        //sizes prop추가하라고 경고뜸 반응형 관련 예상
       />
     </div>
   );
