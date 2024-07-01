@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
 import useToast from "@hooks/useToast";
-import axios from "@lib/api/axios";
+import { createWiki } from "@lib/api/profileApi";
 
 const CreateWikiForm = () => {
   const { toastOpened, showToast } = useToast();
@@ -16,27 +15,25 @@ const CreateWikiForm = () => {
     securityAnswer: "",
   });
 
+  const [errors, setErrors] = useState({
+    securityQuestion: false,
+    securityAnswer: false,
+  });
+
   const isFormValid =
     values.securityQuestion !== "" && values.securityAnswer !== "";
-
-  const accessToken = Cookies.get("accessToken"); // 쿠키에 저장해둔 accessToken 불러오기
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { securityQuestion, securityAnswer } = values;
 
     try {
-      const response = await axios.post("profiles", {
-        securityQuestion,
-        securityAnswer,
-      });
+      const response = await createWiki({ securityQuestion, securityAnswer });
 
       if (response.status === 201) {
-        setToastText("위키를 성공적으로 생성하였습니다");
+        setToastText("위키를 생성하였습니다");
         setToastColor("green");
         showToast();
-      } else {
-        console.log("다른 상태 코드:", response.status, response.data);
       }
     } catch (error: any) {
       if (error.response.status === 400) {
@@ -44,7 +41,9 @@ const CreateWikiForm = () => {
         setToastColor("red");
         showToast();
       } else {
-        console.error(error.response);
+        setToastText("위키 생성에 실패하였습니다");
+        setToastColor("red");
+        showToast();
       }
     }
   }
@@ -52,6 +51,18 @@ const CreateWikiForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: false });
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (value.trim() === "") {
+      // 길이가 0이면 error, border 빨간색으로
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: true,
+      }));
+    }
   };
 
   return (
@@ -69,14 +80,18 @@ const CreateWikiForm = () => {
             name="securityQuestion"
             value={values.securityQuestion}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="질문을 입력해 주세요"
+            className={`${errors.securityQuestion ? "border-[2px] border-solid border-red-400" : ""}`}
           />
           <Input
             type="text"
             name="securityAnswer"
             value={values.securityAnswer}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="답을 입력해 주세요"
+            className={`${errors.securityAnswer ? "border-[2px] border-solid border-red-400" : ""}`}
           />
         </div>
       </div>
@@ -87,14 +102,6 @@ const CreateWikiForm = () => {
         className="ml-auto h-[40px] w-[89px]"
         disabled={!isFormValid}
       />
-      <Button
-        type="submit"
-        text="생성하기"
-        color="white"
-        className="ml-auto h-[40px] w-[89px]"
-        disabled={!isFormValid}
-      />
-
       <Toast type={toastColor} isToastOpened={toastOpened}>
         {toastText}
       </Toast>
