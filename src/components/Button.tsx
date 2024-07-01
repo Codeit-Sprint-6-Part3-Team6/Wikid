@@ -20,8 +20,17 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`${className} rounded-[10px] border-[1px] border-solid border-[var(--color-green200)] ${disabled ? "cursor-not-allowed border-[var(--color-gray300)] bg-[var(--color-gray300)] opacity-100" : ""}} text-center ${color === "green" ? "bg-[var(--color-green200)] text-[var(--color-white)]" : "bg-[var(--color-white) text-[var(--color-green200)]"} `}
-      onClick={onClick}
+      className={`${className} rounded-[10px] border-[1px] border-solid ${
+        disabled
+          ? "cursor-not-allowed border-gray300 bg-gray300 text-white"
+          : "border-green200"
+      } text-center ${
+        color === "green" && !disabled
+          ? "bg-green200 text-white"
+          : "bg-white text-green200"
+      }`}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
     >
       {text}
     </button>

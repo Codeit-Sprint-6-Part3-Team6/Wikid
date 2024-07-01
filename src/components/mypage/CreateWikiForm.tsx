@@ -2,13 +2,22 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import Button from "@components/Button";
 import Input from "@components/Input";
+import Toast from "@components/Toast";
+import useToast from "@hooks/useToast";
 import axios from "@lib/api/axios";
 
 const CreateWikiForm = () => {
+  const { toastOpened, showToast } = useToast();
+  const [toastText, setToastText] = useState("");
+  const [toastColor, setToastColor] = useState("");
+
   const [values, setValues] = useState({
     securityQuestion: "",
     securityAnswer: "",
   });
+
+  const isFormValid =
+    values.securityQuestion !== "" && values.securityAnswer !== "";
 
   const accessToken = Cookies.get("accessToken"); // 쿠키에 저장해둔 accessToken 불러오기
 
@@ -16,18 +25,36 @@ const CreateWikiForm = () => {
     e.preventDefault();
     const { securityQuestion, securityAnswer } = values;
 
-    await axios.post(
-      "profiles",
-      {
-        securityQuestion,
-        securityAnswer,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 포함해서 보내기
+    try {
+      const response = await axios.post(
+        "profiles",
+        {
+          securityQuestion,
+          securityAnswer,
         },
-      },
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 포함해서 보내기
+          },
+        },
+      );
+
+      if (response.status === 201) {
+        setToastText("위키를 성공적으로 생성하였습니다");
+        setToastColor("green");
+        showToast();
+      } else {
+        console.log("다른 상태 코드:", response.status, response.data);
+      }
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        setToastText("이미 위키가 존재합니다");
+        setToastColor("red");
+        showToast();
+      } else {
+        console.error(error.response);
+      }
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +93,11 @@ const CreateWikiForm = () => {
         text="생성하기"
         color="green"
         className="ml-auto h-[40px] w-[89px]"
+        disabled={!isFormValid}
       />
+      <Toast type={toastColor} isToastOpened={toastOpened}>
+        {toastText}
+      </Toast>
     </form>
   );
 };
