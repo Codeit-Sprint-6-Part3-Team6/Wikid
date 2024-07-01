@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
-import CardContainer from "@components/CardContainer";
 import LinkButton from "@components/LinkButton";
+import CardContainer from "@components/article/CardContainer";
 import Comment from "@components/boards/Comment";
-import { formatDate } from "@utils/dateFormatter";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
+import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
 import heartIcon from "@icons/ic_heart.svg";
 
@@ -16,20 +16,20 @@ const ArticlePage = () => {
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchArticle = async (id: string | string[]) => {
-      try {
-        setIsLoading(true);
-        const nextArticle = await getArticle(id);
-        setArticle(nextArticle);
-      } catch (err) {
-        console.error("게시글 불러오기 실패", err);
-        alert("게시글 불러오기에 실패했습니다.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchArticle = async (id: string | string[]) => {
+    try {
+      setIsLoading(true);
+      const nextArticle = await getArticle(id);
+      setArticle(nextArticle);
+    } catch (err) {
+      console.error("게시글 불러오기 실패", err);
+      alert("게시글 불러오기에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (typeof boardId === "string" || Array.isArray(boardId)) {
       fetchArticle(boardId);
     } else {

@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react";
 
 const useToast = () => {
-  const [showToast, setShowToast] = useState(false);
+  const [toastOpened, setToastOpened] = useState(false);
 
-  const handleShowToast = () => {
-    setShowToast(true);
+  const showToast = () => {
+    setToastOpened(true);
   };
 
-  const handleCloseToast = () => {
-    setShowToast(false);
+  const closeToast = () => {
+    setToastOpened(false);
   };
 
   useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(handleCloseToast, 3000);
+    if (toastOpened) {
+      const timer = setTimeout(closeToast, 2300);
 
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [showToast]);
+  }, [toastOpened]);
 
   return {
+    toastOpened,
     showToast,
-    handleShowToast,
   };
 };
 

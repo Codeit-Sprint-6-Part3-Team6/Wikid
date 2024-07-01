@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import CardContainer from "@components/CardContainer";
 import LinkButton from "@components/LinkButton";
+=======
+import { useState } from "react";
+import Link from "next/link";
+>>>>>>> 6abe365dca9f402540789111b52743407baec5c3
 import TextEditor from "@components/TextEditor";
 import { formatDate } from "@utils/dateFormatter";
 import { inputCounter } from "@utils/inputCounter";
@@ -59,6 +64,7 @@ function ArticleEditPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-col items-center">
       <CardContainer className="mb-[23px] mt-[54px] flex flex-col items-center">
         <div className="mt-[46px] flex w-full items-center justify-between">
@@ -111,6 +117,11 @@ function ArticleEditPage() {
         color="white"
         className="mb-[32px] h-[45px] w-[140px] text-green200 ring-2 ring-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300"
       />
+=======
+    <div>
+      <Link href="/wiki/726f196f-b9e0-42ab-ba9c-4305aac71719">링크</Link>
+      <TextEditor type="article" content={content} onChange={handleChange} />
+>>>>>>> 6abe365dca9f402540789111b52743407baec5c3
     </div>
   );
 }
