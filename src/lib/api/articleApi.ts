@@ -1,5 +1,14 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { ArticleType } from "@lib/types/articleType";
+
+export const getAccessToken = () => {
+  const accessToken = Cookies.get("accessToken");
+  if (!accessToken) {
+    throw new Error("쿠키에서 accessToken을 찾을 수 없습니다.");
+  }
+  return accessToken;
+};
 
 export const getArticle = async (
   targetId: string | string[],
@@ -13,10 +22,6 @@ export const getArticle = async (
   }
 };
 
-// 로그인 기능 구현 후 수정 예정
-export const hardCodedToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgxNDM0NywiZXhwIjoxNzE5ODE2MTQ3LCJpc3MiOiJzcC13aWtpZWQifQ.Qj1fzb9e-Y6pyFoSRQ3rL5zif3htQ9mxOKtNxNvg3Ec";
-
 export const deleteArticle = async (
   targetId: string | string[],
 ): Promise<ArticleType> => {
@@ -25,7 +30,7 @@ export const deleteArticle = async (
       `/api/6-6/articles/${targetId}`,
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
@@ -53,7 +58,7 @@ export const editArticle = async (
       },
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
@@ -82,7 +87,7 @@ export const postArticle = async (
       },
       {
         headers: {
-          Authorization: `Bearer ${hardCodedToken}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
