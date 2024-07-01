@@ -51,7 +51,7 @@ const CommentCard = ({
           width={50}
           height={50}
         />
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col">
           <span className="mb-[6px] text-lg font-semibold">
             {comment.writer.name}
           </span>
