@@ -26,18 +26,10 @@ const CreateWikiForm = () => {
     const { securityQuestion, securityAnswer } = values;
 
     try {
-      const response = await axios.post(
-        "profiles",
-        {
-          securityQuestion,
-          securityAnswer,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 포함해서 보내기
-          },
-        },
-      );
+      const response = await axios.post("profiles", {
+        securityQuestion,
+        securityAnswer,
+      });
 
       if (response.status === 201) {
         setToastText("위키를 성공적으로 생성하였습니다");
@@ -95,6 +87,14 @@ const CreateWikiForm = () => {
         className="ml-auto h-[40px] w-[89px]"
         disabled={!isFormValid}
       />
+      <Button
+        type="submit"
+        text="생성하기"
+        color="white"
+        className="ml-auto h-[40px] w-[89px]"
+        disabled={!isFormValid}
+      />
+
       <Toast type={toastColor} isToastOpened={toastOpened}>
         {toastText}
       </Toast>
