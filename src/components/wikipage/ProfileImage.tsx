@@ -7,11 +7,15 @@ type ProfileImageProps = {
 
 function ProfileImage({ imageUrl }: ProfileImageProps) {
   return (
-    <Image
-      src={imageUrl === null ? defaultProfile : imageUrl}
-      alt="Profile"
-      className="h-[200px] w-[200px] rounded-full"
-    />
+    <div className="relative h-[200px] w-[200px] rounded-full">
+      <Image
+        src={imageUrl === null ? defaultProfile : imageUrl}
+        alt="Profile"
+        className="rounded-full"
+        fill
+        objectFit="cover"
+      />
+    </div>
   );
 }
 

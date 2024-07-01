@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
 import { GetServerSidePropsContext } from "next";
 import LinkCopyButton from "@components/LinkCopyButton";
 import TextEditor from "@components/TextEditor";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import { getImageUrl } from "@lib/api/imageApi";
-import { getProfile } from "@lib/api/profileApi";
+import { getProfile, patchProfile } from "@lib/api/profileApi";
 import { Profile } from "@lib/types/Profile";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -34,7 +36,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   const [profile, setProfile] = useState<Profile>(initialProfile);
   const [content, setContent] = useState(initialProfile.content); // 나중에 저장할 때 한 번에 바꿔서 send
   const [profileImage, setProfileImage] = useState(initialProfile.image); // 나중에 저장할 때 한 번에 바꿔서 send
-  const [isEditMode, setIsEditMode] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleWikiContentChange = (value: string) => {
     setContent(value);
@@ -62,7 +64,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   };
 
   const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (profileImage) {
+    if (profileImage !== null) {
       const res = await fetch(profileImage);
       const blob = await res.blob(); // blob: binary large object, 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용
       const parts = blob.type.split("/"); // type 문자열로부터 확장자 추출
@@ -72,6 +74,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
       const imageUrl = (await getImageUrl(imageFile)).url;
       setProfile((prevProfile) => ({
         ...prevProfile,
+        // content: content,
         content,
         image: imageUrl,
       }));
@@ -79,15 +82,15 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   };
 
   const sendEditedProfile = async (profile: Profile) => {
-    // await patchProfile(profile);
-    // profile 한번 더 바꿀 필요 X
+    try {
+      await patchProfile(profile);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    if (
-      profile.content !== initialProfile.content &&
-      profile.image !== initialProfile.image
-    ) {
+    if (isEditMode) {
       sendEditedProfile(profile);
     }
   }, [profile]);
@@ -95,6 +98,9 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   return (
     <div>
       <LinkCopyButton link="https://www.wikied.kr/wikicode" /> {/*test code*/}
+      <button type="button" onClick={handleSubmitClick}>
+        test
+      </button>
       {isEditMode ? (
         <TextEditor
           type="wiki"
@@ -102,7 +108,11 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
           onChange={handleWikiContentChange}
         />
       ) : (
-        <></>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: content,
+          }}
+        />
       )}
       {profile && (
         <ProfileCard

@@ -11,7 +11,7 @@ export const getImageUrl = async (imageFile: File): Promise<Url> => {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY5LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTU3NzY4NywiZXhwIjoxNzE5NTc5NDg3LCJpc3MiOiJzcC13aWtpZWQifQ.uTglCHz0tcKq_xOgL1kpmcz9HKyHLXzzTuMxk6GhSZw",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY5LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgxMzIyNSwiZXhwIjoxNzE5ODE1MDI1LCJpc3MiOiJzcC13aWtpZWQifQ.4F9hM9vGcIuY1U2yQkLILog5x9Zaa8kyarQ7CJA3TEs",
     },
   });
   return res.data;
