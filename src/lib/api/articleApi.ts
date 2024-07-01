@@ -71,23 +71,28 @@ export const editArticle = async (
   }
 };
 
-// 수정 필요
 export const postArticle = async (
   title: string,
   image: string,
   content: string,
 ): Promise<ArticleType> => {
   try {
+    const requestData: any = {
+      title,
+      content,
+    };
+
+    if (image.trim() !== "") {
+      requestData.image = image;
+    }
+
     const res = await axios.post<ArticleType>(
       `/api/6-6/articles`,
-      {
-        title,
-        image,
-        content,
-      },
+      requestData,
       {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
+          "Content-Type": "application/json",
         },
       },
     );
@@ -95,10 +100,7 @@ export const postArticle = async (
     console.log("게시글 등록 성공", res.data);
     return res.data;
   } catch (err: any) {
-    console.error(
-      "게시글 등록 실패",
-      err.response ? err.response.data : err.message,
-    );
+    console.error("게시글 등록 실패", err);
     throw err;
   }
 };

@@ -31,7 +31,19 @@ function ArticleEditPage() {
     setArticleContent(value);
   };
 
-  const handleUpdateArticle = async () => {
+  const handlePostArticle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await postArticle(titleContent, imageContent, articleContent);
+      alert("게시글이 등록되었습니다.");
+      router.push("/boards");
+    } catch (err) {
+      console.error("게시글 등록 실패", err);
+      alert("게시글 등록에 실패했습니다.");
+    }
+  };
+
+  const handleEditArticle = async () => {
     if (id) {
       try {
         await editArticle(
@@ -42,18 +54,9 @@ function ArticleEditPage() {
         );
         alert("게시글이 수정되었습니다.");
         router.push(`/boards/${id}`);
-      } catch (error) {
-        console.error("게시글 수정 실패", error);
+      } catch (err) {
+        console.error("게시글 수정 실패", err);
         alert("게시글 수정에 실패했습니다.");
-      }
-    } else {
-      try {
-        await postArticle(titleContent, imageContent, articleContent);
-        alert("게시글이 등록되었습니다.");
-        router.push("/boards");
-      } catch (error) {
-        console.error("게시글 등록 실패", error);
-        alert("게시글 등록에 실패했습니다.");
       }
     }
   };
@@ -69,7 +72,7 @@ function ArticleEditPage() {
             type="button"
             color="green"
             text={id ? "수정하기" : "등록하기"}
-            onClick={handleUpdateArticle}
+            onClick={id ? handleEditArticle : handlePostArticle}
             className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
           />
         </div>
