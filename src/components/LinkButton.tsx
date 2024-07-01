@@ -8,12 +8,7 @@ interface LinkButtonProps {
   className?: string;
 }
 
-const LinkButton: React.FC<LinkButtonProps> = ({
-  text,
-  link,
-  color,
-  className,
-}) => {
+const LinkButton = ({ text, link, color, className }: LinkButtonProps) => {
   let colors = "";
 
   if (color === "gray") {

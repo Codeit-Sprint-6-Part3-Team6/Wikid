@@ -56,6 +56,7 @@ const useSignUpValidation = () => {
     } else if (formData.password !== formData.passwordConfirmation) {
       validationErrors.passwordConfirmation = "비밀번호가 일치하지 않습니다.";
     }
+
     // 검증 결과를 오류 상태에 업데이트하고 리턴
     setErrors(validationErrors);
     return validationErrors;
@@ -102,7 +103,7 @@ const useSignUpValidation = () => {
               ? "8자 이상 입력해주세요."
               : "";
         break;
-      case "passwordConfirmation":
+      case "passwordRepeat":
         errorMessage =
           formData.passwordConfirmation.trim().length === 0
             ? "비밀번호 확인을 입력해 주세요."
