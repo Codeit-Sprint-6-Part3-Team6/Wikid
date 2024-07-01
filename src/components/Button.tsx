@@ -23,7 +23,7 @@ const Button = ({
       className={`${className} rounded-[10px] border-[1px] border-solid ${
         disabled
           ? "cursor-not-allowed border-gray300 bg-gray300 text-white"
-          : "border-green200"
+          : "text-green border-green200"
       } text-center ${
         color === "green" && !disabled
           ? "bg-green200 text-white"
