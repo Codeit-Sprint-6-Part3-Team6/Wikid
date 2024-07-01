@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Camera, X } from "lucide-react";
-import Button from "./Button";
+import Button from "../Button";
 
 type ImageUploadModalProps = {
   isOpen: boolean;
