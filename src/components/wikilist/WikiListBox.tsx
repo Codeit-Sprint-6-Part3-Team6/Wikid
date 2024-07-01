@@ -6,7 +6,7 @@ import { Profile } from "@lib/types/Profile";
 
 const PAGE_SIZE = 3;
 
-const WikiListBox: React.FC = () => {
+const WikiListBox = () => {
   const [items, setItems] = useState<Profile[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);

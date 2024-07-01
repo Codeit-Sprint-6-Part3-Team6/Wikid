@@ -1,6 +1,6 @@
 import WikiListBox from "@components/wikilist/WikiListBox";
 
-const wikilist = () => {
+const WikiListPage = () => {
   return (
     <main className="wrapper">
       <div className="inner">
@@ -12,4 +12,4 @@ const wikilist = () => {
   );
 };
 
-export default wikilist;
+export default WikiListPage;
