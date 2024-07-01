@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GetServerSidePropsContext } from "next";
+import LinkCopyButton from "@components/LinkCopyButton";
 import TextEditor from "@components/TextEditor";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import { getImageUrl } from "@lib/api/imageApi";
@@ -93,11 +94,16 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
 
   return (
     <div>
-      <TextEditor
-        type="wiki"
-        content={content}
-        onChange={handleWikiContentChange}
-      />
+      <LinkCopyButton link="https://www.wikied.kr/wikicode" /> {/*test code*/}
+      {isEditMode ? (
+        <TextEditor
+          type="wiki"
+          content={content}
+          onChange={handleWikiContentChange}
+        />
+      ) : (
+        <></>
+      )}
       {profile && (
         <ProfileCard
           profile={profile}

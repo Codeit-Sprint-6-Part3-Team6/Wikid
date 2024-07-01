@@ -9,14 +9,14 @@ interface ButtonProps {
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   text,
   color,
   type,
   disabled,
   onClick,
   className,
-}) => {
+}: ButtonProps) => {
   return (
     <button
       type={type}
