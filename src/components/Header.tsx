@@ -34,11 +34,9 @@ interface HeaderLoggedInProps {
 
 const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
   const router = useRouter();
-  const { logout } = useAuth();
 
   async function handleClick() {
     Cookies.remove("accessToken"); // accessToken을 삭제하는 방식으로 로그아웃 구현
-    logout();
   }
 
   return (
@@ -68,11 +66,12 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
 };
 
 interface HeaderProps {
-  profileIconSrc?: string | StaticImageData;
+  isLoggedIn: boolean;
+  profileIconSrc?: string;
 }
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const isLoggedIn = Cookies.get("accessToken") ? true : false;
 
   const [profileIconSrc, setProfileIconSrc] = useState<
     string | StaticImageData | undefined
@@ -100,6 +99,7 @@ const Header = () => {
     fetchProfileImage();
   }, [isLoggedIn]);
 
+  console.log("isLoggedIn: ", isLoggedIn);
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">
       <div className="flex items-center gap-[40px]">
