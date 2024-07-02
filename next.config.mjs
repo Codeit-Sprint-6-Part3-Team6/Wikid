@@ -1,9 +1,4 @@
 /** @type {import('next').NextConfig} */
-import { createRequire } from "module";
-
-const require = createRequire(import.meta.url);
-const { createProxyMiddleware } = require("http-proxy-middleware");
-
 const nextConfig = {
   reactStrictMode: true,
   images: {

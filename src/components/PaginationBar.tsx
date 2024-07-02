@@ -15,6 +15,9 @@ const PaginationBar = ({
   const { currentPage, handleGoPage, handlePrevPage, handleNextPage } =
     usePagination({ initialPage, totalPage });
 
+  const commonClass =
+    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]";
+
   const PaginationButton = () => {
     //number 타입은 map 함수를 지원하지 않아서 array 생성자를 사용하여 새로운 배열로 만듦
     return [...Array(totalPage)].map((_, i) => (
@@ -22,7 +25,7 @@ const PaginationBar = ({
         type="button"
         key={i + 1}
         onClick={() => handleGoPage(i + 1)}
-        className={`flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] ${i + 1 === currentPage ? "active" : ""}`}
+        className={`${commonClass} ${i + 1 === currentPage ? "text-green200" : "text-gray400"}`}
       >
         {i + 1}
       </button>
@@ -30,12 +33,12 @@ const PaginationBar = ({
   };
 
   return (
-    <div className="flex gap-[15px]">
+    <div className="mt-[80px] flex justify-center gap-[15px]">
       <button
         type="button"
         onClick={handlePrevPage}
         disabled={currentPage === 1}
-        className="flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]"
+        className={commonClass}
       >
         <Image src={prevIcon} alt="이전" />
       </button>
@@ -44,7 +47,7 @@ const PaginationBar = ({
         type="button"
         onClick={handleNextPage}
         disabled={currentPage === totalPage}
-        className="flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]"
+        className={commonClass}
       >
         <Image src={nextIcon} alt="다음" />
       </button>

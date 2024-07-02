@@ -1,6 +1,12 @@
 import axios from "@lib/api/axios";
 import { filterProfileProperties } from "@lib/handleProfileProperties";
-import { Code, Profile } from "@lib/types/Profile";
+import {
+  Code,
+  Profile,
+  Pagination,
+  ProfileList,
+  WikiForm,
+} from "@lib/types/Profile";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
   const res = await axios.get<Profile>(`profiles/${code}`);
@@ -21,4 +27,30 @@ export const patchProfile = async (profile: Profile): Promise<Profile> => {
     },
   );
   return res.data;
+};
+
+// 위키 생성하기
+export const createWiki = async (questionAndAnswer: WikiForm) => {
+  const res = await axios.post("profiles", {
+    questionAndAnswer,
+  });
+
+  return res;
+};
+
+export const getProfileList = async (
+  options: Pagination,
+): Promise<ProfileList> => {
+  try {
+    const res = await axios.get<ProfileList>("/profiles", {
+      params: {
+        page: options.page,
+        pageSize: options.pageSize,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };

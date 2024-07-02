@@ -1,3 +1,4 @@
+import { getAccessToken } from "./articleApi";
 import axios from "@lib/api/axios";
 
 type Url = {
@@ -10,8 +11,7 @@ export const getImageUrl = async (imageFile: File): Promise<Url> => {
   const res = await axios.post<Url>("images/upload", imageFormData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY5LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgzMDQ0MSwiZXhwIjoxNzE5ODMyMjQxLCJpc3MiOiJzcC13aWtpZWQifQ.C1M59sX-P9Om_iuduwabe3ILbtectXx9c-Cd36NSrkA",
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
   return res.data;

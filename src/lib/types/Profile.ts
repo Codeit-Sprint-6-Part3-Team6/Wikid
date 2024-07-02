@@ -19,3 +19,19 @@ export type Profile = {
   updatedAt: string;
   name: string;
 };
+
+export type WikiForm = {
+  securityQuestion: string;
+  securityAnswer: string;
+};
+
+export type Pagination = {
+  page: number;
+  pageSize: number;
+};
+
+export type ProfileList = {
+  totalCount: number;
+  list: Profile[];
+};
+
