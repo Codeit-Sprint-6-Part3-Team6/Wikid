@@ -1,5 +1,4 @@
-import axios from "axios";
-import { getAccessToken } from "./articleApi";
+import axios from "@lib/api/axios";
 import { CommentType } from "@lib/types/commentType";
 
 export const getComments = async (
@@ -7,9 +6,7 @@ export const getComments = async (
   limit: number = 10,
 ): Promise<CommentType[]> => {
   try {
-    const res = await axios.get(
-      `/api/6-6/articles/${targetId}/comments?limit=${limit}`,
-    );
+    const res = await axios.get(`articles/${targetId}/comments?limit=${limit}`);
     return res.data.list;
   } catch (err) {
     console.error("댓글 불러오기 실패", err);
@@ -27,13 +24,8 @@ export const postComment = async (
     };
 
     const res = await axios.post<CommentType>(
-      `/api/6-6/articles/${targetId}/comments`,
+      `articles/${targetId}/comments`,
       commentData,
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
     );
 
     return res.data;
@@ -48,17 +40,9 @@ export const editComment = async (
   newContent: string,
 ): Promise<CommentType> => {
   try {
-    const res = await axios.patch<CommentType>(
-      `/api/6-6/comments/${commentId}`,
-      {
-        content: newContent,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
-    );
+    const res = await axios.patch<CommentType>(`comments/${commentId}`, {
+      content: newContent,
+    });
 
     return res.data;
   } catch (err: any) {
@@ -71,14 +55,7 @@ export const deleteComment = async (
   commentId: number,
 ): Promise<CommentType> => {
   try {
-    const res = await axios.delete<CommentType>(
-      `/api/6-6/comments/${commentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
-    );
+    const res = await axios.delete<CommentType>(`comments/${commentId}`);
 
     return res.data;
   } catch (err: any) {

@@ -1,20 +1,11 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import axios from "@lib/api/axios";
 import { ArticleType } from "@lib/types/articleType";
-
-export const getAccessToken = () => {
-  const accessToken = Cookies.get("accessToken");
-  if (!accessToken) {
-    throw new Error("쿠키에서 accessToken을 찾을 수 없습니다.");
-  }
-  return accessToken;
-};
 
 export const getArticle = async (
   targetId: string | string[],
 ): Promise<ArticleType> => {
   try {
-    const res = await axios.get(`/api/6-6/articles/${targetId}`); // 프록시 설정에 따라 경로 설정
+    const res = await axios.get(`articles/${targetId}`); // 프록시 설정에 따라 경로 설정
     return res.data;
   } catch (err) {
     console.error("게시글 불러오기 실패", err);
@@ -26,15 +17,7 @@ export const deleteArticle = async (
   targetId: string | string[],
 ): Promise<ArticleType> => {
   try {
-    const res = await axios.delete<ArticleType>(
-      `/api/6-6/articles/${targetId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
-    );
-
+    const res = await axios.delete<ArticleType>(`articles/${targetId}`);
     return res.data;
   } catch (err: any) {
     console.error("게시글 삭제 실패", err);
@@ -49,19 +32,11 @@ export const editArticle = async (
   newContent: string,
 ): Promise<ArticleType> => {
   try {
-    const res = await axios.patch<ArticleType>(
-      `/api/6-6/articles/${targetId}`,
-      {
-        title: newTitle,
-        image: newImage,
-        content: newContent,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
-    );
+    const res = await axios.patch<ArticleType>(`articles/${targetId}`, {
+      title: newTitle,
+      image: newImage,
+      content: newContent,
+    });
 
     console.log("게시글 수정 성공", res.data);
     return res.data;
@@ -86,16 +61,7 @@ export const postArticle = async (
       requestData.image = image;
     }
 
-    const res = await axios.post<ArticleType>(
-      `/api/6-6/articles`,
-      requestData,
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
+    const res = await axios.post<ArticleType>(`articles`, requestData);
 
     console.log("게시글 등록 성공", res.data);
     return res.data;
@@ -107,15 +73,7 @@ export const postArticle = async (
 
 export const handleLikeOn = async (targetId: string): Promise<ArticleType> => {
   try {
-    const res = await axios.post(
-      `/api/6-6/articles/${targetId}/like`,
-      {}, // 데이터 객체, 빈 객체 전달
-      {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      },
-    );
+    const res = await axios.post(`articles/${targetId}/like`);
     return res.data;
   } catch (err) {
     console.error("좋아요 실패", err);
@@ -125,11 +83,7 @@ export const handleLikeOn = async (targetId: string): Promise<ArticleType> => {
 
 export const handleLikeOff = async (targetId: string): Promise<ArticleType> => {
   try {
-    const res = await axios.delete(`/api/6-6/articles/${targetId}/like`, {
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
-      },
-    });
+    const res = await axios.delete(`articles/${targetId}/like`);
     return res.data;
   } catch (err) {
     console.error("좋아요 취소 실패", err);

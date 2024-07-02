@@ -76,51 +76,53 @@ const ArticlePage = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <CardContainer className="m-[60px] flex-col py-[40px]">
-        <div className="mb-6 flex w-full items-center justify-between">
-          <h1 className="text-[32px] font-semibold">{article.title}</h1>
-          <div className="flex gap-3.5">
-            <Button
-              text="수정하기"
-              color="green"
-              type="button"
-              onClick={handleEditArticle}
-              className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-            />
-            <Button
-              text="삭제하기"
-              color="green"
-              type="button"
-              onClick={handleDeleteArticle}
-              className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-            />
+      {boardId && typeof boardId === "string" && (
+        <CardContainer className="m-[60px] flex-col py-[40px]">
+          <div className="mb-6 flex w-full items-center justify-between">
+            <h1 className="text-[32px] font-semibold">{article.title}</h1>
+            <div className="flex gap-3.5">
+              <Button
+                text="수정하기"
+                color="green"
+                type="button"
+                onClick={handleEditArticle}
+                className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+              />
+              <Button
+                text="삭제하기"
+                color="green"
+                type="button"
+                onClick={handleDeleteArticle}
+                className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+              />
+            </div>
           </div>
-        </div>
-        <div className="mb-[38px] flex w-full justify-between">
-          <div className="flex gap-2.5 text-gray400">
-            <p>{article.writer.name}</p>
-            <p>{formatDate(new Date(article.createdAt))}</p>
+          <div className="mb-[38px] flex w-full justify-between">
+            <div className="flex gap-2.5 text-gray400">
+              <p>{article.writer.name}</p>
+              <p>{formatDate(new Date(article.createdAt))}</p>
+            </div>
+            {boardId && typeof boardId === "string" && (
+              <LikeToggleButton
+                targetId={boardId}
+                initialLiked={article.isLiked}
+                initialLikeCount={article.likeCount}
+              />
+            )}
           </div>
-          {boardId && typeof boardId === "string" && (
-            <LikeToggleButton
-              targetId={boardId}
-              initialLiked={article.isLiked}
-              initialLikeCount={article.likeCount}
+          {article.image && (
+            <Image
+              src={article.image}
+              alt="게시글 이미지"
+              width={800}
+              height={600}
             />
           )}
-        </div>
-        {article.image && (
-          <Image
-            src={article.image}
-            alt="게시글 이미지"
-            width={800}
-            height={600}
-          />
-        )}
-        <p className="mt-[25px] text-[16px] leading-relaxed">
-          {article.content}
-        </p>
-      </CardContainer>
+          <p className="mt-[25px] text-[16px] leading-relaxed">
+            {article.content}
+          </p>
+        </CardContainer>
+      )}
       <LinkButton
         text="목록으로"
         link="/boards"
