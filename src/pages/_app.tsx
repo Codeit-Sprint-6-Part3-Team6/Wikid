@@ -1,12 +1,8 @@
 import Cookies from "js-cookie";
-import { GetServerSideProps } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@components/Header";
 import { AuthProvider } from "@context/AuthContext";
-import { useAuth } from "@context/AuthContext";
-import { getProfile } from "@lib/api/profileApi";
-import { getUserInfo } from "@lib/api/userApi";
 import "@styles/globals.css";
 import "@styles/quillCustom.css";
 
