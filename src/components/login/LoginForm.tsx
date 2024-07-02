@@ -32,6 +32,7 @@ const LoginForm = () => {
         Cookies.set("refreshToken", refreshToken, { secure: true });
 
         login();
+        window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
         router.push("/"); // 로그인 성공 후 메인페이지로 이동
       }
     } catch (error: any) {
