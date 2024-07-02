@@ -44,7 +44,7 @@ const CommentCard = ({
 
   return (
     <CardContainer className="mb-[24px] items-start py-[22px]">
-      <div className="flex grow items-start gap-[20px]">
+      <div className="flex flex-1 grow items-start gap-[20px]">
         <Image
           src={profileIcon}
           alt="기본 프로필 아이콘"
