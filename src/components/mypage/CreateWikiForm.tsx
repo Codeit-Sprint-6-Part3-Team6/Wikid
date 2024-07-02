@@ -29,7 +29,6 @@ const CreateWikiForm = () => {
 
     try {
       const response = await createWiki({ securityQuestion, securityAnswer });
-      console.log("RES:", response);
 
       if (response.status === 201) {
         setToastText("위키를 생성하였습니다");

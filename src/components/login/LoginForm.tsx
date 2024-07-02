@@ -1,12 +1,20 @@
+import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
+import Toast from "@components/Toast";
 import useLoginValidation from "@hooks/useLoginValidation";
+import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
+import { postSignIn } from "@lib/api/authApi";
 import axios from "@lib/api/axios";
 
 const LoginForm = () => {
+  const { toastOpened, showToast } = useToast();
+  const [toastText, setToastText] = useState("");
+  const [toastColor, setToastColor] = useState("");
+
   const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const router = useRouter();
   const { login } = useAuth();
@@ -15,18 +23,28 @@ const LoginForm = () => {
     e.preventDefault();
     const { email, password } = formData;
 
-    const response = await axios.post("auth/signIn", {
-      email,
-      password,
-    });
+    try {
+      const response = await postSignIn({ email, password });
 
-    const { accessToken, refreshToken } = response.data;
+      if (response.status === 200) {
+        const { accessToken, refreshToken } = response.data;
+        Cookies.set("accessToken", accessToken, { secure: true });
+        Cookies.set("refreshToken", refreshToken, { secure: true });
 
-    Cookies.set("accessToken", accessToken, { secure: true });
-    Cookies.set("refreshToken", refreshToken, { secure: true });
-
-    login();
-    router.push("/"); // 로그인 성공 후 메인페이지로 이동
+        login();
+        router.push("/"); // 로그인 성공 후 메인페이지로 이동
+      }
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        setToastText("이메일과 비밀번호를 다시 확인하세요");
+        setToastColor("red");
+        showToast();
+      } else {
+        setToastText("로그인 실패");
+        setToastColor("red");
+        showToast();
+      }
+    }
   }
 
   return (
@@ -65,6 +83,9 @@ const LoginForm = () => {
           type="submit"
           className="h-[45px] w-[400px]"
         />
+        <Toast type={toastColor} isToastOpened={toastOpened}>
+          {toastText}
+        </Toast>
       </form>
     </div>
   );
