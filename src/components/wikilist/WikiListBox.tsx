@@ -3,6 +3,7 @@ import PaginationBar from "@components/PaginationBar";
 import UserWikiList from "./UserWikiList";
 import usePagination from "@hooks/usePagination";
 import { getProfileList } from "@lib/api/profileApi";
+import { ProfilePagination } from "@lib/types/Pagination";
 import { Profile } from "@lib/types/Profile";
 
 const PAGE_SIZE = 3;
@@ -17,7 +18,7 @@ const WikiListBox = () => {
       totalPage,
     });
 
-  const handleLoad = async (options: { page: number; pageSize: number }) => {
+  const handleLoad = async (options: ProfilePagination) => {
     try {
       const { list, totalCount } = await getProfileList(options);
       setItems(list);
