@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { handleLikeOff, handleLikeOn } from "@lib/api/articleApi";
-import heartIcon from "@icons/ic_heart.svg";
+import likeOffIcon from "@icons/ic_heartEmpty.svg";
+import likeOnIcon from "@icons/ic_heartFill.svg";
 
 interface LikeToggleButtonProps {
   targetId: string;
@@ -35,10 +36,10 @@ const LikeToggleButton = ({
   return (
     <p className="flex items-center gap-1 text-gray400">
       <Image
-        src={heartIcon}
+        src={isLiked ? likeOnIcon : likeOffIcon}
         alt="좋아요 아이콘"
         onClick={handleLikeToggle}
-        className="w-[20px] cursor-pointer"
+        className="w-[15px] cursor-pointer"
       />{" "}
       {likeCount}
     </p>
