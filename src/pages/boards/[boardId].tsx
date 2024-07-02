@@ -104,12 +104,14 @@ const ArticlePage = () => {
             <Image src={heartIcon} alt="하트 아이콘" /> {article.likeCount}
           </p>
         </div>
-        <Image
-          src={article.image}
-          alt="게시글 이미지"
-          width={800}
-          height={600}
-        />
+        {article.image && (
+          <Image
+            src={article.image}
+            alt="게시글 이미지"
+            width={800}
+            height={600}
+          />
+        )}
         <p className="mt-[25px] text-[16px] leading-relaxed">
           {article.content}
         </p>
