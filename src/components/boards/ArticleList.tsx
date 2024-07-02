@@ -11,6 +11,7 @@ const ArticleList = ({ items }: ArticleListProps) => {
   const classBoardInfo =
     "absolute top-0 right-0 flex w-2/5 justify-around h-[50px] items-center";
   const classBoardText = "text-center";
+
   return (
     <ul className="mt-[20px] text-[16px]">
       <li className={`${classBoardBox} border-t text-gray400`}>
@@ -22,12 +23,14 @@ const ArticleList = ({ items }: ArticleListProps) => {
           <p className={`${classBoardText} w-[40%]`}>날짜</p>
         </div>
       </li>
-      {items?.map((article) => {
+      {items?.map((article, index) => {
         const articleDate = article.createdAt.split("T")[0];
         return (
           <li key={article.id}>
             <Link href={`/boards/${article.id}`} className={classBoardBox}>
-              <p className={`${classBoardText} w-[15%]`}>1</p>
+              <p className={`${classBoardText} w-[15%]`}>
+                {items.length - index}
+              </p>
               <p className={`${classBoardText} w-[85%]`}>{article.title}</p>
               <div className={classBoardInfo}>
                 <p className={`${classBoardText} w-[30%]`}>
