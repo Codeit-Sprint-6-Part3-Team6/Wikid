@@ -104,3 +104,35 @@ export const postArticle = async (
     throw err;
   }
 };
+
+export const handleLikeOn = async (targetId: string): Promise<ArticleType> => {
+  try {
+    const res = await axios.post(
+      `/api/6-6/articles/${targetId}/like`,
+      {}, // 데이터 객체, 빈 객체 전달
+      {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      },
+    );
+    return res.data;
+  } catch (err) {
+    console.error("좋아요 실패", err);
+    throw err;
+  }
+};
+
+export const handleLikeOff = async (targetId: string): Promise<ArticleType> => {
+  try {
+    const res = await axios.delete(`/api/6-6/articles/${targetId}/like`, {
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error("좋아요 취소 실패", err);
+    throw err;
+  }
+};

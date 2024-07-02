@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import LinkButton from "@components/LinkButton";
 import CardContainer from "@components/article/CardContainer";
+import LikeToggleButton from "@components/article/LikeToggleButton";
 import { getArticle } from "@lib/api/articleApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
-import heartIcon from "@icons/ic_heart.svg";
 
 const ArticlePage = () => {
   const router = useRouter();
@@ -71,9 +71,11 @@ const ArticlePage = () => {
             <p>{article.writer.name}</p>
             <p>{formatDate(new Date(article.createdAt))}</p>
           </div>
-          <p className="flex items-center gap-1 text-gray400">
-            <Image src={heartIcon} alt="하트 아이콘" /> {article.likeCount}
-          </p>
+          <LikeToggleButton
+            targetId={boardId}
+            initialLiked={article.isLiked}
+            initialLikeCount={article.likeCount}
+          />
         </div>
         <Image
           src={article.image}
