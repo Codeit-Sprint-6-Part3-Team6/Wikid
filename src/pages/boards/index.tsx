@@ -1,5 +1,7 @@
+import Button from "@components/Button";
 import Dropdown from "@components/Dropdown";
 import Input from "@components/Input";
+import LinkButton from "@components/LinkButton";
 
 const ArticleListPage = () => {
   // 테스트용 코드입니다.
@@ -14,6 +16,12 @@ const ArticleListPage = () => {
         }}
       />
       <Input type="search" />
+      <LinkButton
+        text="게시물 등록하기"
+        color="green"
+        link="/addboard"
+        className="h-[45px] w-[160px] transition-all duration-500 hover:bg-green300"
+      />
     </div>
   );
 };

@@ -6,6 +6,16 @@ export const getProfile = async (code: Code): Promise<Profile> => {
   return res.data;
 };
 
+
+// 위키 생성하기
+export const createWiki = async (questionAndAnswer: WikiForm) => {
+  const res = await axios.post("profiles", {
+    questionAndAnswer,
+  });
+
+  return res;
+}
+
 export const getProfileList = async (
   options: Pagination,
 ): Promise<ProfileList> => {

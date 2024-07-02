@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import LinkButton from "@components/LinkButton";
 import CardContainer from "@components/article/CardContainer";
+import Comment from "@components/article/Comment";
 import LikeToggleButton from "@components/article/LikeToggleButton";
-import { getArticle } from "@lib/api/articleApi";
+import { deleteArticle, getArticle } from "@lib/api/articleApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
 
@@ -36,6 +37,33 @@ const ArticlePage = () => {
     }
   }, [boardId]);
 
+  const handleEditArticle = () => {
+    if (article) {
+      router.push({
+        pathname: "/addboard",
+        query: {
+          id: boardId,
+          title: article.title,
+          image: article.image,
+          content: article.content,
+        },
+      });
+    }
+  };
+
+  const handleDeleteArticle = async () => {
+    if (!boardId) return;
+    if (confirm("게시글을 삭제하시겠습니까?"))
+      try {
+        await deleteArticle(boardId);
+        alert("게시글이 삭제되었습니다.");
+        router.push("/boards");
+      } catch (err) {
+        console.error("게시글 삭제 실패", err);
+        alert("게시글 삭제에 실패했습니다.");
+      }
+  };
+
   if (isLoading) {
     return <div className="mt-8 text-center">로딩 중 ...</div>;
   }
@@ -56,12 +84,14 @@ const ArticlePage = () => {
               text="수정하기"
               color="green"
               type="button"
+              onClick={handleEditArticle}
               className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
             />
             <Button
               text="삭제하기"
               color="green"
               type="button"
+              onClick={handleDeleteArticle}
               className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
             />
           </div>
@@ -97,6 +127,7 @@ const ArticlePage = () => {
         color="white"
         className="h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300"
       />
+      {boardId && typeof boardId === "string" && <Comment boardId={boardId} />}
     </div>
   );
 };
