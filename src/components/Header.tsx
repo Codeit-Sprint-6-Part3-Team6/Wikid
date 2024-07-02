@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
+import NotificationList from "./notification/NotificationList";
+import useModal from "@hooks/useModal";
 import { useAuth } from "@context/AuthContext";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
@@ -31,6 +33,7 @@ interface HeaderLoggedInProps {
 const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
   const router = useRouter();
   const { logout } = useAuth();
+  const [isOpen, handleIsOpen] = useModal();
 
   async function handleClick() {
     Cookies.remove("accessToken"); // accessToken을 삭제하는 방식으로 로그아웃 구현
@@ -46,11 +49,17 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
         type="button"
         onClick={handleClick}
       />
-      <IconButton
-        src={AlarmIcon}
-        alt="알람 아이콘"
-        className="h-[32px] w-[32px]"
-      />
+      <div className="relative flex items-center">
+        <IconButton
+          src={AlarmIcon}
+          alt="알람 아이콘"
+          className="h-[32px] w-[32px]"
+          onClick={handleIsOpen}
+        />
+        <div className="absolute top-[45px] sm:-left-[250px] lg:-left-[350px]">
+          <NotificationList isOpen={isOpen} handleIsOpen={handleIsOpen} />
+        </div>
+      </div>
       <IconButton
         src={profileIconSrc || DefaultProfileIcon}
         alt="프로필 아이콘"

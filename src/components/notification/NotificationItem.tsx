@@ -16,7 +16,7 @@ export default function NotificationItem({
 
   return (
     <div className="my-[16px]">
-      <div className="flex w-[328px] flex-col gap-[10px] rounded-md bg-white px-[12px] py-[16px] text-[#A4A1AA]">
+      <div className="flex lg:w-[328px] flex-col gap-[10px] rounded-md bg-white px-[12px] py-[16px] text-[#A4A1AA]">
         <div className="flex items-center justify-between">
           <div className="items h-[5px] w-[5px] rounded-full bg-[#0085FF]"></div>
           <X onClick={handleClick} className="cursor-pointer place-self-end" />
