@@ -34,12 +34,13 @@ const LikeToggleButton = ({
   };
 
   return (
-    <p className="flex items-center gap-1 text-gray400">
+    <p className="flex items-center gap-2 text-gray400">
       <Image
         src={isLiked ? likeOnIcon : likeOffIcon}
         alt="좋아요 아이콘"
         onClick={handleLikeToggle}
-        className="w-[15px] cursor-pointer"
+        width={18}
+        className="cursor-pointer"
       />{" "}
       {likeCount}
     </p>
