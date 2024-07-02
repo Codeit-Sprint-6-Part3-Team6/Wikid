@@ -1,8 +1,10 @@
 import React from "react";
+import Cookies from "js-cookie";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import ChangePasswordForm from "@components/mypage/ChangePasswordForm";
 import CreateWikiForm from "@components/mypage/CreateWikiForm";
 
-const SignUpPage = () => {
+const SettingPage = () => {
   return (
     <div className="mt-[141px] flex flex-col items-center justify-center gap-[64px]">
       <h1 className="text-[24px] font-semibold text-gray500">계정 설정</h1>
@@ -13,4 +15,21 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SettingPage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const hasAccessToken = Cookies.get("accessToken") ? true : false;
+
+  if (!hasAccessToken) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
