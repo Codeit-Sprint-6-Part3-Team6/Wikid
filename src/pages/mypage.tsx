@@ -1,6 +1,5 @@
-import React from "react";
-import Cookies from "js-cookie";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Cookies from "cookies";
+import { GetServerSideProps } from "next";
 import ChangePasswordForm from "@components/mypage/ChangePasswordForm";
 import CreateWikiForm from "@components/mypage/CreateWikiForm";
 
@@ -18,9 +17,11 @@ const SettingPage = () => {
 export default SettingPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const hasAccessToken = Cookies.get("accessToken") ? true : false;
+  const { req, res } = context;
+  const cookies = new Cookies(req, res);
+  const accessToken = cookies.get("accessToken");
 
-  if (!hasAccessToken) {
+  if (!accessToken) {
     return {
       redirect: {
         destination: "/login",

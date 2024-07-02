@@ -66,9 +66,11 @@ interface HeaderProps {
 }
 const Header = () => {
   const isLoggedIn = Cookies.get("accessToken") ? true : false;
+
   const [profileIconSrc, setProfileIconSrc] = useState<
     string | StaticImageData | undefined
   >(undefined);
+
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {

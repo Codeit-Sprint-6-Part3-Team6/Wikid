@@ -7,10 +7,6 @@ import "@styles/globals.css";
 import "@styles/quillCustom.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  let isLoggedIn = false;
-  if (Cookies.get("accessToken")) {
-    isLoggedIn = true;
-  }
   return (
     <>
       <Head>
