@@ -36,7 +36,7 @@ const ChangePasswordForm = () => {
       }
     } catch (error: any) {
       if (error.response.status === 400) {
-        setToastText("기존 비밀번호가 일치하지 않습니다");
+        setToastText(error.response.data.message);
         setToastColor("red");
         showToast();
       } else {
