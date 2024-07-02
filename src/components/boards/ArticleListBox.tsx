@@ -38,9 +38,14 @@ const ArticleListBox = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex gap-[20px]">
         <Input type="search" />
-        <Button text="검색" color="green" type="button" className="type6" />
+        <Button
+          text="검색"
+          color="green"
+          type="button"
+          className="h-[45px] w-[80px] shrink-0"
+        />
         <Dropdown
           options={["최신순", "좋아요순"]}
           order={["recent", "like"]}
