@@ -27,7 +27,10 @@ const ArticleList = ({ items }: ArticleListProps) => {
         const articleDate = article.createdAt.split("T")[0];
         return (
           <li key={article.id}>
-            <Link href={`/boards/${article.id}`} className={classBoardBox}>
+            <Link
+              href={`/boards/${article.id}`}
+              className={`${classBoardBox} hover:bg-gray-50`}
+            >
               <p className={`${classBoardText} w-[15%]`}>
                 {items.length - index}
               </p>
