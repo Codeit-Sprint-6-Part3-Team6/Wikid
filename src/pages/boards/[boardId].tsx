@@ -71,18 +71,22 @@ const ArticlePage = () => {
             <p>{article.writer.name}</p>
             <p>{formatDate(new Date(article.createdAt))}</p>
           </div>
-          <LikeToggleButton
-            targetId={boardId}
-            initialLiked={article.isLiked}
-            initialLikeCount={article.likeCount}
-          />
+          {boardId && typeof boardId === "string" && (
+            <LikeToggleButton
+              targetId={boardId}
+              initialLiked={article.isLiked}
+              initialLikeCount={article.likeCount}
+            />
+          )}
         </div>
-        <Image
-          src={article.image}
-          alt="게시글 이미지"
-          width={800}
-          height={600}
-        />
+        {article.image && (
+          <Image
+            src={article.image}
+            alt="게시글 이미지"
+            width={800}
+            height={600}
+          />
+        )}
         <p className="mt-[25px] text-[16px] leading-relaxed">
           {article.content}
         </p>
