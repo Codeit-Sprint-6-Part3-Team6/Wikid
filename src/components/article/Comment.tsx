@@ -7,7 +7,12 @@ import {
   postComment,
   deleteComment,
 } from "@lib/api/commentApi";
+import { getUserInfo } from "@lib/api/userApi";
 import { CommentType } from "@lib/types/commentType";
+
+interface UserInfo {
+  id: number;
+}
 
 interface CommentProps {
   boardId: string;

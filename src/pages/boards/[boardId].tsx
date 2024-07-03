@@ -6,21 +6,18 @@ import LinkButton from "@components/LinkButton";
 import CardContainer from "@components/article/CardContainer";
 import Comment from "@components/article/Comment";
 import LikeToggleButton from "@components/article/LikeToggleButton";
+import useUserInfo from "@hooks/useUserInfo";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
-import { getUserInfo } from "@lib/api/userApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
-
-interface UserInfo {
-  id: number;
-}
 
 const ArticlePage = () => {
   const router = useRouter();
   const { boardId } = router.query;
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<UserInfo | null>(null);
+
+  const { user } = useUserInfo();
 
   const fetchArticle = async (id: string | string[]) => {
     try {
@@ -35,15 +32,6 @@ const ArticlePage = () => {
     }
   };
 
-  const fetchUserInfo = async () => {
-    try {
-      const userInfo = await getUserInfo();
-      setUser(userInfo);
-    } catch (err) {
-      console.error("유저 정보 불러오기 실패");
-    }
-  };
-
   useEffect(() => {
     if (typeof boardId === "string" || Array.isArray(boardId)) {
       fetchArticle(boardId);
@@ -51,10 +39,6 @@ const ArticlePage = () => {
       setIsLoading(false);
     }
   }, [boardId]);
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
 
   const handleEditArticle = () => {
     if (article) {
