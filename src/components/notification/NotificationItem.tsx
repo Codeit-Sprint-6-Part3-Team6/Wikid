@@ -1,8 +1,9 @@
 import { X } from "lucide-react";
-import { Notification } from "@lib/types/Notifications";
+import { elapsedTimeConverter } from "@lib/elapsedTimeConverter";
+import { NotificationItemType } from "@lib/types/Notifications";
 
 type NotificationItemProps = {
-  data: Notification;
+  data: NotificationItemType;
   onClick: (id: number) => void;
 };
 
@@ -14,15 +15,22 @@ export default function NotificationItem({
     onClick(data.id);
   };
 
+  const elapsedTime = elapsedTimeConverter(data.createdAt);
+
   return (
     <div className="my-[16px]">
       <div className="group flex flex-col gap-[10px] rounded-md bg-white px-[12px] py-[16px] text-[#A4A1AA] duration-100 hover:scale-105 hover:opacity-95 lg:w-[328px]">
         <div className="flex items-center justify-between">
           <div className="items h-[5px] w-[5px] rounded-full bg-[#0085FF] group-hover:bg-[#FF472E]"></div>
-          <X onClick={handleClick} className="cursor-pointer place-self-end" />
+          <div
+            className="flex size-10 cursor-pointer items-center justify-center rounded-full"
+            onClick={handleClick}
+          >
+            <X />
+          </div>
         </div>
         <p className="text-[#1B1B1B]">{data.content}</p>
-        <p>{data.createdAt}</p>
+        <p>{elapsedTime}</p>
       </div>
     </div>
   );

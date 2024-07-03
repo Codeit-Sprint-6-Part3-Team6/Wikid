@@ -1,9 +1,9 @@
-export type Notifications = {
-  list: Notification[];
+export type NotificationListType = {
+  list: NotificationItemType[];
   totalCount: number;
 };
 
-export type Notification = {
+export type NotificationItemType = {
   createdAt: string;
   content: string;
   id: number;
