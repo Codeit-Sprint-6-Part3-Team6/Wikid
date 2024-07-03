@@ -54,7 +54,7 @@ const ChangePasswordForm = () => {
 
   return (
     <form
-      className="flex w-[400px] flex-col gap-[16px]"
+      className="flex w-[335px] flex-col gap-[16px] md:w-[400px]"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-[10px]">
