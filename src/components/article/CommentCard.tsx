@@ -52,11 +52,15 @@ const CommentCard = ({
       : profileIcon;
 
   return (
-    <CardContainer className="mb-[24px] items-start py-[22px]">
-      <div className="flex flex-1 grow items-start gap-[20px]">
-        <Image src={imageSrc} alt="프로필 이미지" width={50} height={50} />
+    <CardContainer className="mb-[16px] items-start py-[16px] md:py-[22px] lg:mb-[24px]">
+      <div className="flex flex-1 grow items-start gap-[15px] md:gap-[20px]">
+        <Image
+          src={imageSrc}
+          alt="프로필 이미지"
+          className="w-[40px] md:w-[50px]"
+        />
         <div className="flex w-full flex-col">
-          <span className="mb-[6px] text-lg font-semibold">
+          <span className="text-[16px] font-semibold md:mb-[6px] md:text-[18px]">
             {comment.writer.name}
           </span>
           {isEditing ? (
@@ -68,9 +72,11 @@ const CommentCard = ({
               className="mb-[10px]"
             />
           ) : (
-            <span className="mb-[10px]">{comment.content}</span>
+            <span className="mb-[4px] md:mb-[10px] md:text-[16px]">
+              {comment.content}
+            </span>
           )}
-          <span className="text-gray400">
+          <span className="text-[12px] text-gray400 md:text-[14px]">
             {formatDate(new Date(comment.createdAt))}
           </span>
         </div>

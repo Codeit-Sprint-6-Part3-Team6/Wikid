@@ -39,8 +39,7 @@ const LikeToggleButton = ({
         src={isLiked ? likeOnIcon : likeOffIcon}
         alt="좋아요 아이콘"
         onClick={handleLikeToggle}
-        width={18}
-        className="cursor-pointer"
+        className="w-[16px] cursor-pointer md:w-[18px]"
       />{" "}
       {likeCount}
     </p>
