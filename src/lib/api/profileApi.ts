@@ -1,20 +1,29 @@
 import axios from "@lib/api/axios";
-import { Code, Profile, Pagination, ProfileList } from "@lib/types/Profile";
+import {
+  Code,
+  Profile,
+  Pagination,
+  ProfileList,
+  WikiForm,
+} from "@lib/types/Profile";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
   const res = await axios.get<Profile>(`profiles/${code}`);
   return res.data;
 };
 
-
 // 위키 생성하기
-export const createWiki = async (questionAndAnswer: WikiForm) => {
+export const createWiki = async ({
+  securityQuestion,
+  securityAnswer,
+}: WikiForm) => {
   const res = await axios.post("profiles", {
-    questionAndAnswer,
+    securityQuestion,
+    securityAnswer,
   });
 
   return res;
-}
+};
 
 export const getProfileList = async (
   options: Pagination,
