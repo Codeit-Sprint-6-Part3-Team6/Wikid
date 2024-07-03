@@ -57,17 +57,20 @@ function WikiPage({
   const [profile, setProfile] = useState<Profile>(initialProfile);
   const [content, setContent] = useState(initialProfile.content); // 나중에 저장할 때 한 번에 바꿔서 send
   const [profileImage, setProfileImage] = useState(initialProfile.image); // 나중에 저장할 때 한 번에 바꿔서 send
-  // const [isEditMode, setIsEditMode] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCancelWarningOpen, setIsCancelWarningOpen] = useState(false);
   const {
     isQuizOpen,
-    handleModalOpen,
+    handleQuizOpen,
     toastOpened,
     handleQuizSubmit,
     triggerEditMode,
     isEditMode,
+    refreshTimer,
+    isTimeOutModalOpen,
   } = useEditMode();
   const router = useRouter();
+  // const
 
   const handleEditClick = () => {
     triggerEditMode(initialProfile.code);
@@ -98,14 +101,24 @@ function WikiPage({
     setProfileImage(null);
   };
 
-  const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (confirm("저장하시겠습니까?")) {
+  const handleSubmitClick = async (timeOut: boolean = false) => {
+    if (confirm("수정사항을 저장하시겠습니까?")) {
+      setIsSaving(true);
+      console.log(`handleSubmit ${timeOut}`);
+      if (timeOut) {
+        console.log("refreshed in blabla");
+        await refreshTimer();
+      }
       if (
         initialProfile === profile && //항상 최신
         initialProfile.content === content && //업데이트필요
         initialProfile.image === profileImage //업데이트필요
       ) {
-        alert("변경사항이 없습니다.");
+        alert("수정사항이 없습니다.");
+        if (timeOut) {
+          console.log("reloaded Second");
+          router.reload();
+        }
       } else if (
         profileImage !== initialProfile.image &&
         profileImage !== null
@@ -145,10 +158,6 @@ function WikiPage({
     }
   };
 
-  const handleCancelClick = () => {
-    setIsModalOpen(true);
-  };
-
   const sendEditedProfile = async (profile: Profile) => {
     try {
       await patchProfile(profile);
@@ -156,6 +165,8 @@ function WikiPage({
       router.reload();
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -164,6 +175,13 @@ function WikiPage({
       sendEditedProfile(profile);
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (isEditMode.content && isSaving === false) {
+      console.log("refreshed");
+      refreshTimer();
+    }
+  }, [profile, content, profileImage]);
 
   return (
     <>
@@ -216,6 +234,7 @@ function WikiPage({
             profile={profile}
             profileImage={profileImage}
             isEditMode={isEditMode.profile}
+            onChange={refreshTimer}
             onFocusOut={handleInputFocusOut}
             onFileChange={handleImageInputChange}
             onDeleteClick={handleDeleteProfileImageClick}
@@ -227,14 +246,14 @@ function WikiPage({
                 text="취소"
                 color="white"
                 className="px-5 py-2"
-                onClick={handleCancelClick}
+                onClick={() => setIsCancelWarningOpen(true)}
               />
               <Button
                 type="button"
                 text="저장"
                 color="green"
                 className="px-5 py-2"
-                onClick={handleSubmitClick}
+                onClick={() => handleSubmitClick(false)}
               />
             </div>
           )}
@@ -242,16 +261,25 @@ function WikiPage({
       </div>
       <AlarmModal
         type="alert"
-        isOpen={isModalOpen}
-        handleIsOpen={setIsModalOpen}
+        isOpen={isCancelWarningOpen}
+        handleIsOpen={setIsCancelWarningOpen}
         heading="저장하지 않고 나가시겠어요?"
         message="작성하신 모든 내용이 사라집니다."
         buttonText="페이지 나가기"
         onClick={router.reload}
       />
+      <AlarmModal
+        type="alert"
+        isOpen={isTimeOutModalOpen}
+        handleIsOpen={() => handleSubmitClick(true)}
+        heading="5분 이상 글을 쓰지 않아 접속이 끊어졌어요."
+        message="위키 참여하기를 통해 다시 위키를 수정해 주세요."
+        buttonText="확인"
+        onClick={() => handleSubmitClick(true)}
+      />
       <QuizModal
         isOpen={isQuizOpen}
-        handleIsOpen={handleModalOpen}
+        handleIsOpen={handleQuizOpen}
         onClick={handleQuizSubmit}
         code={initialProfile.code}
       />

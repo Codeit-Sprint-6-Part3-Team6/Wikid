@@ -9,6 +9,7 @@ type ProfileCardProps = {
   profile: Profile;
   profileImage: string | null;
   isEditMode: boolean;
+  onChange: () => Promise<void>;
   onFocusOut: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,6 +20,7 @@ function ProfileCard({
   profile,
   profileImage,
   isEditMode,
+  onChange,
   onFocusOut: onBlur,
   onFileChange,
   onDeleteClick,
@@ -41,6 +43,7 @@ function ProfileCard({
       <ProfileInfoList
         profile={profile}
         isEditMode={isEditMode}
+        onChange={onChange}
         onBlur={onBlur}
       />
     </div>

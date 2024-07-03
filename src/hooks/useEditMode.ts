@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { AxiosError } from "axios";
-import Toast from "@components/Toast";
+import { useRef, useState } from "react";
 import useToast from "@hooks/useToast";
 import { checkIsEditing, postProfileEdit } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
@@ -12,10 +10,16 @@ function useEditMode() {
     profile: false,
   });
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const [isTimeOutModalOpen, setIsTimeOutModalOpen] = useState(false);
   const [resolveFunction, setResolveFunction] = useState<
     ((value: boolean) => void) | null
   >(null);
   const { toastOpened, showToast } = useToast();
+  const timeDelayerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout>();
+  const answerRef = useRef("");
+  const codeRef = useRef<Code>("");
+  const lastRefreshedRef = useRef<number>(Date.now());
 
   const triggerEditMode = async (code: Code) => {
     const isEditing = await checkIsEditing(code);
@@ -26,7 +30,7 @@ function useEditMode() {
     } else {
       console.log("not editing");
       setIsQuizOpen(true);
-      const permission = await someFunc();
+      const permission = await askPermissionPromise();
       if (permission) {
         console.log("permission true");
         const isProfileYours = await compareCode(code);
@@ -43,6 +47,11 @@ function useEditMode() {
             profile: false,
           });
         }
+        timerRef.current = setTimeout(
+          () => setIsTimeOutModalOpen(true),
+          300000,
+        );
+        lastRefreshedRef.current = Date.now();
       }
     }
   };
@@ -57,20 +66,27 @@ function useEditMode() {
     }
   };
 
-  const someFunc = async () => {
-    console.log("someFunc");
+  const askPermissionPromise = async () => {
+    console.log("askPermission");
     return new Promise<boolean>((resolve) => {
       setResolveFunction(() => resolve);
     });
   };
 
-  const handleModalOpen = () => {
+  const handleQuizOpen = () => {
     setIsQuizOpen((prev) => !prev);
   };
 
   const handleQuizSubmit = async (answer: string, code: Code) => {
-    console.log("handleQuizSumbit");
-    await tryEdit(answer, code);
+    console.log("handleQuizSubmit");
+    answerRef.current = answer;
+    codeRef.current = code;
+    const result = await tryEdit(answer, code);
+    if (result && resolveFunction !== null) {
+      resolveFunction(true);
+      setResolveFunction(null);
+      setIsQuizOpen(false);
+    }
   };
 
   const tryEdit = async (answer: string, code: Code) => {
@@ -81,11 +97,7 @@ function useEditMode() {
         code,
         securityAnswer: answer,
       });
-      if (result && resolveFunction !== null) {
-        resolveFunction(true);
-        setResolveFunction(null);
-        setIsQuizOpen(false);
-      }
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === "보안 답변이 일치하지 않습니다.") {
@@ -95,13 +107,35 @@ function useEditMode() {
     }
   };
 
+  const refreshTimer = async () => {
+    clearTimeout(timeDelayerRef.current);
+    timeDelayerRef.current = setTimeout(
+      async () => {
+        const result = await tryEdit(answerRef.current, codeRef.current);
+        if (result) {
+          clearTimeout(timerRef.current);
+          timerRef.current = setTimeout(
+            () => setIsTimeOutModalOpen(true),
+            300000,
+          );
+          lastRefreshedRef.current = Date.now();
+        } else {
+          setIsTimeOutModalOpen(true);
+        }
+      },
+      300000 - (Date.now() - lastRefreshedRef.current) < 5000 ? 300 : 5000, // 시간 얼마 안남았을 때만 바로 업데이트
+    );
+  };
+
   return {
     isQuizOpen,
-    handleModalOpen,
+    handleQuizOpen,
     toastOpened,
     handleQuizSubmit,
     triggerEditMode,
     isEditMode,
+    refreshTimer,
+    isTimeOutModalOpen,
   };
 }
 

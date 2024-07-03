@@ -5,18 +5,21 @@ import { Profile } from "@lib/types/Profile";
 type ProfileInfoListProps = {
   profile: Profile;
   isEditMode: boolean;
+  onChange: () => Promise<void>;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 type ProfileInfoProps = {
   info: string[];
   id: string;
   isEditMode: boolean;
+  onChange: () => Promise<void>;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export default function ProfileInfoList({
   profile,
   isEditMode,
+  onChange,
   onBlur,
 }: ProfileInfoListProps) {
   const infoList = refineProfileInfo(profile);
@@ -31,6 +34,7 @@ export default function ProfileInfoList({
           id={info[0]}
           info={info}
           isEditMode={isEditMode}
+          onChange={onChange}
           onBlur={onBlur}
         />
       ))}
@@ -38,16 +42,27 @@ export default function ProfileInfoList({
   );
 }
 
-function ProfileInfo({ info, id, isEditMode, onBlur }: ProfileInfoProps) {
+function ProfileInfo({
+  info,
+  id,
+  isEditMode,
+  onChange,
+  onBlur,
+}: ProfileInfoProps) {
   return (
     <div className="flex items-center gap-5">
-      <div className="text-gray400 w-[60px] flex-shrink-0 text-sm font-normal leading-6">
+      <div className="w-[60px] flex-shrink-0 text-sm font-normal leading-6 text-gray400">
         {info[1]}
       </div>
       {isEditMode ? (
-        <Input id={id} defaultValue={info[2]} onBlur={onBlur} />
+        <Input
+          id={id}
+          defaultValue={info[2]}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
       ) : (
-        <div className="text-gray500 text-sm font-normal leading-6">
+        <div className="text-sm font-normal leading-6 text-gray500">
           {info[2]}
         </div>
       )}
