@@ -1,11 +1,10 @@
+import Cookies from "js-cookie";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@components/Header";
 import { AuthProvider } from "@context/AuthContext";
-import { useAuth } from "@context/AuthContext";
 import "@styles/globals.css";
 import "@styles/quillCustom.css";
-import ProfileIconTest from "@images/image_profile_test.jpg";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -27,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </noscript>
       </Head>
       <AuthProvider>
-        <Header profileIconSrc={ProfileIconTest} />
+        <Header />
         <Component {...pageProps} />
       </AuthProvider>
     </>
