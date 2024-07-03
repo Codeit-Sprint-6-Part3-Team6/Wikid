@@ -1,13 +1,12 @@
-import React, { Dispatch, SetStateAction } from "react";
-
 interface ButtonProps {
   text: string;
-  color: "green" | "white";
+  color: "green" | "white" | "red";
   type: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?:
-    | (() => void)
-    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>);
+    | (() => Promise<void>)
+    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
+    | (() => void);
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
 
@@ -20,7 +19,11 @@ const Button = ({
   className,
 }: ButtonProps) => {
   const primaryStyle =
-    color === "green" ? "bg-green200 text-white" : "bg-white text-green200";
+    color === "green"
+      ? "bg-green200 text-white"
+      : color === "white"
+        ? "bg-white text-green200"
+        : "bg-red300 text-white";
 
   const disabledStyle = disabled
     ? "cursor-not-allowed border-gray300 bg-gray300 text-white"

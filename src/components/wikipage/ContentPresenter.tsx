@@ -4,7 +4,7 @@ import Button from "@components/Button";
 function ContentPresenter({ content }: { content: string }) {
   return content ? (
     <div
-      className="textPresenter text-[16px] leading-[1.42]"
+      className="textPresenter pb-36 text-[16px] leading-[1.42]"
       dangerouslySetInnerHTML={{
         __html: DOMPurify.sanitize(content),
       }}

@@ -5,12 +5,15 @@ import AlarmModal from "@components/AlarmModal";
 import Button from "@components/Button";
 import LinkCopyButton from "@components/LinkCopyButton";
 import TextEditor from "@components/TextEditor";
+import Toast from "@components/Toast";
 import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
+import QuizModal from "@components/wikipage/QuizModal";
+import useEditMode from "@hooks/useEditMode";
 //import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
-import { getProfile, patchProfile } from "@lib/api/profileApi";
-import { Profile } from "@lib/types/Profile";
+import { getProfile, checkIsEditing, patchProfile } from "@lib/api/profileApi";
+import { Profile, profileEditResponse } from "@lib/types/Profile";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const code = context.query["code"];
@@ -18,6 +21,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   let profile: Profile | null = null;
   try {
     profile = await getProfile(code);
+  } catch (error) {
+    console.error(error);
+  }
+
+  let isEditable: boolean = false;
+  try {
+    const response = await checkIsEditing(code);
+    isEditable = response ? false : true;
   } catch (error) {
     console.error(error);
   }
@@ -31,17 +42,36 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       profile,
+      isEditable,
     },
   };
 }
 
-function WikiPage({ profile: initialProfile }: { profile: Profile }) {
+function WikiPage({
+  profile: initialProfile,
+  isEditable: initialIsEditable,
+}: {
+  profile: Profile;
+  isEditable: boolean;
+}) {
   const [profile, setProfile] = useState<Profile>(initialProfile);
   const [content, setContent] = useState(initialProfile.content); // 나중에 저장할 때 한 번에 바꿔서 send
   const [profileImage, setProfileImage] = useState(initialProfile.image); // 나중에 저장할 때 한 번에 바꿔서 send
-  const [isEditMode, setIsEditMode] = useState(false);
+  // const [isEditMode, setIsEditMode] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    isQuizOpen,
+    handleModalOpen,
+    toastOpened,
+    handleQuizSubmit,
+    triggerEditMode,
+    isEditMode,
+  } = useEditMode();
   const router = useRouter();
+
+  const handleEditClick = () => {
+    triggerEditMode(initialProfile.code);
+  };
 
   const handleWikiContentChange = (value: string) => {
     setContent(value);
@@ -93,7 +123,10 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
           content,
           image: imageUrl,
         }));
-      } else if (profileImage === null) {
+      } else if (
+        profileImage !== initialProfile.image &&
+        profileImage === null
+      ) {
         //이미지 삭제함
         setProfile((prevProfile) => ({
           ...prevProfile,
@@ -127,7 +160,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
   };
 
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode.content) {
       sendEditedProfile(profile);
     }
   }, [profile]);
@@ -137,7 +170,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
       <div
         className={`flex justify-between gap-20 ${isEditMode ? "pl-[200px] pr-[80px]" : "mx-auto max-w-[1200px]"}`}
       >
-        {isEditMode ? (
+        {isEditMode.content ? (
           <TextEditor
             type="wiki"
             name={initialProfile.name}
@@ -148,7 +181,7 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
         ) : (
           <div className="mt-20 w-full max-w-[800px] flex-shrink-0">
             <div className="mb-8 flex items-center justify-between">
-              <div className="text-gray500 text-[48px] font-semibold">
+              <div className="text-[48px] font-semibold text-gray500">
                 {initialProfile.name}
               </div>
               <Button
@@ -156,15 +189,21 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
                 color="green"
                 text="위키 참여하기"
                 className="px-[42px] py-[10.5px]"
-                onClick={() => {
-                  setIsEditMode(true);
-                }}
+                onClick={handleEditClick}
               />
             </div>
             <LinkCopyButton
               link={`http://localhost:3000/wiki/${initialProfile.code}`}
               className="mb-14"
             />
+            {!initialIsEditable && (
+              <div
+                style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
+                className="mb-5 mt-[-40px] flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat px-[55px] leading-6 text-gray500"
+              >
+                {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
+              </div>
+            )}
             <ContentPresenter content={initialProfile.content} />
           </div>
         )}
@@ -176,12 +215,12 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
             className=""
             profile={profile}
             profileImage={profileImage}
-            isEditMode={isEditMode}
+            isEditMode={isEditMode.profile}
             onFocusOut={handleInputFocusOut}
             onFileChange={handleImageInputChange}
             onDeleteClick={handleDeleteProfileImageClick}
           />
-          {isEditMode && (
+          {isEditMode.content && (
             <div className="mt-8 flex justify-end gap-[10px]">
               <Button
                 type="button"
@@ -210,6 +249,15 @@ function WikiPage({ profile: initialProfile }: { profile: Profile }) {
         buttonText="페이지 나가기"
         onClick={router.reload}
       />
+      <QuizModal
+        isOpen={isQuizOpen}
+        handleIsOpen={handleModalOpen}
+        onClick={handleQuizSubmit}
+        code={initialProfile.code}
+      />
+      <Toast type="red" isToastOpened={toastOpened}>
+        다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.
+      </Toast>
     </>
   );
 }

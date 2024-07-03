@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { X, LockKeyhole } from "lucide-react";
 import Button from "../Button";
 import Input from "../Input";
+import { Code } from "@lib/types/Profile";
 
 type QuizModalProps = {
-  securityQuestion: string;
-  securityAnswer: string;
+  securityQuestion?: string;
+  securityAnswer?: string;
   isOpen: boolean;
   handleIsOpen: () => void;
-  onClick: () => void;
+  onClick: (answer: string, code: Code) => Promise<void>;
+  code: Code;
 };
 
 // 유효성 검사는 나중에 hook이 생기면 Hook으로 교체합니다
@@ -24,11 +26,12 @@ export default function QuizModal({
   securityQuestion,
   securityAnswer,
   isOpen,
+  code,
 }: QuizModalProps) {
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [showWarningMessage, setShowWarningMessage] = useState<boolean>(false);
 
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserAnswer(e.target.value);
   };
 
@@ -78,7 +81,7 @@ export default function QuizModal({
                   </p>
                 )} */}
                 <Button
-                  onClick={onClick}
+                  onClick={() => onClick(userAnswer, code)}
                   text="확인"
                   color="green"
                   type="button"

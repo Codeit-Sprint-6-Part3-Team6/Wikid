@@ -35,3 +35,7 @@ export type ProfileList = {
   list: Profile[];
 };
 
+export type profileEditResponse = {
+  registeredAt: string;
+  userId: number;
+};

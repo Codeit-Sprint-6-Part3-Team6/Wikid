@@ -42,9 +42,9 @@ export default function AlarmModal({
             <Button
               onClick={onClick}
               text={buttonText}
-              color={type == "confirm" ? "green" : "white"}
+              color={type == "confirm" ? "green" : "red"}
               type={"button"}
-              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none bg-[#D14343]` : ""}`}
+              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none` : ""}`}
             />
           </div>
         </div>

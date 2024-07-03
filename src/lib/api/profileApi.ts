@@ -6,6 +6,7 @@ import {
   Pagination,
   ProfileList,
   WikiForm,
+  profileEditResponse,
 } from "@lib/types/Profile";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
@@ -21,8 +22,6 @@ export const patchProfile = async (profile: Profile): Promise<Profile> => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY5LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgzMDQ0MSwiZXhwIjoxNzE5ODMyMjQxLCJpc3MiOiJzcC13aWtpZWQifQ.C1M59sX-P9Om_iuduwabe3ILbtectXx9c-Cd36NSrkA",
       },
     },
   );
@@ -51,6 +50,36 @@ export const getProfileList = async (
     return res.data;
   } catch (error) {
     console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const checkIsEditing = async (code: Code) => {
+  try {
+    const res = await axios.get<profileEditResponse>(`profiles/${code}/ping`);
+    if (res.status === 204) {
+      return false;
+    }
+    return res.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const postProfileEdit = async ({
+  code,
+  securityAnswer,
+}: {
+  code: Code;
+  securityAnswer: string;
+}) => {
+  try {
+    const res = await axios.post<profileEditResponse>(`profiles/${code}/ping`, {
+      securityAnswer,
+    });
+    return res.data;
+  } catch (error) {
     throw error;
   }
 };
