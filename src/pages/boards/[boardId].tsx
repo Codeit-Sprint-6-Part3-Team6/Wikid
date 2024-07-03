@@ -7,14 +7,20 @@ import CardContainer from "@components/article/CardContainer";
 import Comment from "@components/article/Comment";
 import LikeToggleButton from "@components/article/LikeToggleButton";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
+import { getUserInfo } from "@lib/api/userApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
+
+interface UserInfo {
+  id: number;
+}
 
 const ArticlePage = () => {
   const router = useRouter();
   const { boardId } = router.query;
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<UserInfo | null>(null);
 
   const fetchArticle = async (id: string | string[]) => {
     try {
@@ -29,6 +35,15 @@ const ArticlePage = () => {
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+      const userInfo = await getUserInfo();
+      setUser(userInfo);
+    } catch (err) {
+      console.error("유저 정보 불러오기 실패");
+    }
+  };
+
   useEffect(() => {
     if (typeof boardId === "string" || Array.isArray(boardId)) {
       fetchArticle(boardId);
@@ -36,6 +51,10 @@ const ArticlePage = () => {
       setIsLoading(false);
     }
   }, [boardId]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   const handleEditArticle = () => {
     if (article) {
@@ -74,28 +93,32 @@ const ArticlePage = () => {
     );
   }
 
+  const isAuthor = article.writer.id === user?.id;
+
   return (
     <div className="flex flex-col items-center">
       {boardId && typeof boardId === "string" && (
         <CardContainer className="m-[60px] flex-col py-[40px]">
           <div className="mb-6 flex w-full items-center justify-between">
             <h1 className="text-[32px] font-semibold">{article.title}</h1>
-            <div className="flex gap-3.5">
-              <Button
-                text="수정하기"
-                color="green"
-                type="button"
-                onClick={handleEditArticle}
-                className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-              />
-              <Button
-                text="삭제하기"
-                color="green"
-                type="button"
-                onClick={handleDeleteArticle}
-                className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-              />
-            </div>
+            {isAuthor && (
+              <div className="flex gap-3.5">
+                <Button
+                  text="수정하기"
+                  color="green"
+                  type="button"
+                  onClick={handleEditArticle}
+                  className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                />
+                <Button
+                  text="삭제하기"
+                  color="green"
+                  type="button"
+                  onClick={handleDeleteArticle}
+                  className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                />
+              </div>
+            )}
           </div>
           <div className="mb-[38px] flex w-full justify-between">
             <div className="flex gap-2.5 text-gray400">
