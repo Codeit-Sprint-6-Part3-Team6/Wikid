@@ -64,6 +64,54 @@ const HeaderLoggedIn = ({
   );
 };
 
+const MenuLoggedOut = () => {
+  return (
+    <div className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+      <Link href="/wikilist" className="h-[44px] leading-[44px]">
+        위키목록
+      </Link>
+      <Link href="/boards" className="h-[44px] leading-[44px]">
+        자유게시판
+      </Link>
+      <Link href="/login" className="h-[44px] leading-[44px]">
+        로그인
+      </Link>
+    </div>
+  );
+};
+
+// 내 위키 링크 수정 필요, 주영님 하실 때 여기도 부탁드려요...
+const MenuLoggedIn = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
+    router.replace("/login");
+  };
+
+  return (
+    <div className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+      <Link href="/wikilist" className="h-[44px] leading-[44px]">
+        위키목록
+      </Link>
+      <Link href="/boards" className="h-[44px] leading-[44px]">
+        자유게시판
+      </Link>
+      <button className="h-[44px] leading-[44px]">알림</button>
+      <Link href="/mypage" className="h-[44px] leading-[44px]">
+        마이페이지
+      </Link>
+      <Link href="/" className="h-[44px] leading-[44px]">
+        내 위키
+      </Link>
+      <button onClick={handleLogout} className="h-[44px] leading-[44px]">
+        로그아웃
+      </button>
+    </div>
+  );
+};
+
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
@@ -141,26 +189,8 @@ const Header = () => {
           onClick={toggleMenu}
         />
         {isMenuOpen && (
-          <div
-            onClick={handleMenuClick}
-            className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
-          >
-            <Link href="/wikilist" className="h-[44px] leading-[44px]">
-              위키목록
-            </Link>
-            <Link href="/boards" className="h-[44px] leading-[44px]">
-              자유게시판
-            </Link>
-            {isLoggedIn && <button className="h-[44px]">알림</button>}
-            {isLoggedIn ? (
-              <Link href="/mypage" className="h-[44px] leading-[44px]">
-                마이페이지
-              </Link>
-            ) : (
-              <Link href="/login" className="h-[44px] leading-[44px]">
-                로그인
-              </Link>
-            )}
+          <div onClick={handleMenuClick}>
+            {isLoggedIn ? <MenuLoggedIn /> : <MenuLoggedOut />}
           </div>
         )}
       </div>
