@@ -1,8 +1,11 @@
 import axios from "axios";
-import instance from "@lib/api/axios";
-import { ArticleList, ArticlePagination } from "@lib/types/Pagination";
 import Cookies from "js-cookie";
-import { ArticleType } from "@lib/types/articleType";
+import instance from "@lib/api/axios";
+import {
+  ArticleType,
+  ArticleList,
+  ArticleQueryOptions,
+} from "@lib/types/articleType";
 
 export const getAccessToken = () => {
   const accessToken = Cookies.get("accessToken");
@@ -25,7 +28,7 @@ export const getArticle = async (
 };
 
 export const getArticleList = async (
-  options: ArticlePagination,
+  options: ArticleQueryOptions,
 ): Promise<ArticleList> => {
   try {
     const res = await instance.get<ArticleList>("/articles", {
@@ -33,6 +36,7 @@ export const getArticleList = async (
         page: options.page,
         pageSize: options.pageSize,
         orderBy: options.orderBy,
+        keyword: options.keyword,
       },
     });
     return res.data;

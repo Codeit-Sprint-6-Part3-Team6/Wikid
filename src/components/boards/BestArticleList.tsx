@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 import { getArticleList } from "@lib/api/articleApi";
-import { ArticlePagination } from "@lib/types/Pagination";
-import { ArticleType } from "@lib/types/articleType";
+import { ArticleType, ArticleQueryOptions } from "@lib/types/articleType";
 
 const PAGE_SIZE = 4;
 
 const BestArticleList = () => {
   const [items, setItems] = useState<ArticleType[]>([]);
 
-  const handleLoad = async (options: ArticlePagination) => {
+  const handleLoad = async (options: ArticleQueryOptions) => {
     try {
       const { list } = await getArticleList(options);
       setItems(list);

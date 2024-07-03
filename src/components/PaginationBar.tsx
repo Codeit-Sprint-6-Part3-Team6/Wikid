@@ -18,7 +18,7 @@ const PaginationBar = ({
   handleNextPage,
 }: PaginationProps) => {
   const commonClass =
-    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] transition-[0.3s_ease-in-out]";
+    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] duration-300 ease-in-out";
 
   const PaginationButton = () => {
     //number 타입은 map 함수를 지원하지 않아서 array 생성자를 사용하여 새로운 배열로 만듦

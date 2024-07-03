@@ -25,3 +25,13 @@ export type WikiForm = {
   securityAnswer: string;
 };
 
+export type ProfileList = {
+  totalCount: number;
+  list: Profile[];
+};
+
+export type ProfileQueryOptions = {
+  page?: number;
+  pageSize?: number;
+  name?: string;
+};
