@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
+import AccountMenu from "./accountMenu/AccountMenu";
 import NotificationList from "./notification/NotificationList";
 import useModal from "@hooks/useModal";
 import { getProfile } from "@lib/api/profileApi";
@@ -34,6 +35,7 @@ const HeaderLoggedIn = ({
 }) => {
   const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
+  const [isOpenAccountMenu, handleIsOpenAccountMenu] = useModal();
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -43,13 +45,6 @@ const HeaderLoggedIn = ({
 
   return (
     <div className="flex items-center gap-[24px]">
-      <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
-      <Button
-        text="임시 로그아웃 버튼"
-        color="green"
-        type="button"
-        onClick={handleLogout}
-      />
       <div className="relative flex items-center">
         <IconButton
           src={AlarmIcon}
@@ -61,14 +56,20 @@ const HeaderLoggedIn = ({
           <NotificationList isOpen={isOpen} handleIsOpen={handleIsOpen} />
         </div>
       </div>
-      <IconButton
-        src={profileIconSrc || DefaultProfileIcon}
-        alt="프로필 아이콘"
-        className="h-[32px] w-[32px] rounded-full"
-        unoptimized={true}
-        width={32}
-        height={32}
-      />
+      <div className="relative flex items-center bg-blue-200">
+        <IconButton
+          src={profileIconSrc || DefaultProfileIcon}
+          alt="프로필 아이콘"
+          className="h-[32px] w-[32px] rounded-full"
+          unoptimized={true}
+          width={32}
+          height={32}
+          onClick={handleIsOpenAccountMenu}
+        />
+        <div className="absolute top-[10px] sm:-left-[150px] lg:-left-[150px]">
+          <AccountMenu handleLogout={handleLogout} isOpen={isOpenAccountMenu} />
+        </div>
+      </div>
     </div>
   );
 };
