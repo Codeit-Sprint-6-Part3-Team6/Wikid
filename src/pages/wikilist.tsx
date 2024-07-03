@@ -1,15 +1,13 @@
 import WikiListBox from "@components/wikilist/WikiListBox";
 
-const wikilist = () => {
+const WikiListPage = () => {
   return (
     <main className="wrapper">
-      <div className="inner">
-        <div className="pb-[136px] pt-[80px]">
-          <WikiListBox />
-        </div>
+      <div className="inner pb-[120px] pt-[80px]">
+        <WikiListBox />
       </div>
     </main>
   );
 };
 
-export default wikilist;
+export default WikiListPage;

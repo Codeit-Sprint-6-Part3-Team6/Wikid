@@ -1,22 +1,24 @@
 import Image from "next/image";
-import usePagination from "@hooks/usePagination";
 import nextIcon from "@icons/ic_next.svg";
 import prevIcon from "@icons/ic_prev.svg";
 
 interface PaginationProps {
   currentPage: number; //현재 페이지
   totalPage: number; //전체 페이지
+  handleGoPage: (pageNumber: number) => void;
+  handlePrevPage: () => void;
+  handleNextPage: () => void;
 }
 
 const PaginationBar = ({
-  currentPage: initialPage,
+  currentPage,
   totalPage,
+  handleGoPage,
+  handlePrevPage,
+  handleNextPage,
 }: PaginationProps) => {
-  const { currentPage, handleGoPage, handlePrevPage, handleNextPage } =
-    usePagination({ initialPage, totalPage });
-
   const commonClass =
-    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]";
+    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] transition-[0.3s_ease-in-out]";
 
   const PaginationButton = () => {
     //number 타입은 map 함수를 지원하지 않아서 array 생성자를 사용하여 새로운 배열로 만듦
@@ -25,7 +27,9 @@ const PaginationBar = ({
         type="button"
         key={i + 1}
         onClick={() => handleGoPage(i + 1)}
-        className={`${commonClass} ${i + 1 === currentPage ? "text-green200" : "text-gray400"}`}
+        className={`${commonClass} ${
+          i + 1 === currentPage ? "font-semibold text-green200" : "text-gray400"
+        } hover:text-green200`}
       >
         {i + 1}
       </button>
@@ -40,16 +44,24 @@ const PaginationBar = ({
         disabled={currentPage === 1}
         className={commonClass}
       >
-        <Image src={prevIcon} alt="이전" />
+        <Image
+          src={prevIcon}
+          alt="이전"
+          className={`${currentPage === 1 && "opacity-50"}`}
+        />
       </button>
-      {PaginationButton()}
+      <PaginationButton />
       <button
         type="button"
         onClick={handleNextPage}
         disabled={currentPage === totalPage}
         className={commonClass}
       >
-        <Image src={nextIcon} alt="다음" />
+        <Image
+          src={nextIcon}
+          alt="다음"
+          className={`${currentPage === totalPage && "opacity-50"}`}
+        />
       </button>
     </div>
   );
