@@ -46,16 +46,15 @@ const CommentCard = ({
   };
 
   const isAuthor = comment.writer.id === user?.id;
+  const imageSrc =
+    comment.writer.image && comment.writer.image.includes("sprint") // "https://example.com/..." 이 이미지 때문에 에러떠서 임시로 이렇게 구현했어요.
+      ? comment.writer.image
+      : profileIcon;
 
   return (
     <CardContainer className="mb-[24px] items-start py-[22px]">
       <div className="flex flex-1 grow items-start gap-[20px]">
-        <Image
-          src={profileIcon}
-          alt="기본 프로필 아이콘"
-          width={50}
-          height={50}
-        />
+        <Image src={imageSrc} alt="프로필 이미지" width={50} height={50} />
         <div className="flex w-full flex-col">
           <span className="mb-[6px] text-lg font-semibold">
             {comment.writer.name}
