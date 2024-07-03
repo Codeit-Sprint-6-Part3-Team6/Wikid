@@ -86,7 +86,7 @@ const ArticlePage = () => {
   return (
     <div className="flex flex-col items-center px-[20px] pb-[46px] md:px-[60px]">
       {boardId && typeof boardId === "string" && (
-        <CardContainer className="mt-[20px] flex-col py-[20px] md:mt-[40px] lg:mt-[60px]">
+        <CardContainer className="mt-[20px] flex-col py-[20px] md:mt-[40px] md:py-[40px] lg:mt-[60px]">
           <div className="mb-[14px] flex w-full items-center justify-between md:mb-[30px]">
             <h1 className="text-[24px] font-semibold md:text-[32px]">
               {article.title}
