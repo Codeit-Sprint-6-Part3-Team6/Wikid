@@ -3,6 +3,7 @@ import Image from "next/image";
 import { CommentType } from "../../lib/types/commentType";
 import CardContainer from "./CardContainer";
 import CommentInput from "./CommentInput";
+import useUserInfo from "@hooks/useUserInfo";
 import { formatDate } from "@lib/dateFormatter";
 import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
@@ -21,6 +22,8 @@ const CommentCard = ({
 }: CommentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+
+  const { user } = useUserInfo();
 
   const handleEdit = async (newContent: string) => {
     try {
@@ -41,6 +44,8 @@ const CommentCard = ({
       onDeleteComment(comment.id);
     }
   };
+
+  const isAuthor = comment.writer.id === user?.id;
 
   return (
     <CardContainer className="mb-[24px] items-start py-[22px]">
@@ -72,7 +77,7 @@ const CommentCard = ({
         </div>
       </div>
       <div className="flex gap-[20px]">
-        {isEditing ? null : (
+        {!isEditing && isAuthor && (
           <>
             <Image
               src={editIcon}
