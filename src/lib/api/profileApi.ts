@@ -8,6 +8,7 @@ import {
   WikiForm,
   profileEditResponse,
 } from "@lib/types/Profile";
+import { ProfileList, ProfilePagination } from "@lib/types/Pagination";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
   const res = await axios.get<Profile>(`profiles/${code}`);
@@ -29,16 +30,20 @@ export const patchProfile = async (profile: Profile): Promise<Profile> => {
 };
 
 // 위키 생성하기
-export const createWiki = async (questionAndAnswer: WikiForm) => {
+export const createWiki = async ({
+  securityQuestion,
+  securityAnswer,
+}: WikiForm) => {
   const res = await axios.post("profiles", {
-    questionAndAnswer,
+    securityQuestion,
+    securityAnswer,
   });
 
   return res;
 };
 
 export const getProfileList = async (
-  options: Pagination,
+  options: ProfilePagination,
 ): Promise<ProfileList> => {
   try {
     const res = await axios.get<ProfileList>("/profiles", {

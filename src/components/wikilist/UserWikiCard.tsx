@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-// import LinkCopyButton from "@components/LinkCopyButton";
+import LinkCopyButton from "@components/LinkCopyButton";
 import { Profile } from "@lib/types/Profile";
 import profileIcon from "@icons/ic_profile.svg";
 
@@ -15,12 +15,13 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
         href={`/wiki/${profile.code}`}
         className="flex h-[140px] items-end justify-between gap-[20px] p-[25px_35px]"
       >
-        <div className="flex gap-[32px]">
+        <div className="flex items-center gap-[32px]">
           <Image
             src={profile.image || profileIcon}
             alt={profile.name}
-            height={85}
             width={85}
+            height={85}
+            className="h-[85px] w-[85px] rounded-full"
           />
           <div>
             <div className="mb-[15px] text-[24px] font-semibold">
@@ -30,7 +31,7 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
             <div className="text-gray400">{profile.job}</div>
           </div>
         </div>
-        {/* <LinkCopyButton link="https://www.wikied.kr/wikicode" /> */}
+        <LinkCopyButton link="https://www.wikied.kr/wikicode" />
       </Link>
     </div>
   );

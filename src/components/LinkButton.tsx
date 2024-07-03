@@ -29,19 +29,3 @@ const LinkButton = ({ text, link, color, className }: LinkButtonProps) => {
 };
 
 export default LinkButton;
-
-// type3
-// 게시물 등록하기-linkButton
-// width 160, height 45, --color-green200, --color-white
-
-// type7
-// 삭제하기-linkButton, 목록으로-linkButton, 등록하기-linkButton
-// width 140, height 45,  --color-green200, --color-white
-
-// type9
-// 위키만들기(메인)-linkButton
-// width 170, height 59, --color-gray600, --color-white
-
-// type10
-// 지금 시작하기(메인)-linkButton
-// width 190, height 59, --color-white, --color-gray800
