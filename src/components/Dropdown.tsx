@@ -5,11 +5,12 @@ import dropdownIcon from "@icons/ic_arrowDown.svg";
 // 드롭다운 옵션들이 상황에 따라 달라지기 때문에 prop으로 받도록 설정
 interface DropdownProps {
   options: string[];
-  onClick?: (option: string) => void;
+  order: string[];
+  onClick: (option: string) => void;
   type?: "sort" | string; // 추가된 type prop
 }
 
-const Dropdown = ({ options, onClick, type }: DropdownProps) => {
+const Dropdown = ({ options, order, onClick, type }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,7 @@ const Dropdown = ({ options, onClick, type }: DropdownProps) => {
 
   const containerClass = `relative cursor-pointer items-center ${type === "sort" ? "w-[140px]" : "w-auto"}`;
   const dropdownButtonClass = `flex h-[45px] ${type === "sort" ? "w-[140px]" : "w-full"} cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200`;
-  const dropdownMenuClass = `absolute top-full mt-1.5 ${type === "sort" ? "w-[140px]" : "w-full"} rounded-lg bg-white p-1.5 text-gray-800`;
+  const dropdownMenuClass = `absolute top-full mt-1.5 ${type === "sort" ? "w-[140px]" : "w-full"} rounded-lg bg-white p-1.5 text-gray-800 bg-white z-10 shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]`;
 
   return (
     <div className={containerClass} ref={dropdownRef}>
@@ -65,13 +66,16 @@ const Dropdown = ({ options, onClick, type }: DropdownProps) => {
       </div>
       {isOpen && (
         <div className={dropdownMenuClass}>
-          {options.map((option, index) => (
+          {order.map((order, index) => (
             <div
-              key={option}
+              key={order}
               className={`cursor-pointer border-solid py-2.5 text-center transition-all duration-500 hover:bg-green-50 hover:text-green300 ${index !== options.length - 1 ? "border-b border-solid border-gray-100" : ""}`}
-              onClick={() => handleOptionClick(option)}
+              onClick={() => {
+                handleOptionClick(options[index]);
+                onClick(order);
+              }}
             >
-              {option}
+              {options[index]}
             </div>
           ))}
         </div>

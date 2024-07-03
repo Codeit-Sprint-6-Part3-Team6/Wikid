@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
+import NotificationList from "./notification/NotificationList";
+import useModal from "@hooks/useModal";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
@@ -29,6 +31,7 @@ const HeaderLoggedIn = ({
   profileIconSrc: string | undefined;
 }) => {
   const router = useRouter();
+  const [isOpen, handleIsOpen] = useModal();
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
