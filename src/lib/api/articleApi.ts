@@ -1,4 +1,6 @@
 import axios from "@lib/api/axios";
+import instance from "@lib/api/axios";
+import { ArticleList, ArticlePagination } from "@lib/types/Pagination";
 import { ArticleType } from "@lib/types/articleType";
 
 export const getArticle = async (
@@ -13,6 +15,23 @@ export const getArticle = async (
   }
 };
 
+export const getArticleList = async (
+  options: ArticlePagination,
+): Promise<ArticleList> => {
+  try {
+    const res = await instance.get<ArticleList>("/articles", {
+      params: {
+        page: options.page,
+        pageSize: options.pageSize,
+        orderBy: options.orderBy,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const deleteArticle = async (
   targetId: string | string[],
 ): Promise<ArticleType> => {

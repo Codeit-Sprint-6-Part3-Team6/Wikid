@@ -1,11 +1,6 @@
 import axios from "@lib/api/axios";
-import {
-  Code,
-  Profile,
-  Pagination,
-  ProfileList,
-  WikiForm,
-} from "@lib/types/Profile";
+import { ProfileList, ProfilePagination } from "@lib/types/Pagination";
+import { Code, Profile, WikiForm } from "@lib/types/Profile";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
   const res = await axios.get<Profile>(`profiles/${code}`);
@@ -26,7 +21,7 @@ export const createWiki = async ({
 };
 
 export const getProfileList = async (
-  options: Pagination,
+  options: ProfilePagination,
 ): Promise<ProfileList> => {
   try {
     const res = await axios.get<ProfileList>("/profiles", {
