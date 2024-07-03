@@ -10,6 +10,7 @@ import NotificationList from "./notification/NotificationList";
 import useModal from "@hooks/useModal";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
+import { NotificationItemType } from "@lib/types/Notifications";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
@@ -34,12 +35,24 @@ const HeaderLoggedIn = ({
 }) => {
   const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
+  const [isNotification, setIsNotification] = useState(false);
+  const [countOfBookmarks, setcountOfBookmarks] = useState<string>('');
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
     window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
     router.replace("/login");
   };
+
+  const handleIsNotification = (notificationList: NotificationItemType[]) => {
+    notificationList?.length >= 1
+      ? setIsNotification(true)
+      : setIsNotification(false);
+  };
+
+  const getCountOfBookmarks = (count: string) => {
+    setcountOfBookmarks(count)
+  }
 
   return (
     <div className="flex items-center gap-[24px]">
@@ -54,11 +67,17 @@ const HeaderLoggedIn = ({
         <IconButton
           src={AlarmIcon}
           alt="알람 아이콘"
-          className="h-[32px] w-[32px]"
+          className={`h-[32px] w-[32px] ${isNotification ? "animate-pulse" : ""}`}
           onClick={handleIsOpen}
+          countOfBookmarks={countOfBookmarks}
         />
         <div className="absolute top-[45px] sm:-left-[250px] lg:-left-[350px]">
-          <NotificationList isOpen={isOpen} handleIsOpen={handleIsOpen} />
+          <NotificationList
+            handleIsNotification={handleIsNotification}
+            isOpen={isOpen}
+            handleIsOpen={handleIsOpen}
+            getCountOfBookmarks={getCountOfBookmarks}
+          />
         </div>
       </div>
       <IconButton

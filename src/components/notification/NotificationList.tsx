@@ -1,20 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import NotificationContainer from "./NotificationContainer";
 import NotificationItem from "./NotificationItem";
-import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
 
 type NotificationListProps = {
   isOpen: boolean;
   handleIsOpen: () => {};
+  handleIsNotification: () => {};
+  getCountOfBookmarks: () => {};
 };
 
 export default function NotificationList({
   isOpen,
   handleIsOpen,
+  handleIsNotification,
+  getCountOfBookmarks,
 }: NotificationListProps) {
   const { notificationList, totalCount, handleDeleteClick } =
     useNotificationList();
+
+  useEffect(() => {
+    handleIsNotification(notificationList);
+    getCountOfBookmarks(totalCount);
+  }, [notificationList]);
 
   return (
     <>
