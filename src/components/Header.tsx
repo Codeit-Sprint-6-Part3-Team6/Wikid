@@ -35,8 +35,7 @@ const HeaderLoggedIn = ({
 }) => {
   const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
-  const [isNotification, setIsNotification] = useState(false);
-  const [countOfBookmarks, setcountOfBookmarks] = useState<string>('');
+  const [countOfBookmarks, setcountOfBookmarks] = useState<string>("");
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -44,15 +43,9 @@ const HeaderLoggedIn = ({
     router.replace("/login");
   };
 
-  const handleIsNotification = (notificationList: NotificationItemType[]) => {
-    notificationList?.length >= 1
-      ? setIsNotification(true)
-      : setIsNotification(false);
-  };
-
   const getCountOfBookmarks = (count: string) => {
-    setcountOfBookmarks(count)
-  }
+    setcountOfBookmarks(count);
+  };
 
   return (
     <div className="flex items-center gap-[24px]">
@@ -67,13 +60,12 @@ const HeaderLoggedIn = ({
         <IconButton
           src={AlarmIcon}
           alt="알람 아이콘"
-          className={`h-[32px] w-[32px] ${isNotification ? "animate-pulse" : ""}`}
+          className={`h-[32px] w-[32px] ${countOfBookmarks ? "animate-pulse" : ""}`}
           onClick={handleIsOpen}
           countOfBookmarks={countOfBookmarks}
         />
-        <div className="absolute top-[45px] sm:-left-[250px] lg:-left-[350px]">
+        <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
           <NotificationList
-            handleIsNotification={handleIsNotification}
             isOpen={isOpen}
             handleIsOpen={handleIsOpen}
             getCountOfBookmarks={getCountOfBookmarks}

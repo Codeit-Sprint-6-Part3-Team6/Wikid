@@ -33,7 +33,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         unoptimized={unoptimized}
       />
       {countOfBookmarks ? (
-        <div className="absolute -right-[5px] -top-[6px] rounded-full bg-red-500 px-[6px] text-[10px] text-white">
+        <div className="absolute -right-[5px] -top-[6px] rounded-full bg-red-500 px-[6px] text-[10px] font-[600] text-white">
           {countOfBookmarks}
         </div>
       ) : null}
