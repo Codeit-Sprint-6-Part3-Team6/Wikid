@@ -13,8 +13,13 @@ const useUserInfo = () => {
       try {
         const userInfo = await getUserInfo();
         setUser(userInfo);
-      } catch (err) {
-        console.error("유저 정보 불러오기 실패");
+      } catch (err: any) {
+        // 로그인하지 않은 사용자 오류 처리
+        if (err.response && err.response.status === 401) {
+          console.info("로그인하지 않은 사용자");
+        } else {
+          console.error("유저 정보 불러오기 실패");
+        }
       }
     };
 
@@ -25,6 +30,3 @@ const useUserInfo = () => {
 };
 
 export default useUserInfo;
-
-// 게시글 및 댓글 수정, 삭제 버튼을 조건부로 렌더링하기 위해 사용되는 훅입니다.
-// 유저 id와 게시글 및 댓글의 작성자 id를 비교하는 방법으로 구현했습니다.

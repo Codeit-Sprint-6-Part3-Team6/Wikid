@@ -7,12 +7,7 @@ import {
   postComment,
   deleteComment,
 } from "@lib/api/commentApi";
-import { getUserInfo } from "@lib/api/userApi";
 import { CommentType } from "@lib/types/commentType";
-
-interface UserInfo {
-  id: number;
-}
 
 interface CommentProps {
   boardId: string;
@@ -44,7 +39,7 @@ const Comment = ({ boardId }: CommentProps) => {
       const newComment = await postComment(boardId, content);
       setComments([newComment, ...comments]);
     } catch (err) {
-      console.error("댓글 등록 실패", err);
+      throw err;
     }
   };
 
