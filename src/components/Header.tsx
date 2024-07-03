@@ -10,15 +10,13 @@ import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
+import MenuIcon from "@icons/ic_menu.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
 
 const HeaderLoggedOut = () => {
   return (
-    <div>
-      <Link
-        href="/login"
-        className="text-[14px] font-normal text-[var(--color-gray600)]"
-      >
+    <div className="hidden md:block">
+      <Link href="/login" className="text-[14px] font-normal text-gray600">
         로그인
       </Link>
     </div>
@@ -39,27 +37,29 @@ const HeaderLoggedIn = ({
   };
 
   return (
-    <div className="flex items-center gap-[24px]">
-      <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
-      <Button
-        text="임시 로그아웃 버튼"
-        color="green"
-        type="button"
-        onClick={handleLogout}
-      />
-      <IconButton
-        src={AlarmIcon}
-        alt="알람 아이콘"
-        className="h-[32px] w-[32px]"
-      />
-      <IconButton
-        src={profileIconSrc || DefaultProfileIcon}
-        alt="프로필 아이콘"
-        className="h-[32px] w-[32px] rounded-full"
-        unoptimized={true}
-        width={32}
-        height={32}
-      />
+    <div className="hidden md:block">
+      <div className="flex items-center gap-[24px]">
+        <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
+        <Button
+          text="임시 로그아웃 버튼"
+          color="green"
+          type="button"
+          onClick={handleLogout}
+        />
+        <IconButton
+          src={AlarmIcon}
+          alt="알람 아이콘"
+          className="h-[32px] w-[32px]"
+        />
+        <IconButton
+          src={profileIconSrc || DefaultProfileIcon}
+          alt="프로필 아이콘"
+          className="h-[32px] w-[32px] rounded-full"
+          unoptimized={true}
+          width={32}
+          height={32}
+        />
+      </div>
     </div>
   );
 };
@@ -101,29 +101,36 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">
+    <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px] shadow-md">
       <div className="flex items-center gap-[40px]">
         <Link href="/">
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
         </Link>
         <Link
           href="/wikilist"
-          className="text-[14px] font-normal text-[var(--color-gray800)]"
+          className="hidden text-[14px] font-normal text-gray800 md:block"
         >
           위키목록
         </Link>
         <Link
           href="/boards"
-          className="text-[14px] font-normal text-[var(--color-gray800)]"
+          className="hidden text-[14px] font-normal text-gray800 md:block"
         >
           자유게시판
         </Link>
       </div>
-      {isLoggedIn ? (
-        <HeaderLoggedIn profileIconSrc={profileIconSrc} />
-      ) : (
-        <HeaderLoggedOut />
-      )}
+      <div className="flex">
+        {isLoggedIn ? (
+          <HeaderLoggedIn profileIconSrc={profileIconSrc} />
+        ) : (
+          <HeaderLoggedOut />
+        )}
+        <IconButton
+          src={MenuIcon}
+          alt="메뉴 아이콘"
+          className="block h-[24px] w-[24px] md:hidden"
+        />
+      </div>
     </div>
   );
 };
