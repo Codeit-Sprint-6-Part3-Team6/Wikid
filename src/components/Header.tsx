@@ -70,6 +70,15 @@ const Header = () => {
     undefined,
   );
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   useEffect(() => {
     const checkLoginStatus = () => {
       const accessToken = Cookies.get("accessToken");
@@ -119,7 +128,7 @@ const Header = () => {
           자유게시판
         </Link>
       </div>
-      <div className="flex">
+      <div className="relative flex">
         {isLoggedIn ? (
           <HeaderLoggedIn profileIconSrc={profileIconSrc} />
         ) : (
@@ -129,7 +138,31 @@ const Header = () => {
           src={MenuIcon}
           alt="메뉴 아이콘"
           className="block h-[24px] w-[24px] md:hidden"
+          onClick={toggleMenu}
         />
+        {isMenuOpen && (
+          <div
+            onClick={handleMenuClick}
+            className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[1px] border-solid bg-white"
+          >
+            <Link href="/wikilist" className="h-[44px] leading-[44px]">
+              위키목록
+            </Link>
+            <Link href="/boards" className="h-[44px] leading-[44px]">
+              자유게시판
+            </Link>
+            {isLoggedIn && <button className="h-[44px]">알림</button>}
+            {isLoggedIn ? (
+              <Link href="/mypage" className="h-[44px] leading-[44px]">
+                마이페이지
+              </Link>
+            ) : (
+              <Link href="/login" className="h-[44px] leading-[44px]">
+                로그인
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
