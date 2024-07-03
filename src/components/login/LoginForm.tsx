@@ -19,6 +19,8 @@ const LoginForm = () => {
   const router = useRouter();
   const { login } = useAuth();
 
+  const isFormValid = formData.email !== "" && formData.password !== "";
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = formData;
@@ -83,6 +85,7 @@ const LoginForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-full"
+          disabled={!isFormValid}
         />
         <Toast type={toastColor} isToastOpened={toastOpened}>
           {toastText}

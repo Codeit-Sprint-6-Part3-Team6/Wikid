@@ -6,7 +6,6 @@ import Toast from "@components/Toast";
 import useSignUpValidation from "@hooks/useSignUpValidation";
 import useToast from "@hooks/useToast";
 import { postSignUp } from "@lib/api/authApi";
-import axios from "@lib/api/axios";
 
 const SignUpForm = () => {
   const { toastOpened, showToast } = useToast();
@@ -15,6 +14,12 @@ const SignUpForm = () => {
 
   const router = useRouter();
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
+
+  const isFormValid =
+    formData.name !== "" &&
+    formData.email !== "" &&
+    formData.password &&
+    formData.passwordConfirmation;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -107,6 +112,7 @@ const SignUpForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-full"
+          disabled={!isFormValid}
         />
       </form>
       <Toast type={toastColor} isToastOpened={toastOpened}>
