@@ -143,7 +143,7 @@ const Header = () => {
         {isMenuOpen && (
           <div
             onClick={handleMenuClick}
-            className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[1px] border-solid bg-white"
+            className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
           >
             <Link href="/wikilist" className="h-[44px] leading-[44px]">
               위키목록
