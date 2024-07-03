@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
-import { useAuth } from "@context/AuthContext";
-import axios from "@lib/api/axios";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
@@ -27,19 +25,18 @@ const HeaderLoggedOut = () => {
   );
 };
 
-interface HeaderLoggedInProps {
-  // profileIconSrc?: string | StaticImageData;
-  profileIconSrc?: string | StaticImageData | undefined;
-}
-
-const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
+const HeaderLoggedIn = ({
+  profileIconSrc,
+}: {
+  profileIconSrc: string | undefined;
+}) => {
   const router = useRouter();
-  const { logout } = useAuth();
 
-  async function handleClick() {
-    Cookies.remove("accessToken"); // accessToken을 삭제하는 방식으로 로그아웃 구현
-    logout();
-  }
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
+    router.replace("/login");
+  };
 
   return (
     <div className="flex items-center gap-[24px]">
@@ -48,7 +45,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
         text="임시 로그아웃 버튼"
         color="green"
         type="button"
-        onClick={handleClick}
+        onClick={handleLogout}
       />
       <IconButton
         src={AlarmIcon}
@@ -59,7 +56,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
         src={profileIconSrc || DefaultProfileIcon}
         alt="프로필 아이콘"
         className="h-[32px] w-[32px] rounded-full"
-        unoptimized={true} // 외부 이미지의 경우 최적화를 비활성화
+        unoptimized={true}
         width={32}
         height={32}
       />
@@ -67,29 +64,32 @@ const HeaderLoggedIn = ({ profileIconSrc }: HeaderLoggedInProps) => {
   );
 };
 
-interface HeaderProps {
-  profileIconSrc?: string | StaticImageData;
-}
-
 const Header = () => {
-  const { isLoggedIn } = useAuth();
-
-  const [profileIconSrc, setProfileIconSrc] = useState<
-    string | StaticImageData | undefined
-  >(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
+    const checkLoginStatus = () => {
+      const accessToken = Cookies.get("accessToken");
+      setIsLoggedIn(!!accessToken);
+      return !!accessToken;
+    };
+
     const fetchProfileImage = async () => {
       try {
-        const userInfo = await getUserInfo();
-        const code = userInfo?.profile?.code; // 나중에 수정
-
-        if (code) {
-          const profile = await getProfile(code);
-          const profileImageUrl = profile.image as string;
-          setProfileIconSrc(profileImageUrl);
-        } else {
-          setProfileIconSrc(DefaultProfileIcon);
+        const loggedIn = checkLoginStatus();
+        if (loggedIn) {
+          const userInfo = await getUserInfo();
+          const code = userInfo?.profile?.code;
+          if (code) {
+            const profile = await getProfile(code);
+            const profileImageUrl = profile.image as string;
+            setProfileIconSrc(profileImageUrl);
+          } else {
+            setProfileIconSrc(DefaultProfileIcon);
+          }
         }
       } catch (error) {
         console.error("이미지를 불러오는데 실패했습니다 ", error);
@@ -98,7 +98,7 @@ const Header = () => {
     };
 
     fetchProfileImage();
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-[var(--color-white)] pl-[20px] pr-[20px] shadow-md">
