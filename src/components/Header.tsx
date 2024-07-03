@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
+import NotificationList from "./notification/NotificationList";
+import useModal from "@hooks/useModal";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
@@ -31,6 +33,7 @@ const HeaderLoggedIn = ({
   profileIconSrc: string | undefined;
 }) => {
   const router = useRouter();
+  const [isOpen, handleIsOpen] = useModal();
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -47,11 +50,17 @@ const HeaderLoggedIn = ({
         type="button"
         onClick={handleLogout}
       />
-      <IconButton
-        src={AlarmIcon}
-        alt="알람 아이콘"
-        className="h-[32px] w-[32px]"
-      />
+      <div className="relative flex items-center">
+        <IconButton
+          src={AlarmIcon}
+          alt="알람 아이콘"
+          className="h-[32px] w-[32px]"
+          onClick={handleIsOpen}
+        />
+        <div className="absolute top-[45px] sm:-left-[250px] lg:-left-[350px]">
+          <NotificationList isOpen={isOpen} handleIsOpen={handleIsOpen} />
+        </div>
+      </div>
       <IconButton
         src={profileIconSrc || DefaultProfileIcon}
         alt="프로필 아이콘"
