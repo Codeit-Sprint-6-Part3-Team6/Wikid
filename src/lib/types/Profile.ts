@@ -19,3 +19,9 @@ export type Profile = {
   updatedAt: string;
   name: string;
 };
+
+export type WikiForm = {
+  securityQuestion: string;
+  securityAnswer: string;
+};
+

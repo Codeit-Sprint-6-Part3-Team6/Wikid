@@ -2,35 +2,49 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import Button from "@components/Button";
 import Input from "@components/Input";
+import Toast from "@components/Toast";
+import useToast from "@hooks/useToast";
 import axios from "@lib/api/axios";
+import { patchUserPassword } from "@lib/api/userApi";
 
 const ChangePasswordForm = () => {
+  const { toastOpened, showToast } = useToast();
+  const [toastText, setToastText] = useState("");
+  const [toastColor, setToastColor] = useState("");
+
   const [values, setValues] = useState({
     currentPassword: "",
     password: "",
     passwordConfirmation: "",
   });
 
-  const accessToken = Cookies.get("accessToken"); // 쿠키에 저장해둔 accessToken 불러오기
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { currentPassword, password, passwordConfirmation } = values;
 
-    await axios.patch(
-      "users/me/password",
-      {
+    try {
+      const response = await patchUserPassword({
         currentPassword,
         password,
         passwordConfirmation,
-      },
-      {
-        headers: {
-          // 쿠키에 저장을 한다고 하긴 했는데 자동으로 보내지진 않아서 임의로 추가해주어야 합니다 ㅜ
-          Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 포함해서 보내기
-        },
-      },
-    );
+      });
+
+      if (response.status === 200) {
+        setToastText("비밀번호를 변경하였습니다");
+        setToastColor("green");
+        showToast();
+      }
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        setToastText(error.response.data.message);
+        setToastColor("red");
+        showToast();
+      } else {
+        setToastText("비밀번호 변경에 실패하였습니다");
+        setToastColor("red");
+        showToast();
+      }
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +91,9 @@ const ChangePasswordForm = () => {
         color="green"
         className="ml-auto h-[40px] w-[89px]"
       />
+      <Toast type={toastColor} isToastOpened={toastOpened}>
+        {toastText}
+      </Toast>
     </form>
   );
 };
