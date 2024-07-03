@@ -5,7 +5,7 @@ import {
 } from "@lib/api/notificationListApi";
 import { NotificationItemType } from "@lib/types/Notifications";
 
-export const useNotificationList = () => {
+export const useNotificationList = (isOpen) => {
   const [notificationList, setNotificationList] = useState<
     NotificationItemType[] | null
   >(null);
@@ -17,7 +17,7 @@ export const useNotificationList = () => {
       setNotificationList(list);
     }
     fetchData();
-  }, [notificationList]);
+  }, [isOpen]);
 
   const handleDeleteClick = (id: number) => {
     deleteNotifications(id);

@@ -8,9 +8,9 @@ import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
 import NotificationList from "./notification/NotificationList";
 import useModal from "@hooks/useModal";
+import useNotificationList from "@hooks/useNotificationList";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
-import { NotificationItemType } from "@lib/types/Notifications";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
@@ -35,7 +35,8 @@ const HeaderLoggedIn = ({
 }) => {
   const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
-  const [countOfBookmarks, setcountOfBookmarks] = useState<string>("");
+  const { notificationList, totalCount, handleDeleteClick } =
+    useNotificationList(isOpen);
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -43,32 +44,25 @@ const HeaderLoggedIn = ({
     router.replace("/login");
   };
 
-  const getCountOfBookmarks = (count: string) => {
-    setcountOfBookmarks(count);
-  };
+  
 
   return (
     <div className="flex items-center gap-[24px]">
-      <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
-      <Button
-        text="임시 로그아웃 버튼"
-        color="green"
-        type="button"
-        onClick={handleLogout}
-      />
       <div className="relative flex items-center">
         <IconButton
           src={AlarmIcon}
           alt="알람 아이콘"
-          className={`h-[32px] w-[32px] ${countOfBookmarks ? "animate-pulse" : ""}`}
+          className={`h-[32px] w-[32px] ${totalCount ? "animate-pulse" : ""}`}
+          totalCount={totalCount}
           onClick={handleIsOpen}
-          countOfBookmarks={countOfBookmarks}
         />
         <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
           <NotificationList
             isOpen={isOpen}
             handleIsOpen={handleIsOpen}
-            getCountOfBookmarks={getCountOfBookmarks}
+            notificationList={notificationList}
+            totalCount={totalCount}
+            handleDeleteClick={handleDeleteClick}
           />
         </div>
       </div>

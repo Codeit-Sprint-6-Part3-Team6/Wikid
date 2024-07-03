@@ -7,21 +7,18 @@ import { NotificationItemType } from "@lib/types/Notifications";
 type NotificationListProps = {
   isOpen: boolean;
   handleIsOpen: () => {};
-  getCountOfBookmarks: (count: number) => {};
+  notificationList: NotificationItemType[];
+  totalCount: number;
+  handleDeleteClick: () => {};
 };
 
 export default function NotificationList({
   isOpen,
   handleIsOpen,
-  getCountOfBookmarks,
+  notificationList,
+  totalCount,
+  handleDeleteClick,
 }: NotificationListProps) {
-  const { notificationList, totalCount, handleDeleteClick } =
-    useNotificationList();
-
-  useEffect(() => {
-    getCountOfBookmarks(totalCount);
-  }, [notificationList]);
-
   return (
     <>
       {isOpen && (
