@@ -9,7 +9,7 @@ interface ArticleCardProps {
 
 const ArticleCard = ({ items }: ArticleCardProps) => {
   return (
-    <div className="best_article flex gap-[15px]">
+    <div className="flex gap-[15px]">
       {items?.map((article) => {
         const articleDate = article.createdAt.split("T")[0];
         return (
