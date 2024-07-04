@@ -22,6 +22,8 @@ const config: Config = {
         red300: "var(--color-red300)",
         purple: "var(--color-purple)",
         yellow: "var(--color-yellow)",
+        gray10: "var(--color-gray10)",
+        gray20: "var(--color-gray20)",
       },
       keyframes: {
         fadeIn: {
