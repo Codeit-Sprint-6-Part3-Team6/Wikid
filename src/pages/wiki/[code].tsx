@@ -194,8 +194,7 @@ function WikiPage({
             <div className="text-[48px] font-semibold text-gray500">
               {initialProfile.name}
             </div>
-
-            {isEditMode.content && !isEditMode.profile ? (
+            {isEditMode.profile ? undefined : isEditMode.content ? (
               <div className="mt-8 flex justify-end gap-[10px]">
                 <Button
                   type="button"
@@ -213,15 +212,13 @@ function WikiPage({
                 />
               </div>
             ) : (
-              !isEditMode.profile && (
-                <Button
-                  type="button"
-                  color="green"
-                  text="위키 참여하기"
-                  className="px-[42px] py-[10.5px]"
-                  onClick={handleEditClick}
-                />
-              )
+              <Button
+                type="button"
+                color="green"
+                text="위키 참여하기"
+                className="px-[42px] py-[10.5px]"
+                onClick={handleEditClick}
+              />
             )}
           </div>
           {isEditMode.content ? (
