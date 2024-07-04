@@ -8,6 +8,7 @@ import IconButton from "./IconButton";
 import LinkButton from "./LinkButton";
 import NotificationList from "./notification/NotificationList";
 import useModal from "@hooks/useModal";
+import useNotificationList from "@hooks/useNotificationList";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
@@ -32,6 +33,8 @@ const HeaderLoggedIn = ({
 }) => {
   const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
+  const { notificationList, totalCount, handleDeleteClick } =
+    useNotificationList(isOpen);
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -42,26 +45,34 @@ const HeaderLoggedIn = ({
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[24px]">
-        <LinkButton text="임시 mypage 이동 버튼" link="/mypage" color="green" />
-        <Button
-          text="임시 로그아웃 버튼"
-          color="green"
-          type="button"
-          onClick={handleLogout}
-        />
-        <IconButton
-          src={AlarmIcon}
-          alt="알람 아이콘"
-          className="h-[32px] w-[32px]"
-        />
-        <IconButton
-          src={profileIconSrc || DefaultProfileIcon}
-          alt="프로필 아이콘"
-          className="h-[32px] w-[32px] rounded-full"
-          unoptimized={true}
-          width={32}
-          height={32}
-        />
+        <div className="flex items-center gap-[24px]">
+          <div className="gap-4 relative flex items-center">
+            <IconButton
+              src={AlarmIcon}
+              alt="알람 아이콘"
+              className={`h-[32px] w-[32px] ${totalCount ? "animate-pulse" : ""}`}
+              totalCount={totalCount}
+              onClick={handleIsOpen}
+            />
+            <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
+              <NotificationList
+                isOpen={isOpen}
+                handleIsOpen={handleIsOpen}
+                notificationList={notificationList}
+                totalCount={totalCount}
+                handleDeleteClick={handleDeleteClick}
+              />
+            </div>
+            <IconButton
+              src={profileIconSrc || DefaultProfileIcon}
+              alt="프로필 아이콘"
+              className="h-[32px] w-[32px] rounded-full"
+              unoptimized={true}
+              width={32}
+              height={32}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -69,7 +80,7 @@ const HeaderLoggedIn = ({
 
 const MenuLoggedOut = () => {
   return (
-    <div className="z-10 absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="absolute left-[-80px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
@@ -94,7 +105,7 @@ const MenuLoggedIn = () => {
   };
 
   return (
-    <div className="z-10 absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="absolute left-[-80px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>

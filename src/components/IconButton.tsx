@@ -9,6 +9,7 @@ interface IconButtonProps {
   unoptimized?: boolean; // 외부 이미지의 경우 최적화를 비활성화하기 위함
   width?: number;
   height?: number;
+  totalCount?: number;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -19,9 +20,10 @@ const IconButton: React.FC<IconButtonProps> = ({
   unoptimized,
   width,
   height,
+  totalCount,
 }) => {
   return (
-    <button type="button" onClick={onClick}>
+    <button type="button" onClick={onClick} className="relative">
       <Image
         width={width}
         height={height}
@@ -30,6 +32,11 @@ const IconButton: React.FC<IconButtonProps> = ({
         className={`${className}`}
         unoptimized={unoptimized}
       />
+      {totalCount ? (
+        <div className="absolute -right-[5px] -top-[6px] rounded-full bg-red-500 px-[6px] text-[10px] font-[600] text-white">
+          {totalCount}
+        </div>
+      ) : null}
     </button>
   );
 };
