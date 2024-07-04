@@ -69,7 +69,7 @@ const HeaderLoggedIn = ({
 
 const MenuLoggedOut = () => {
   return (
-    <div className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="z-10 absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
@@ -94,7 +94,7 @@ const MenuLoggedIn = () => {
   };
 
   return (
-    <div className="absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="z-10 absolute left-[-80px] top-[40px] flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
