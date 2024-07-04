@@ -1,3 +1,19 @@
+PATCH https://wikied-api.vercel.app/6-6/profiles/51cf7834-417c-4002-80f4-499de01ec80e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY5LCJ0ZWFtSWQiOiI2LTYiLCJzY29wZSI6ImFjY2VzcyIsImlhdCI6MTcxOTgxMTI1OSwiZXhwIjoxNzE5ODEzMDU5LCJpc3MiOiJzcC13aWtpZWQifQ.U7hGLq3Zh9BO1NrD_vYTGn_6tg9VvXgZqgcjXP8bMao
+Content-Type: application/json
+
+{
+  "nationality": "테스트",
+  "family": "엄마아빠",
+  "bloodType": "b",
+  "nickname": "별명임",
+  "birthday": "2022-10-11",
+  "sns": "snsexample",
+  "job": "프론트엔드 개발자",
+  "mbti": "intp",
+  "city": "서울"
+}
+
 ### 회원가입
 POST https://wikied-api.vercel.app/6-6/auth/signUp
 Content-Type: application/json
