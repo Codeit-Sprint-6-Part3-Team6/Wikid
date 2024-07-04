@@ -68,6 +68,8 @@ function WikiPage({
     isEditMode,
     refreshTimer,
     isTimeOutModalOpen,
+    errorMessage,
+    handleQuizInputFocus,
   } = useEditMode();
   const router = useRouter();
   // const
@@ -105,10 +107,6 @@ function WikiPage({
     if (confirm("수정사항을 저장하시겠습니까?")) {
       setIsSaving(true);
       console.log(`handleSubmit ${timeOut}`);
-      if (timeOut) {
-        console.log("refreshed in blabla");
-        await refreshTimer();
-      }
       if (
         initialProfile === profile && //항상 최신
         initialProfile.content === content && //업데이트필요
@@ -119,39 +117,44 @@ function WikiPage({
           console.log("reloaded Second");
           router.reload();
         }
-      } else if (
-        profileImage !== initialProfile.image &&
-        profileImage !== null
-      ) {
-        const res = await fetch(profileImage);
-        const blob = await res.blob(); // blob: binary large object, 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용
-        const parts = blob.type.split("/"); // type 문자열로부터 확장자 추출
-        const imageFile = new File([blob], `image.${parts[1]}`, {
-          type: blob.type,
-        });
-        const imageUrl = (await getImageUrl(imageFile)).url;
-
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          content,
-          image: imageUrl,
-        }));
-      } else if (
-        profileImage !== initialProfile.image &&
-        profileImage === null
-      ) {
-        //이미지 삭제함
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          content,
-          image: profileImage,
-        }));
       } else {
-        // 이미지는 변화가 없는데 소개글만 바뀜
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          content,
-        }));
+        if (timeOut) {
+          console.log("refreshed in blabla");
+          await refreshTimer();
+        }
+        if (profileImage !== initialProfile.image && profileImage !== null) {
+          const res = await fetch(profileImage);
+          const blob = await res.blob(); // blob: binary large object, 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용
+          const parts = blob.type.split("/"); // type 문자열로부터 확장자 추출
+          const imageFile = new File([blob], `image.${parts[1]}`, {
+            type: blob.type,
+          });
+          const imageUrl = (await getImageUrl(imageFile)).url;
+
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            content,
+            image: imageUrl,
+          }));
+        } else if (
+          profileImage !== initialProfile.image &&
+          profileImage === null
+        ) {
+          console.log("이미지 삭제함");
+          //이미지 삭제함
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            content,
+            image: profileImage,
+          }));
+        } else {
+          console.log("이미지는 변화가 없는데 소개글만 바뀜");
+          // 이미지는 변화가 없는데 소개글만 바뀜
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            content,
+          }));
+        }
       }
     } else {
       return;
@@ -171,7 +174,7 @@ function WikiPage({
   };
 
   useEffect(() => {
-    if (isEditMode.content) {
+    if (isEditMode.content && isSaving) {
       sendEditedProfile(profile);
     }
   }, [profile]);
@@ -185,50 +188,69 @@ function WikiPage({
 
   return (
     <>
-      <div
-        className={`flex justify-between gap-20 ${isEditMode ? "pl-[200px] pr-[80px]" : "mx-auto max-w-[1200px]"}`}
-      >
-        {isEditMode.content ? (
-          <TextEditor
-            type="wiki"
-            name={initialProfile.name}
-            className="mt-10"
-            content={content}
-            onChange={handleWikiContentChange}
-          />
-        ) : (
-          <div className="mt-20 w-full max-w-[800px] flex-shrink-0">
-            <div className="mb-8 flex items-center justify-between">
-              <div className="text-[48px] font-semibold text-gray500">
-                {initialProfile.name}
-              </div>
-              <Button
-                type="button"
-                color="green"
-                text="위키 참여하기"
-                className="px-[42px] py-[10.5px]"
-                onClick={handleEditClick}
-              />
+      <div className={`mx-auto flex w-[1600px] justify-between gap-20 pb-28`}>
+        <div className="mt-20 w-full">
+          <div className="mb-8 flex items-center justify-between">
+            <div className="text-[48px] font-semibold text-gray500">
+              {initialProfile.name}
             </div>
-            <LinkCopyButton
-              link={`http://localhost:3000/wiki/${initialProfile.code}`}
-              className="mb-14"
-            />
-            {!initialIsEditable && (
-              <div
-                style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
-                className="mb-5 mt-[-40px] flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat px-[55px] leading-6 text-gray500"
-              >
-                {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
-              </div>
-            )}
-            <ContentPresenter content={initialProfile.content} />
-          </div>
-        )}
 
-        <div
-          className={`${isEditMode ? "w-[400px]" : "w-[320px]"} mt-10 flex-shrink-0`}
-        >
+            {isEditMode.content && !isEditMode.profile ? (
+              <div className="mt-8 flex justify-end gap-[10px]">
+                <Button
+                  type="button"
+                  text="취소"
+                  color="white"
+                  className="px-5 py-2"
+                  onClick={() => setIsCancelWarningOpen(true)}
+                />
+                <Button
+                  type="button"
+                  text="저장"
+                  color="green"
+                  className="px-5 py-2"
+                  onClick={() => handleSubmitClick(false)}
+                />
+              </div>
+            ) : (
+              !isEditMode.profile && (
+                <Button
+                  type="button"
+                  color="green"
+                  text="위키 참여하기"
+                  className="px-[42px] py-[10.5px]"
+                  onClick={handleEditClick}
+                />
+              )
+            )}
+          </div>
+          {isEditMode.content ? (
+            <TextEditor
+              type="wiki"
+              name={initialProfile.name}
+              className="mt-10"
+              content={content}
+              onChange={handleWikiContentChange}
+            />
+          ) : (
+            <>
+              <LinkCopyButton
+                link={`http://localhost:3000/wiki/${initialProfile.code}`}
+                className="mb-14"
+              />
+              {!initialIsEditable && (
+                <div
+                  style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
+                  className="mb-5 mt-[-40px] flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat px-[55px] leading-6 text-gray500"
+                >
+                  {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
+                </div>
+              )}
+              <ContentPresenter content={initialProfile.content} />
+            </>
+          )}
+        </div>
+        <div className={`mt-10 w-[320px] flex-shrink-0`}>
           <ProfileCard
             className=""
             profile={profile}
@@ -239,7 +261,7 @@ function WikiPage({
             onFileChange={handleImageInputChange}
             onDeleteClick={handleDeleteProfileImageClick}
           />
-          {isEditMode.content && (
+          {isEditMode.profile && (
             <div className="mt-8 flex justify-end gap-[10px]">
               <Button
                 type="button"
@@ -279,9 +301,12 @@ function WikiPage({
       />
       <QuizModal
         isOpen={isQuizOpen}
+        securityQuestion={initialProfile.securityQuestion}
         handleIsOpen={handleQuizOpen}
         onClick={handleQuizSubmit}
         code={initialProfile.code}
+        // errorMessage={errorMessage}
+        // onFocus={handleQuizInputFocus}
       />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.
