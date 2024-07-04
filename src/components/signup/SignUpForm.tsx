@@ -58,7 +58,7 @@ const SignUpForm = () => {
       <h1 className="text-[24px] font-semibold text-gray800">회원가입</h1>
       <form className="flex w-full flex-col gap-[24px]" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-[32px]">
-          <div>
+          <div className="flex flex-col gap-[10px]">
             <label>이름</label>
             <Input
               type="text"
