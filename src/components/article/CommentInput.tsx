@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Button from "@components/Button";
 import { inputCounter } from "@lib/inputCounter";
 
@@ -19,6 +20,7 @@ const CommentInput = ({
 }: CommentInputProps) => {
   const [inputCount, setInputCount] = useState(0);
   const [content, setContent] = useState(initialContent);
+  const router = useRouter();
 
   useEffect(() => {
     setInputCount(initialContent.length);
@@ -28,12 +30,27 @@ const CommentInput = ({
     inputCounter(e, setInputCount, setContent);
   };
 
-  const handleSave = () => {
-    if (content.trim()) {
-      onSaveComment(content);
+  const handleSave = async () => {
+    if (!content.trim()) return; // 입력된 내용이 공백으로만 이루어진 경우 함수 실행 중지
+
+    try {
+      await onSaveComment(content);
       if (type === "create") {
         setContent("");
         setInputCount(0); // 댓글 등록 후 input 초기화
+      }
+    } catch (err: any) {
+      const status = err.response?.status;
+      if (status === 401 || status === 400) {
+        const confirmed = window.confirm(
+          // alert창은 로그인 페이지로 이동하는 선택지 밖에 없으니까 confirm 함수 사용해서 취소도 가능하게 했어요
+          "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?",
+        );
+        if (confirmed) {
+          router.push("/login");
+        }
+      } else {
+        console.error("댓글 등록 실패", err);
       }
     }
   };

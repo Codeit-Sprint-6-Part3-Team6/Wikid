@@ -24,7 +24,7 @@ const infoDictionary: { [key: string]: string } = {
   nationality: "국적",
 };
 
-const refineProfileInfo = (profile: Profile) => {
+export const refineProfileInfo = (profile: Profile) => {
   const convertedProfile = Object.entries(profile); // 배열로 변경
 
   const filteredInfoList = convertedProfile.filter(
@@ -44,4 +44,34 @@ const refineProfileInfo = (profile: Profile) => {
   return translatedInfoList;
 };
 
-export default refineProfileInfo;
+export const filterProfileProperties = (profile: Profile) => {
+  const {
+    image,
+    city,
+    mbti,
+    job,
+    sns,
+    birthday,
+    nickname,
+    bloodType,
+    family,
+    nationality,
+    content,
+    securityQuestion,
+  } = profile;
+
+  return {
+    image,
+    city,
+    mbti,
+    job,
+    sns,
+    birthday,
+    nickname,
+    bloodType,
+    family,
+    nationality,
+    content,
+    securityQuestion,
+  };
+};

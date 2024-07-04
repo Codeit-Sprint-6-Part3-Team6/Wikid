@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArticleType } from "@lib/types/articleType";
-import heartIcon from "@icons/ic_heart.svg";
+import heartIcon from "@icons/ic_heartEmpty.svg";
 
 interface ArticleCardProps {
   items: ArticleType[];

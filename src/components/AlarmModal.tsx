@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { X } from "lucide-react";
 import Button from "./Button";
 
@@ -6,12 +6,11 @@ import Button from "./Button";
 type AlarmModalProps = {
   type: "confirm" | "alert";
   isOpen: boolean;
-  handleIsOpen: () => {};
-  heading: "";
-  message: "";
-  body: "";
-  buttonText: "";
-  onClick: () => {};
+  handleIsOpen: Dispatch<SetStateAction<boolean>>;
+  heading: string;
+  message: string;
+  buttonText: string;
+  onClick: () => void;
 };
 
 export default function AlarmModal({
@@ -29,7 +28,7 @@ export default function AlarmModal({
         <div className="fixed inset-0 flex items-center justify-center bg-[#474D664D]">
           <div className="flex h-[215px] w-[335px] flex-col justify-center gap-4 rounded-xl bg-white p-5 shadow-xl sm:w-[395px]">
             <button
-              onClick={handleIsOpen}
+              onClick={() => handleIsOpen(false)}
               className="place-self-end text-[#8F95B2]"
             >
               <X />
@@ -43,9 +42,9 @@ export default function AlarmModal({
             <Button
               onClick={onClick}
               text={buttonText}
-              color={type == "confirm" ? "green" : "white"}
+              color={type == "confirm" ? "green" : "red"}
               type={"button"}
-              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none bg-[#D14343]` : ""}`}
+              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none` : ""}`}
             />
           </div>
         </div>

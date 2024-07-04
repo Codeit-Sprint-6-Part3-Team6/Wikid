@@ -49,4 +49,3 @@ function ProfileImageEditor({
 }
 
 export default ProfileImageEditor;
-// 이미지 지웠다가 같은거 못올리는 거 수정해야함

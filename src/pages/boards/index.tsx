@@ -9,7 +9,7 @@ const ArticleListPage = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-[32px] font-semibold">베스트 게시글</h2>
           <LinkButton
-            text="게시물 등록하기"
+            text="게시글 등록하기"
             color="green"
             link="/addboard"
             className="h-[45px] w-[160px] transition-all duration-500 hover:bg-green300"

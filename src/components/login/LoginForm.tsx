@@ -19,6 +19,8 @@ const LoginForm = () => {
   const router = useRouter();
   const { login } = useAuth();
 
+  const isFormValid = formData.email !== "" && formData.password !== "";
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = formData;
@@ -49,9 +51,9 @@ const LoginForm = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-[50px]">
+    <div className="flex w-[335px] flex-col items-center justify-center gap-[50px] md:w-[400px]">
       <h1 className="text-[24px] font-semibold text-gray500">로그인</h1>
-      <form className="flex flex-col gap-[24px]" onSubmit={handleSubmit}>
+      <form className="flex w-full flex-col gap-[24px]" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-[32px]">
           <div className="flex flex-col gap-[10px]">
             <label>이메일</label>
@@ -82,7 +84,8 @@ const LoginForm = () => {
           text="로그인"
           color="green"
           type="submit"
-          className="h-[45px] w-[400px]"
+          className="h-[45px] w-full"
+          disabled={!isFormValid}
         />
         <Toast type={toastColor} isToastOpened={toastOpened}>
           {toastText}

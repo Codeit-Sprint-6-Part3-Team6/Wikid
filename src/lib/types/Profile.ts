@@ -25,6 +25,11 @@ export type WikiForm = {
   securityAnswer: string;
 };
 
+export type Pagination = {
+  page: number;
+  pageSize: number;
+};
+
 export type ProfileList = {
   totalCount: number;
   list: Profile[];
@@ -34,4 +39,9 @@ export type ProfileQueryOptions = {
   page?: number;
   pageSize?: number;
   name?: string;
+};
+
+export type profileEditResponse = {
+  registeredAt: string;
+  userId: number;
 };

@@ -9,6 +9,11 @@ interface UserWikiCardProps {
 }
 
 const UserWikiCard = ({ profile }: UserWikiCardProps) => {
+  const imageSrc =
+    profile.image && profile.image.includes("sprint") // "https://example.com/..." 이 이미지 때문에 에러떠서 임시로 이렇게 구현했어요.
+      ? profile.image
+      : profileIcon;
+
   return (
     <div className="mb-[24px] flex h-[140px] items-end justify-between gap-[20px] rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]">
       <Link
@@ -17,7 +22,7 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
       >
         <div className="flex items-center gap-[32px]">
           <Image
-            src={profile.image ?? profileIcon}
+            src={imageSrc}
             alt={profile.name}
             width={85}
             height={85}
