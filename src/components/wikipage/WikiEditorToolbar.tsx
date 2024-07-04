@@ -1,9 +1,12 @@
-function WikiEditorToolbar() {
+function WikiEditorToolbar({ name }: { name: string }) {
   return (
     <div
       id="toolbar"
-      className="mb-[60px] flex h-[60px] items-center justify-center gap-5 rounded-xl border-8 !border-[var(--color-gray50)] bg-[var(--color-gray50)]"
+      className="relative mb-[60px] flex h-[60px] items-center justify-center gap-5 rounded-xl border-8 !border-[var(--color-gray50)] bg-[var(--color-gray50)]"
     >
+      <span className="absolute left-[30px] top-[14px] text-[20px] font-semibold leading-8">
+        {name}
+      </span>
       <span className="ql-formats !mr-0 !flex gap-5 border-r border-solid border-[var(--color-gray200)] pr-5">
         <button className="ql-bold !w-6 !p-0" />
         <button className="ql-italic !w-6 !p-0" />

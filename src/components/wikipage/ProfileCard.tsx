@@ -5,27 +5,31 @@ import ProfileInfoList from "./ProfileInfoList";
 import { Profile } from "@lib/types/Profile";
 
 type ProfileCardProps = {
+  className?: string;
   profile: Profile;
   profileImage: string | null;
   isEditMode: boolean;
+  onChange: () => Promise<void>;
   onFocusOut: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function ProfileCard({
+  className,
   profile,
   profileImage,
   isEditMode,
+  onChange,
   onFocusOut: onBlur,
   onFileChange,
   onDeleteClick,
 }: ProfileCardProps) {
-  const className = isEditMode ? "w-[400px] px-[40px]" : "w-[320px] px-[30px]";
+  const style = `${className} ${isEditMode ? "px-[40px]" : "px-[30px]"}`;
 
   return (
     <div
-      className={`${className} flex flex-col items-center gap-[60px] rounded-[10px] pb-[30px] pt-[60px] shadow-[0_4px_20px_0_#00000014]`}
+      className={`${style} flex w-full flex-col items-center gap-[60px] rounded-[10px] pb-[30px] pt-[60px] shadow-[0_4px_20px_0_#00000014]`}
     >
       {isEditMode ? (
         <ProfileImageEditor
@@ -39,6 +43,7 @@ function ProfileCard({
       <ProfileInfoList
         profile={profile}
         isEditMode={isEditMode}
+        onChange={onChange}
         onBlur={onBlur}
       />
     </div>

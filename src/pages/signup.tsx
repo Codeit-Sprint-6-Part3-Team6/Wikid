@@ -4,7 +4,10 @@ import SignUpForm from "@components/signup/SignUpForm";
 
 const SignUpPage = () => {
   return (
-    <div className="mt-[153px] flex flex-col items-center gap-[40px]">
+    <div
+      className="flex flex-col items-center justify-center gap-[40px]"
+      style={{ height: "calc(100vh - 80px)" }}
+    >
       <SignUpForm />
       <div className="flex gap-[10px]">
         <p className="text-[14px] font-normal text-gray400">

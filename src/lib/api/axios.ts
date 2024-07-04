@@ -25,6 +25,8 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
+type RefreshTokenResponse = { accessToken: string };
+
 instance.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -34,9 +36,15 @@ instance.interceptors.response.use(
       originalRequest._retry = true; // 무한 루프 방지 플래그 설정
       try {
         // 토큰 새로고침 요청
-        await instance.post("auth/refresh-token", undefined, {
-          headers: { "Content-Type": "application/json" },
-        });
+        const refreshToken = Cookies.get("refreshToken");
+        const response = await instance.post<RefreshTokenResponse>(
+          "auth/refresh-token",
+          { refreshToken },
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        Cookies.set("accessToken", response.data.accessToken, { secure: true });
         return instance(originalRequest);
       } catch (refreshError) {
         // 실패하면 에러 반환
