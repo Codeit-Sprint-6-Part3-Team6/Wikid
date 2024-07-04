@@ -3,7 +3,7 @@ import { NotificationListType } from "@lib/types/Notifications";
 
 export const getNotifications = async () => {
   const res = await axios.get<NotificationListType>(
-    `notifications?page=1&pageSize=10`,
+    `notifications?page=1&pageSize=20`,
   );
   const data = res.data;
   return data;
