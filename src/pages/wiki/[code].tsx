@@ -194,7 +194,8 @@ function WikiPage({
             <div className="text-[48px] font-semibold text-gray500">
               {initialProfile.name}
             </div>
-            {isEditMode.profile ? undefined : isEditMode.content ? (
+            {isEditMode.profile ||
+            !initialProfile.content ? undefined : isEditMode.content ? (
               <div className="mt-8 flex justify-end gap-[10px]">
                 <Button
                   type="button"
