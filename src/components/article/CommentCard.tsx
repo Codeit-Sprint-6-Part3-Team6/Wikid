@@ -54,13 +54,15 @@ const CommentCard = ({
   return (
     <CardContainer className="mb-[16px] items-start py-[16px] md:py-[22px] lg:mb-[24px]">
       <div className="flex flex-1 grow items-start gap-[15px] md:gap-[20px]">
-        <Image
-          src={imageSrc}
-          alt="프로필 이미지"
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
+        <div className="flex h-[50px] w-[50px] flex-shrink-0">
+          <Image
+            src={imageSrc}
+            alt="프로필 이미지"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+        </div>
         <div className="flex w-full flex-col">
           <span className="text-[16px] font-semibold md:mb-[6px] md:text-[18px]">
             {comment.writer.name}
