@@ -7,7 +7,6 @@ import CardContainer from "@components/article/CardContainer";
 import Comment from "@components/article/Comment";
 import LikeToggleButton from "@components/article/LikeToggleButton";
 import useUserInfo from "@hooks/useUserInfo";
-import { useWindowResize } from "@hooks/useWindowResize";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
@@ -21,7 +20,6 @@ const ArticlePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { user } = useUserInfo();
-  const isMobile = useWindowResize();
 
   const fetchArticle = async (id: string | string[]) => {
     try {
@@ -92,40 +90,39 @@ const ArticlePage = () => {
               {article.title}
             </h1>
             {isAuthor && (
-              <div className="flex gap-3.5">
-                {isMobile ? (
-                  <>
-                    <Image
-                      src={editIcon}
-                      alt="수정 아이콘"
-                      width={25}
-                      onClick={handleEditArticle}
-                    />
-                    <Image
-                      src={deleteIcon}
-                      alt="삭제 아이콘"
-                      width={25}
-                      onClick={handleDeleteArticle}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      text="수정하기"
-                      color="green"
-                      type="button"
-                      onClick={handleEditArticle}
-                      className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-                    />
-                    <Button
-                      text="삭제하기"
-                      color="green"
-                      type="button"
-                      onClick={handleDeleteArticle}
-                      className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-                    />
-                  </>
-                )}
+              <div>
+                <div className="flex gap-3.5 md:hidden">
+                  <Image
+                    src={editIcon}
+                    alt="수정 아이콘"
+                    width={25}
+                    onClick={handleEditArticle}
+                    className="cursor-pointer"
+                  />
+                  <Image
+                    src={deleteIcon}
+                    alt="삭제 아이콘"
+                    width={25}
+                    onClick={handleDeleteArticle}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <div className="hidden gap-3.5 md:block">
+                  <Button
+                    text="수정하기"
+                    color="green"
+                    type="button"
+                    onClick={handleEditArticle}
+                    className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                  />
+                  <Button
+                    text="삭제하기"
+                    color="green"
+                    type="button"
+                    onClick={handleDeleteArticle}
+                    className="ml-[14px] h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                  />
+                </div>
               </div>
             )}
           </div>

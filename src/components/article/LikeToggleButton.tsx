@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { handleLikeOff, handleLikeOn } from "@lib/api/articleApi";
+import { deleteLike, postLike } from "@lib/api/articleApi";
 import likeOffIcon from "@icons/ic_heartEmpty.svg";
 import likeOnIcon from "@icons/ic_heartFill.svg";
 
@@ -21,13 +21,13 @@ const LikeToggleButton = ({
   const handleLikeToggle = async () => {
     try {
       if (isLiked) {
-        const updatedArticle = await handleLikeOff(targetId);
+        const updatedArticle = await deleteLike(targetId);
         setLikeCount(updatedArticle.likeCount);
       } else {
-        const updatedArticle = await handleLikeOn(targetId);
+        const updatedArticle = await postLike(targetId);
         setLikeCount(updatedArticle.likeCount);
       }
-      setIsLiked(!isLiked);
+      setIsLiked((prevIsLiked) => !prevIsLiked);
     } catch (err) {
       console.error("좋아요 토글 실패", err);
     }

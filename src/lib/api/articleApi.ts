@@ -90,7 +90,7 @@ export const postArticle = async (
   }
 };
 
-export const handleLikeOn = async (targetId: string): Promise<ArticleType> => {
+export const postLike = async (targetId: string): Promise<ArticleType> => {
   try {
     const res = await axios.post(`articles/${targetId}/like`);
     return res.data;
@@ -100,7 +100,7 @@ export const handleLikeOn = async (targetId: string): Promise<ArticleType> => {
   }
 };
 
-export const handleLikeOff = async (targetId: string): Promise<ArticleType> => {
+export const deleteLike = async (targetId: string): Promise<ArticleType> => {
   try {
     const res = await axios.delete(`articles/${targetId}/like`);
     return res.data;
