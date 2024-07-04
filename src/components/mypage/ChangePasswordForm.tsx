@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
+import useSignUpValidation from "@hooks/useSignUpValidation";
 import useToast from "@hooks/useToast";
 import { patchUserPassword } from "@lib/api/userApi";
 
@@ -10,16 +11,12 @@ const ChangePasswordForm = () => {
   const [toastText, setToastText] = useState("");
   const [toastColor, setToastColor] = useState("");
 
-  const [values, setValues] = useState({
-    currentPassword: "",
-    password: "",
-    passwordConfirmation: "",
-  });
+  const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   const isFormValid =
-    values.currentPassword !== "" &&
-    values.password !== "" &&
-    values.passwordConfirmation;
+    formData.currentPassword !== "" &&
+    formData.password !== "" &&
+    formData.passwordConfirmation;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,11 +47,6 @@ const ChangePasswordForm = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
-
   return (
     <form
       className="flex w-[335px] flex-col gap-[16px] md:w-[400px]"
@@ -68,23 +60,29 @@ const ChangePasswordForm = () => {
           <Input
             type="password"
             name="currentPassword"
-            value={values.currentPassword}
+            value={formData.currentPassword}
             placeholder="기존 비밀번호"
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.currentPassword}
           />
           <Input
             type="password"
             name="password"
-            value={values.password}
+            value={formData.password}
             placeholder="새 비밀번호"
             onChange={handleChange}
+            error={errors.password}
+            onBlur={handleBlur}
           />
           <Input
             type="password"
             name="passwordConfirmation"
-            value={values.passwordConfirmation}
+            value={formData.passwordConfirmation}
             placeholder="새 비밀번호 확인"
             onChange={handleChange}
+            error={errors.passwordConfirmation}
+            onBlur={handleBlur}
           />
         </div>
       </div>
