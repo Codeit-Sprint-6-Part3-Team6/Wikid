@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import Button from "@components/Button";
 import LinkButton from "@components/LinkButton";
 import profile from "@images/image_landing1.png";
 import example1 from "@images/image_landing2.png";
@@ -272,14 +270,12 @@ function BottomSection() {
         <h1 className="text-[30px] text-white md:text-[60px]">
           나만의 위키 만들어 보기
         </h1>
-        <Link href={"/"}>
-          <Button
-            text="지금 시작하기"
-            type="button"
-            color="white"
-            className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
-          />
-        </Link>
+        <LinkButton
+          text="지금 시작하기"
+          color="white"
+          link="/mypage"
+          className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
+        />
       </section>
     </SectionLayout>
   );
