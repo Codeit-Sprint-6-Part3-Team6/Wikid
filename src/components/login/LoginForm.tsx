@@ -14,7 +14,7 @@ const LoginForm = () => {
   const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const { login } = useAuth();
 
-  const isFormValid = formData.email !== "" && formData.password !== "";
+  const isFormValid = errors.email === "" && errors.password === "";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

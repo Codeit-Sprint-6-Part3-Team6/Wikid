@@ -16,10 +16,10 @@ const SignUpForm = () => {
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   const isFormValid =
-    formData.name !== "" &&
-    formData.email !== "" &&
-    formData.password &&
-    formData.passwordConfirmation;
+    errors.name === "" &&
+    errors.email === "" &&
+    errors.password === "" &&
+    errors.passwordConfirmation === "";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,9 +35,8 @@ const SignUpForm = () => {
       });
 
       if (response.status === 201) {
+        alert("가입이 완료되었습니다");
         setToastText("회원가입에 성공하였습니다");
-        setToastColor("green");
-        showToast(); // 회원가입 성공 후 페이지 이동 시, 토스트 적용 안됨, 근데 성공했을 때도 알림이 필요한가요?
         router.push("login"); // 회원가입 성공 후 로그인 페이지로 이동
       }
     } catch (error: any) {
