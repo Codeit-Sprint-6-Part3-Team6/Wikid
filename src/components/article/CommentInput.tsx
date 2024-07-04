@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
-import useAuth from "@hooks/useAuth";
+import useIsLoggedIn from "@hooks/useIsLoggedIn";
 import { inputCounter } from "@lib/inputCounter";
 
 interface CommentInputProps {
@@ -21,28 +21,29 @@ const CommentInput = ({
 }: CommentInputProps) => {
   const [inputCount, setInputCount] = useState(0);
   const [content, setContent] = useState(initialContent);
+  const [isContentValid, setIsContentValid] = useState(false);
   const router = useRouter();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useIsLoggedIn();
 
   useEffect(() => {
     setInputCount(initialContent.length);
+    setIsContentValid(initialContent.trim().length > 0);
   }, [initialContent]);
 
   const handleInputCount = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     inputCounter(e, setInputCount, setContent);
+    setIsContentValid(e.target.value.trim().length > 0);
   };
 
   const handleSave = async () => {
-    if (!content.trim()) return; // 입력된 내용이 공백으로만 이루어진 경우 함수 실행 중지
-
     try {
       await onSaveComment(content);
       if (type === "create") {
         setContent("");
         setInputCount(0); // 댓글 등록 후 input 초기화
+        setIsContentValid(false);
       }
     } catch (err: any) {
-      const status = err.response?.status;
       if (!isLoggedIn) {
         const confirmed = window.confirm(
           "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?",
@@ -90,12 +91,13 @@ const CommentInput = ({
             type="button"
             text={type === "edit" ? "저장" : "댓글 등록"}
             color="green"
-            className={`rounded-md transition-all duration-500 hover:bg-green300 ${
+            className={`rounded-md transition-all duration-500 ${
               type === "edit"
                 ? "h-[30px] w-[55px] text-[12px]"
                 : "h-[45px] w-[120px]"
             }`}
             onClick={handleSave}
+            disabled={!isContentValid}
           />
         </div>
       </div>
