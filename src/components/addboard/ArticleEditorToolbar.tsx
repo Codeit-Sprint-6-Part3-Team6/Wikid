@@ -2,7 +2,7 @@ function ArticleEditorToolbar() {
   return (
     <div
       id="toolbar"
-      className="ml-auto mr-auto !flex !h-11 !w-[1000px] items-center justify-between rounded-[21.5px] !border-[#e2e8f0] !px-4 !py-[10px]"
+      className="mb-3 ml-auto mr-auto mt-3 !flex !h-11 !w-full items-center justify-between rounded-[21.5px] !border-[#e2e8f0] !px-4 !py-[10px]"
     >
       <div className="flex gap-4">
         <span className="ql-formats !mr-0 !flex gap-1">
