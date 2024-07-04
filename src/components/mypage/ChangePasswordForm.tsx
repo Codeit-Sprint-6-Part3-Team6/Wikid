@@ -20,7 +20,7 @@ const ChangePasswordForm = () => {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { currentPassword, password, passwordConfirmation } = values;
+    const { currentPassword, password, passwordConfirmation } = formData;
 
     try {
       const response = await patchUserPassword({
