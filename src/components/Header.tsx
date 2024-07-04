@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import IconButton from "./IconButton";
 import NotificationList from "./notification/NotificationList";
 import useIsLoggedIn from "@hooks/useIsLoggedIn";
@@ -58,8 +57,6 @@ const HeaderLoggedIn = ({
   profileIconSrc: string | undefined;
 }) => {
   const [isOpen, handleIsOpen] = useModal();
-  const { notificationList, totalCount, handleDeleteClick } =
-    useNotificationList(isOpen);
 
   return (
     <div className="hidden md:block">

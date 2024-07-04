@@ -1,4 +1,3 @@
-// contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
