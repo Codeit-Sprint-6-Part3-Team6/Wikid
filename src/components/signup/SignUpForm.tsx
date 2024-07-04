@@ -6,7 +6,6 @@ import Toast from "@components/Toast";
 import useSignUpValidation from "@hooks/useSignUpValidation";
 import useToast from "@hooks/useToast";
 import { postSignUp } from "@lib/api/authApi";
-import axios from "@lib/api/axios";
 
 const SignUpForm = () => {
   const { toastOpened, showToast } = useToast();
@@ -15,6 +14,12 @@ const SignUpForm = () => {
 
   const router = useRouter();
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
+
+  const isFormValid =
+    formData.name !== "" &&
+    formData.email !== "" &&
+    formData.password &&
+    formData.passwordConfirmation;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -49,9 +54,9 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-[50px]">
+    <div className="flex w-[335px] flex-col items-center justify-center gap-[50px] md:w-[400px]">
       <h1 className="text-[24px] font-semibold text-gray800">회원가입</h1>
-      <form className="flex flex-col gap-[24px]" onSubmit={handleSubmit}>
+      <form className="flex w-full flex-col gap-[24px]" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-[32px]">
           <div>
             <label>이름</label>
@@ -106,7 +111,8 @@ const SignUpForm = () => {
           text="가입하기"
           color="green"
           type="submit"
-          className="h-[45px] w-[400px]"
+          className="h-[45px] w-full"
+          disabled={!isFormValid}
         />
       </form>
       <Toast type={toastColor} isToastOpened={toastOpened}>

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Cookies from "js-cookie";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
 import useToast from "@hooks/useToast";
-import axios from "@lib/api/axios";
 import { patchUserPassword } from "@lib/api/userApi";
 
 const ChangePasswordForm = () => {
@@ -17,6 +15,11 @@ const ChangePasswordForm = () => {
     password: "",
     passwordConfirmation: "",
   });
+
+  const isFormValid =
+    values.currentPassword !== "" &&
+    values.password !== "" &&
+    values.passwordConfirmation;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -54,7 +57,7 @@ const ChangePasswordForm = () => {
 
   return (
     <form
-      className="flex w-[400px] flex-col gap-[16px]"
+      className="flex w-[335px] flex-col gap-[16px] md:w-[400px]"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-[10px]">
@@ -90,6 +93,7 @@ const ChangePasswordForm = () => {
         text="변경하기"
         color="green"
         className="ml-auto h-[40px] w-[89px]"
+        disabled={!isFormValid}
       />
       <Toast type={toastColor} isToastOpened={toastOpened}>
         {toastText}
