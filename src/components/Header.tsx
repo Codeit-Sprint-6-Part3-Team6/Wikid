@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,17 +36,11 @@ const HeaderLoggedIn = ({
   const { notificationList, totalCount, handleDeleteClick } =
     useNotificationList(isOpen);
 
-  const handleLogout = () => {
-    Cookies.remove("accessToken");
-    window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
-    router.replace("/login");
-  };
-
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[24px]">
         <div className="flex items-center gap-[24px]">
-          <div className="gap-4 relative flex items-center">
+          <div className="relative flex items-center gap-4">
             <IconButton
               src={AlarmIcon}
               alt="알람 아이콘"
@@ -100,6 +94,7 @@ const MenuLoggedIn = () => {
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
     router.replace("/login");
   };
@@ -131,6 +126,8 @@ const Header = () => {
   const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
     undefined,
   );
+  // const profileIconRef = useRef(undefined); // const profileIcon = undefined;
+  // profileIconRef.current; // = undefined
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {

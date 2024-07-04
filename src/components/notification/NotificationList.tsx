@@ -6,7 +6,7 @@ import { NotificationItemType } from "@lib/types/Notifications";
 
 type NotificationListProps = {
   isOpen: boolean;
-  handleIsOpen: () => {};
+  handleIsOpen: () => void;
   notificationList: NotificationItemType[];
   totalCount: number;
   handleDeleteClick: () => {};
