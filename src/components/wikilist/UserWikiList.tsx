@@ -7,7 +7,7 @@ interface UserWikiListProps {
 
 const UserWikiList = ({ items }: UserWikiListProps) => {
   return (
-    <div className="wikiList">
+    <div className="min-h-[468px]">
       {items?.map((profile) => (
         <UserWikiCard key={profile.id} profile={profile} />
       ))}

@@ -5,7 +5,7 @@ import linkIcon from "@icons/ic_linkGreen.svg";
 
 type LinkCopyButtonProps = {
   link: string;
-  className: string;
+  className?: string;
 };
 
 function LinkCopyButton({ link, className }: LinkCopyButtonProps) {
@@ -25,7 +25,7 @@ function LinkCopyButton({ link, className }: LinkCopyButtonProps) {
       <button
         type="button"
         onClick={handleClick}
-        className={`${className} bg-green100 text-green200 flex items-center gap-[5px] rounded-[10px] px-[10px] py-[5px] leading-6`}
+        className={`${className} flex items-center gap-[5px] rounded-[10px] bg-green100 px-[10px] py-[5px] leading-6 text-green200`}
       >
         <Image src={linkIcon} alt="link" />
         {link.length > 30 ? link.slice(0, 30) + "..." : link}

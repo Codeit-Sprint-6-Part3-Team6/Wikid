@@ -71,6 +71,9 @@ const ArticleListBox = () => {
     }
   }, [currentPage, orderBy, search, searching]);
 
+  //첫번째 인덱스값 = (해당 페이지 번호 - 1) * 페이지당 표시할 게시물 수
+  const firstIndex = (currentPage - 1) * PAGE_SIZE;
+
   return (
     <>
       <div className="flex gap-[20px]">
@@ -98,7 +101,11 @@ const ArticleListBox = () => {
 
       {items.length > 0 ? (
         <>
-          <ArticleList items={items} totalCount={totalCount} />
+          <ArticleList
+            items={items}
+            totalCount={totalCount}
+            firstIndex={firstIndex}
+          />
           <PaginationBar
             currentPage={currentPage}
             totalPage={totalPage}
