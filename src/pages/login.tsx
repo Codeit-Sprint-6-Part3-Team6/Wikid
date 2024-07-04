@@ -3,13 +3,11 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import LoginForm from "@components/login/LoginForm";
 
-// 헤더 제외한 부분에서 중앙에 위치할 수 있도록
-// viewport height - header height
 const LoginPage = () => {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-[40px]"
-      style={{ height: "calc(100vh - 80px)" }}
+      className="flex flex-col items-center justify-center gap-[40px] pb-[30px] pt-[30px]"
+      style={{ minHeight: "calc(100vh - 80px)" }}
     >
       <LoginForm />
       <div className="flex gap-[10px]">

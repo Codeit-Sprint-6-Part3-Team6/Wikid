@@ -6,8 +6,8 @@ import CreateWikiForm from "@components/mypage/CreateWikiForm";
 const SettingPage = () => {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-[64px]"
-      style={{ height: "calc(100vh - 80px)" }}
+      className="flex flex-col items-center justify-center gap-[64px] pb-[30px] pt-[30px]"
+      style={{ minHeight: "calc(100vh - 80px)" }}
     >
       <h1 className="text-[24px] font-semibold text-gray500">계정 설정</h1>
       <ChangePasswordForm />
