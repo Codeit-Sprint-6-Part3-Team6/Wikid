@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 type NotificationContainerProps = {
   totalCount: number | undefined;
   children: React.ReactNode;
-  onClick: () => {};
+  onClick: () => void;
 };
 
 export default function NotificationContainer({
