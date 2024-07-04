@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import IconButton from "./IconButton";
 import NotificationList from "./notification/NotificationList";
-import useAuth from "@hooks/useAuth";
+import useIsLoggedIn from "@hooks/useIsLoggedIn";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
+import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
 import Logo from "@images/image_logo.png";
@@ -57,11 +56,8 @@ const HeaderLoggedIn = ({
 }: {
   profileIconSrc: string | undefined;
 }) => {
-  
   const [isOpen, handleIsOpen] = useModal();
-  const { notificationList, totalCount, handleDeleteClick } =
-    useNotificationList(isOpen);
-  
+
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
@@ -97,13 +93,10 @@ const MenuLoggedOut = () => {
 
 // 내 위키 링크 수정 필요, 주영님 하실 때 여기도 부탁드려요...
 const MenuLoggedIn = () => {
-  const router = useRouter();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
-    router.replace("/login");
+    logout();
   };
 
   return (
@@ -128,7 +121,7 @@ const MenuLoggedIn = () => {
 };
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useIsLoggedIn();
   const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
     undefined,
   );

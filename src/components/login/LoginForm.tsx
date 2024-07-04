@@ -1,14 +1,10 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
 import useLoginValidation from "@hooks/useLoginValidation";
 import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
-import { postSignIn } from "@lib/api/authApi";
-import axios from "@lib/api/axios";
 
 const LoginForm = () => {
   const { toastOpened, showToast } = useToast();
@@ -16,7 +12,6 @@ const LoginForm = () => {
   const [toastColor, setToastColor] = useState("");
 
   const { formData, errors, handleChange, handleBlur } = useLoginValidation();
-  const router = useRouter();
   const { login } = useAuth();
 
   const isFormValid = formData.email !== "" && formData.password !== "";
@@ -25,27 +20,16 @@ const LoginForm = () => {
     e.preventDefault();
     const { email, password } = formData;
 
-    try {
-      const response = await postSignIn({ email, password });
+    const error = await login({ email, password });
 
-      if (response.status === 200) {
-        const { accessToken, refreshToken } = response.data;
-        Cookies.set("accessToken", accessToken, { secure: true });
-        Cookies.set("refreshToken", refreshToken, { secure: true });
-
-        login();
-        window.location.reload(); // 로그인/로그아웃 후, 새로고침 해야 헤더가 변경됨
-        router.push("/"); // 로그인 성공 후 메인페이지로 이동
-      }
-    } catch (error: any) {
-      if (error.response.status === 400) {
-        setToastText("이메일과 비밀번호를 다시 확인하세요");
-        setToastColor("red");
-        showToast();
+    if (error instanceof Error) {
+      setToastColor("red");
+      showToast();
+      const errorResponse = error as any;
+      if (errorResponse.response && errorResponse.response.status === 400) {
+        setToastText(errorResponse.response.data.message);
       } else {
         setToastText("로그인 실패");
-        setToastColor("red");
-        showToast();
       }
     }
   }

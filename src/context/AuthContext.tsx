@@ -1,11 +1,11 @@
-// contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import Cookies from "js-cookie";
-import axios from "@lib/api/axios";
+import { useRouter } from "next/router";
+import { postSignIn } from "@lib/api/authApi";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
+  login: ({ email, password }: LoginProps) => Promise<void | Error>;
   logout: () => void;
 }
 
@@ -15,20 +15,39 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-interface loginTestProps {
+interface LoginProps {
   email: string;
   password: string;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
-  const login = () => {
-    setIsLoggedIn(true);
-  };
+  async function login({ email, password }: LoginProps): Promise<void> {
+    try {
+      const response = await postSignIn({ email, password });
+
+      if (response.status === 200) {
+        const { accessToken, refreshToken } = response.data;
+        Cookies.set("accessToken", accessToken, { secure: true });
+        Cookies.set("refreshToken", refreshToken, { secure: true });
+
+        setIsLoggedIn(true);
+        window.location.reload();
+        router.push("/");
+      }
+    } catch (error: any) {
+      return error;
+    }
+  }
 
   const logout = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     setIsLoggedIn(false);
+    window.location.reload();
+    router.replace("/login");
   };
 
   return (
