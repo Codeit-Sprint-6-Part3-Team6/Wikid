@@ -3,13 +3,11 @@ import { filterProfileProperties } from "@lib/handleProfileProperties";
 import {
   Code,
   Profile,
-  Pagination,
   ProfileList,
   WikiForm,
   profileEditResponse,
   ProfileQueryOptions,
 } from "@lib/types/Profile";
-import { ProfileList, ProfilePagination } from "@lib/types/Pagination";
 
 export const getProfile = async (code: Code): Promise<Profile> => {
   const res = await axios.get<Profile>(`profiles/${code}`);
