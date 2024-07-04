@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import IconButton from "./IconButton";
 import NotificationList from "./notification/NotificationList";
+import useAuth from "@hooks/useAuth";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
 import { getProfile } from "@lib/api/profileApi";
@@ -56,6 +57,11 @@ const HeaderLoggedIn = ({
 }: {
   profileIconSrc: string | undefined;
 }) => {
+  
+  const [isOpen, handleIsOpen] = useModal();
+  const { notificationList, totalCount, handleDeleteClick } =
+    useNotificationList(isOpen);
+  
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
@@ -122,7 +128,7 @@ const MenuLoggedIn = () => {
 };
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn } = useAuth();
   const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
     undefined,
   );
@@ -139,16 +145,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const accessToken = Cookies.get("accessToken");
-      setIsLoggedIn(!!accessToken);
-      return !!accessToken;
-    };
-
     const fetchProfileImage = async () => {
       try {
-        const loggedIn = checkLoginStatus();
-        if (loggedIn) {
+        if (isLoggedIn) {
           const userInfo = await getUserInfo();
           const code = userInfo?.profile?.code;
           if (code) {
@@ -166,7 +165,7 @@ const Header = () => {
     };
 
     fetchProfileImage();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px] shadow-md">
