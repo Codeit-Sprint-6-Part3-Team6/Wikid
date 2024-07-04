@@ -3,9 +3,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Button from "./Button";
 import IconButton from "./IconButton";
-import LinkButton from "./LinkButton";
 import NotificationList from "./notification/NotificationList";
 import useAuth from "@hooks/useAuth";
 import useModal from "@hooks/useModal";
@@ -32,7 +30,6 @@ const HeaderLoggedIn = ({
 }: {
   profileIconSrc: string | undefined;
 }) => {
-  const router = useRouter();
   const [isOpen, handleIsOpen] = useModal();
   const { notificationList, totalCount, handleDeleteClick } =
     useNotificationList(isOpen);
