@@ -10,6 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 선택적 prop, 유효성 검사에 사용
   className?: string; // 다른 스타일 속성 추가할 때 사용
+  placeholder?: string;
 }
 
 const Input = ({
@@ -32,7 +33,7 @@ const Input = ({
   // 검색 input 컨테이너 클래스 설정
   const searchContainerClass = `
     ${commonClasses} ${containerClass}
-    group flex max-w-[800px] gap-4
+    group flex gap-4
     focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-200
   `;
 
@@ -53,7 +54,7 @@ const Input = ({
         <input
           type="search"
           className={searchInputClass}
-          placeholder="검색어를 입력해 주세요"
+          onChange={onChange}
           {...rest}
         />
       </div>

@@ -15,10 +15,10 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
       : profileIcon;
 
   return (
-    <div className="mb-[24px] rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]">
+    <div className="mb-[24px] flex h-[140px] items-end justify-between gap-[20px] rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]">
       <Link
         href={`/wiki/${profile.code}`}
-        className="flex h-[140px] items-end justify-between gap-[20px] p-[25px_35px]"
+        className="h-full w-full p-[25px_0_25px_35px]"
       >
         <div className="flex items-center gap-[32px]">
           <Image
@@ -36,8 +36,10 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
             <div className="text-gray400">{profile.job}</div>
           </div>
         </div>
-        <LinkCopyButton link="https://www.wikied.kr/wikicode" />
       </Link>
+      <div className="flex h-full shrink-0 items-end p-[25px_35px_25px_0]">
+        <LinkCopyButton link="https://www.wikied.kr/wikicode" />
+      </div>
     </div>
   );
 };

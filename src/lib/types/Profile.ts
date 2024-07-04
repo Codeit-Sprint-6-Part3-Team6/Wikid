@@ -35,6 +35,12 @@ export type ProfileList = {
   list: Profile[];
 };
 
+export type ProfileQueryOptions = {
+  page?: number;
+  pageSize?: number;
+  name?: string;
+};
+
 export type profileEditResponse = {
   registeredAt: string;
   userId: number;

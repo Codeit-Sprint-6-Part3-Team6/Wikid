@@ -12,3 +12,15 @@ export interface ArticleType {
   likeCount: number;
   isLiked: boolean;
 }
+
+export type ArticleList = {
+  totalCount: number;
+  list: ArticleType[];
+};
+
+export type ArticleQueryOptions = {
+  page?: number;
+  pageSize?: number;
+  orderBy?: string;
+  keyword?: string;
+};

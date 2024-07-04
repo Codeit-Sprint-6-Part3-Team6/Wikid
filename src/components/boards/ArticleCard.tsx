@@ -16,24 +16,19 @@ const ArticleCard = ({ items }: ArticleCardProps) => {
           <Link
             href={`/boards/${article.id}`}
             key={article.id}
-            className="basis-1/4 overflow-hidden rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]"
+            className="group basis-1/4 overflow-hidden rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]"
           >
-            <div className="relative h-[130px] w-full">
-              {/* {article.image ? (
-              <Image
-                src={article.image}
-                alt={article.title}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div>no image</div>
-            )} */}
-              <img
-                src={article.image}
-                alt={article.title}
-                className="h-full w-full object-cover"
-              />
+            <div className="relative h-[130px] w-full overflow-hidden">
+              {article.image ? (
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  fill
+                  className="transform object-cover duration-700 ease-in-out group-hover:scale-110"
+                />
+              ) : (
+                <div>no image</div>
+              )}
             </div>
             <div className="p-[15px_20px]">
               <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[18px] font-semibold">

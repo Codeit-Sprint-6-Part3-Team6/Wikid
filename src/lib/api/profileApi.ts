@@ -7,6 +7,7 @@ import {
   ProfileList,
   WikiForm,
   profileEditResponse,
+  ProfileQueryOptions,
 } from "@lib/types/Profile";
 import { ProfileList, ProfilePagination } from "@lib/types/Pagination";
 
@@ -43,13 +44,14 @@ export const createWiki = async ({
 };
 
 export const getProfileList = async (
-  options: ProfilePagination,
+  options: ProfileQueryOptions,
 ): Promise<ProfileList> => {
   try {
     const res = await axios.get<ProfileList>("/profiles", {
       params: {
         page: options.page,
         pageSize: options.pageSize,
+        name: options.name,
       },
     });
     return res.data;
