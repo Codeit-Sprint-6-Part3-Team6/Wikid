@@ -305,8 +305,8 @@ function WikiPage({
         handleIsOpen={handleQuizOpen}
         onClick={handleQuizSubmit}
         code={initialProfile.code}
-        // errorMessage={errorMessage}
-        // onFocus={handleQuizInputFocus}
+        errorMessage={errorMessage}
+        onFocus={handleQuizInputFocus}
       />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.

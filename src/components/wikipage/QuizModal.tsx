@@ -56,7 +56,8 @@ export default function QuizModal({
                 onChange={handleInput}
                 placeholder={"답안을 입력해 주세요"}
                 id="security-answer"
-                error=""
+                error={errorMessage}
+                onFocus={onFocus}
               />
               <Button
                 onClick={() => onClick(userAnswer, code)}
