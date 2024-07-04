@@ -5,8 +5,8 @@ import SignUpForm from "@components/signup/SignUpForm";
 const SignUpPage = () => {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-[40px]"
-      style={{ height: "calc(100vh - 80px)" }}
+      className="flex flex-col items-center justify-center gap-[40px] pb-[30px] pt-[30px]"
+      style={{ minHeight: "calc(100vh - 80px)" }}
     >
       <SignUpForm />
       <div className="flex gap-[10px]">

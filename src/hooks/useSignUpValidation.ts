@@ -8,6 +8,7 @@ interface SignUpFormData {
   email: string;
   password: string;
   passwordConfirmation: string;
+  currentPassword: string;
 }
 
 // 회원가입 폼 각 input에 대한 오류 메시지를 담을 객체 타입 정의
@@ -16,6 +17,7 @@ interface SignUpErrors {
   email?: string;
   password?: string;
   passwordConfirmation?: string;
+  currentPassword?: string;
 }
 
 const useSignUpValidation = () => {
@@ -25,6 +27,7 @@ const useSignUpValidation = () => {
     email: "",
     password: "",
     passwordConfirmation: "",
+    currentPassword: "",
   });
 
   const [errors, setErrors] = useState<SignUpErrors>({});
@@ -57,6 +60,12 @@ const useSignUpValidation = () => {
       validationErrors.passwordConfirmation = "비밀번호가 일치하지 않습니다.";
     }
 
+    if (formData.currentPassword.trim().length === 0) {
+      validationErrors.currentPassword = "비밀번호를 입력해 주세요.";
+    } else if (formData.currentPassword.length < 8) {
+      validationErrors.currentPassword = "8자 이상 입력해주세요.";
+    }
+
     // 검증 결과를 오류 상태에 업데이트하고 리턴
     setErrors(validationErrors);
     return validationErrors;
@@ -74,7 +83,7 @@ const useSignUpValidation = () => {
 
   // input 포커스 아웃(Blur) 이벤트 처리
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
     let errorMessage = "";
 
     // 각 input에 따른 검증 로직 설정
@@ -103,12 +112,20 @@ const useSignUpValidation = () => {
               ? "8자 이상 입력해주세요."
               : "";
         break;
-      case "passwordRepeat":
+      case "passwordConfirmation":
         errorMessage =
           formData.passwordConfirmation.trim().length === 0
             ? "비밀번호 확인을 입력해 주세요."
             : formData.password !== formData.passwordConfirmation
               ? "비밀번호가 일치하지 않습니다."
+              : "";
+        break;
+      case "currentPassword":
+        errorMessage =
+          formData.currentPassword.trim().length === 0
+            ? "비밀번호를 입력해 주세요."
+            : formData.currentPassword.length < 8
+              ? "8자 이상 입력해주세요."
               : "";
         break;
       default:

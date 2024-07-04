@@ -3,9 +3,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Button from "./Button";
 import IconButton from "./IconButton";
-import LinkButton from "./LinkButton";
 import NotificationList from "./notification/NotificationList";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
@@ -15,6 +13,33 @@ import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import MenuIcon from "@icons/ic_menu.svg";
 import DefaultProfileIcon from "@icons/ic_profile.svg";
+
+const AlarmMenu = () => {
+  const [isOpen, handleIsOpen] = useModal();
+  const { notificationList, totalCount, handleDeleteClick } =
+    useNotificationList(isOpen);
+
+  return (
+    <>
+      <IconButton
+        src={AlarmIcon}
+        alt="알람 아이콘"
+        className={`h-[32px] w-[32px] ${totalCount ? "animate-pulse" : ""}`}
+        totalCount={totalCount}
+        onClick={handleIsOpen}
+      />
+      <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
+        <NotificationList
+          isOpen={isOpen}
+          handleIsOpen={handleIsOpen}
+          notificationList={notificationList}
+          totalCount={totalCount}
+          handleDeleteClick={handleDeleteClick}
+        />
+      </div>
+    </>
+  );
+};
 
 const HeaderLoggedOut = () => {
   return (
@@ -31,42 +56,18 @@ const HeaderLoggedIn = ({
 }: {
   profileIconSrc: string | undefined;
 }) => {
-  const router = useRouter();
-  const [isOpen, handleIsOpen] = useModal();
-  const { notificationList, totalCount, handleDeleteClick } =
-    useNotificationList(isOpen);
-
   return (
     <div className="hidden md:block">
-      <div className="flex items-center gap-[24px]">
-        <div className="flex items-center gap-[24px]">
-          <div className="relative flex items-center gap-4">
-            <IconButton
-              src={AlarmIcon}
-              alt="알람 아이콘"
-              className={`h-[32px] w-[32px] ${totalCount ? "animate-pulse" : ""}`}
-              totalCount={totalCount}
-              onClick={handleIsOpen}
-            />
-            <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
-              <NotificationList
-                isOpen={isOpen}
-                handleIsOpen={handleIsOpen}
-                notificationList={notificationList}
-                totalCount={totalCount}
-                handleDeleteClick={handleDeleteClick}
-              />
-            </div>
-            <IconButton
-              src={profileIconSrc || DefaultProfileIcon}
-              alt="프로필 아이콘"
-              className="h-[32px] w-[32px] rounded-full"
-              unoptimized={true}
-              width={32}
-              height={32}
-            />
-          </div>
-        </div>
+      <div className="flex items-center gap-[20px]">
+        <AlarmMenu />
+        <IconButton
+          src={profileIconSrc || DefaultProfileIcon}
+          alt="프로필 아이콘"
+          className="h-[32px] w-[32px] rounded-full"
+          unoptimized={true}
+          width={32}
+          height={32}
+        />
       </div>
     </div>
   );
@@ -74,7 +75,7 @@ const HeaderLoggedIn = ({
 
 const MenuLoggedOut = () => {
   return (
-    <div className="absolute left-[-80px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="absolute left-[-90px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
@@ -100,14 +101,13 @@ const MenuLoggedIn = () => {
   };
 
   return (
-    <div className="absolute left-[-80px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
       <Link href="/boards" className="h-[44px] leading-[44px]">
         자유게시판
       </Link>
-      <button className="h-[44px] leading-[44px]">알림</button>
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         마이페이지
       </Link>
@@ -189,7 +189,12 @@ const Header = () => {
       </div>
       <div className="relative flex">
         {isLoggedIn ? (
-          <HeaderLoggedIn profileIconSrc={profileIconSrc} />
+          <div className="flex flex-row items-center">
+            <div className="mr-[15px] block md:hidden">
+              <AlarmMenu />
+            </div>
+            <HeaderLoggedIn profileIconSrc={profileIconSrc} />
+          </div>
         ) : (
           <HeaderLoggedOut />
         )}
