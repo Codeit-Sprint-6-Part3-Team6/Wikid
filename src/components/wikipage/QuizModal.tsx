@@ -74,12 +74,12 @@ export default function QuizModal({
                   placeholder={"답안을 입력해 주세요"}
                   id="security-answer"
                 />
-                {/* 유효성 검사는 나중에 hook이 생기면 hook으로 교체합니다.
+
                 {showWarningMessage && (
                   <p className="mt-3 text-[12px] text-[#D14343]">
                     정답이 아닙니다. 다시 시도해 주세요.
                   </p>
-                )} */}
+                )}
                 <Button
                   onClick={() => onClick(userAnswer, code)}
                   text="확인"

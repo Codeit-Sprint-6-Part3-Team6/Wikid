@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
@@ -147,9 +148,12 @@ const ArticlePage = () => {
               height={600}
             />
           )}
-          <p className="mt-[15px] text-[14px] leading-relaxed md:mt-[20px] md:text-[16px]">
-            {article.content}
-          </p>
+          <p
+            className="mt-[15px] text-[14px] leading-relaxed md:mt-[20px] md:text-[16px]"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(article.content),
+            }}
+          />
         </CardContainer>
       )}
       <LinkButton

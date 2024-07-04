@@ -106,6 +106,7 @@ function ArticleEditPage() {
           type="article"
           content={articleContent}
           onChange={handleChange}
+          className="relative h-[55lvh]"
         />
       </CardContainer>
       <LinkButton
