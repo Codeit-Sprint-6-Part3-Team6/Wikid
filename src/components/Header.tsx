@@ -181,7 +181,7 @@ const Header = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="shadow-m shadow-md] flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px]">
+    <div className="sticky top-0 flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px] shadow-md">
       <div className="flex items-center gap-[40px]">
         <Link href="/">
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
