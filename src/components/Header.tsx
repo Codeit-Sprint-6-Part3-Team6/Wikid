@@ -81,7 +81,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-    
+
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
@@ -151,6 +151,10 @@ const Header = () => {
   const { isLoggedIn } = useIsLoggedIn();
   const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
