@@ -10,7 +10,6 @@ import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import QuizModal from "@components/wikipage/QuizModal";
 import useEditMode from "@hooks/useEditMode";
-import useIsLoggedIn from "@hooks/useIsLoggedIn";
 import { useAuth } from "@context/AuthContext";
 //import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
@@ -73,7 +72,7 @@ function WikiPage({
     errorMessage,
     deleteError,
   } = useEditMode();
-  const { isLoggedIn } = useIsLoggedIn();
+  const { isLoggedIn } = useAuth();
   const router = useRouter();
 
   const handleEditClick = () => {

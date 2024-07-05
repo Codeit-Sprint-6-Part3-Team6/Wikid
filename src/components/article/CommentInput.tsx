@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
-import useIsLoggedIn from "@hooks/useIsLoggedIn";
+import { useAuth } from "@context/AuthContext";
 import { inputCounter } from "@lib/inputCounter";
 
 interface CommentInputProps {
@@ -23,7 +23,7 @@ const CommentInput = ({
   const [content, setContent] = useState(initialContent);
   const [isContentValid, setIsContentValid] = useState(false);
   const router = useRouter();
-  const { isLoggedIn } = useIsLoggedIn();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     setInputCount(initialContent.length);

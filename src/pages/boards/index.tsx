@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 import Button from "@components/Button";
 import ArticleListBox from "@components/boards/ArticleListBox";
 import BestArticleList from "@components/boards/BestArticleList";
-import useIsLoggedIn from "@hooks/useIsLoggedIn";
+import { useAuth } from "@context/AuthContext";
 
 const ArticleListPage = () => {
   const router = useRouter();
-  const { isLoggedIn } = useIsLoggedIn();
+  const { isLoggedIn } = useAuth();
 
   const handlePostButtonClick = () => {
     if (!isLoggedIn) {

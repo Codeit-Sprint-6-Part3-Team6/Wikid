@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import useIsLoggedIn from "@hooks/useIsLoggedIn";
+import { useAuth } from "@context/AuthContext";
 import { deleteLike, postLike } from "@lib/api/articleApi";
 import likeOffIcon from "@icons/ic_heartEmpty.svg";
 import likeOnIcon from "@icons/ic_heartFill.svg";
@@ -20,7 +20,7 @@ const LikeToggleButton = ({
   const [isLiked, setIsLiked] = useState(initialLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const router = useRouter();
-  const { isLoggedIn } = useIsLoggedIn();
+  const { isLoggedIn } = useAuth();
 
   const handleLikeToggle = async () => {
     if (!isLoggedIn) {

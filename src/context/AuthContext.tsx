@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { postSignIn, postSignUp } from "@lib/api/authApi";
@@ -47,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (response.status === 201) {
         alert("가입이 완료되었습니다");
-        router.push("login"); // 회원가입 성공 후 로그인 페이지로 이동
+        router.push("/login"); // 회원가입 성공 후 로그인 페이지로 이동
       }
     } catch (error: any) {
       return error;
@@ -64,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         Cookies.set("refreshToken", refreshToken, { secure: true });
 
         setIsLoggedIn(true);
-        window.location.reload();
+        // window.location.reload();
         router.push("/");
       }
     } catch (error: any) {
@@ -77,8 +83,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     Cookies.remove("refreshToken");
     setIsLoggedIn(false);
     window.location.reload();
-    router.replace("/login");
+    router.push("/");
   };
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const accessToken = Cookies.get("accessToken");
+      setIsLoggedIn(!!accessToken);
+    };
+
+    checkLoginStatus();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, signup, login, logout }}>
