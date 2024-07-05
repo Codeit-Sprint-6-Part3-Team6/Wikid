@@ -11,6 +11,8 @@ import ProfileCard from "@components/wikipage/ProfileCard";
 import QuizModal from "@components/wikipage/QuizModal";
 import useEditMode from "@hooks/useEditMode";
 import useIsLoggedIn from "@hooks/useIsLoggedIn";
+import { useAuth } from "@context/AuthContext";
+//import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
 import { getProfile, checkIsEditing, patchProfile } from "@lib/api/profileApi";
 import { Profile } from "@lib/types/Profile";
