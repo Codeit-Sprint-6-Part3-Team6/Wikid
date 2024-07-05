@@ -6,6 +6,7 @@ import NotificationList from "./notification/NotificationList";
 import useIsLoggedIn from "@hooks/useIsLoggedIn";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
+import useUserInfo from "@hooks/useUserInfo";
 import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
@@ -28,7 +29,7 @@ const AlarmMenu = () => {
         totalCount={totalCount}
         onClick={handleIsOpen}
       />
-      <div className="absolute z-50 -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
+      <div className="absolute -left-[230px] top-[45px] z-50 sm:-left-[250px] lg:-left-[350px]">
         <NotificationList
           isOpen={isOpen}
           handleIsOpen={handleIsOpen}
@@ -51,12 +52,39 @@ const HeaderLoggedOut = () => {
   );
 };
 
+const ProfileMenu = () => {
+  const { logout } = useAuth();
+  const { user } = useUserInfo();
+  const code = user?.profile.code;
+
+  return (
+    <div className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+      <Link href="/mypage" className="h-[44px] leading-[44px]">
+        계정 설정
+      </Link>
+      <Link href={`wiki/${code}`} className="h-[44px] leading-[44px]">
+        내 위키
+      </Link>
+      <button onClick={logout} className="h-[44px] leading-[44px]">
+        로그아웃
+      </button>
+    </div>
+  );
+};
+
 const HeaderLoggedIn = ({
   profileIconSrc,
 }: {
   profileIconSrc: string | undefined;
 }) => {
-  const [isOpen, handleIsOpen] = useModal();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <div className="hidden md:block">
@@ -69,8 +97,14 @@ const HeaderLoggedIn = ({
           unoptimized={true}
           width={32}
           height={32}
+          onClick={toggleMenu}
         />
       </div>
+      {isMenuOpen && (
+        <div onClick={handleMenuClick}>
+          <ProfileMenu />
+        </div>
+      )}
     </div>
   );
 };
@@ -91,13 +125,10 @@ const MenuLoggedOut = () => {
   );
 };
 
-// 내 위키 링크 수정 필요, 주영님 하실 때 여기도 부탁드려요...
 const MenuLoggedIn = () => {
   const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
+  const { user } = useUserInfo();
+  const code = user?.profile.code;
 
   return (
     <div className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
@@ -110,10 +141,10 @@ const MenuLoggedIn = () => {
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         마이페이지
       </Link>
-      <Link href="/" className="h-[44px] leading-[44px]">
+      <Link href={`/wiki/${code}`} className="h-[44px] leading-[44px]">
         내 위키
       </Link>
-      <button onClick={handleLogout} className="h-[44px] leading-[44px]">
+      <button onClick={logout} className="h-[44px] leading-[44px]">
         로그아웃
       </button>
     </div>
@@ -161,7 +192,7 @@ const Header = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="shadow-m flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px] shadow-md">
+    <div className="shadow-m shadow-md] flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px]">
       <div className="flex items-center gap-[40px]">
         <Link href="/">
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
@@ -193,7 +224,7 @@ const Header = () => {
         <IconButton
           src={MenuIcon}
           alt="메뉴 아이콘"
-          className="block h-[24px] w-[24px] md:hidden"
+          className="block h-[32px] w-[32px] md:hidden"
           onClick={toggleMenu}
         />
         {isMenuOpen && (
