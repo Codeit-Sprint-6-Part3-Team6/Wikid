@@ -90,7 +90,7 @@ function TextEditor({
     >
       {type === "wiki" && name && <WikiEditorToolbar />}
       <QuillNoSSRWrapper
-        style={{ width: "100%", height: "100%", overflow: "auto" }}
+        style={{ height: "100%", overflow: "auto" }}
         theme="snow"
         placeholder={`${type === "wiki" ? "추천 헤더 : 개요, 취미, 취향, 여담" : "본문을 입력해주세요"}`}
         modules={modules}
