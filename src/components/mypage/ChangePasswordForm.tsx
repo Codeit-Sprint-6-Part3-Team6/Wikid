@@ -14,9 +14,9 @@ const ChangePasswordForm = () => {
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   const isFormValid =
-    formData.currentPassword !== "" &&
-    formData.password !== "" &&
-    formData.passwordConfirmation;
+    errors.currentPassword === "" &&
+    errors.password === "" &&
+    errors.passwordConfirmation === "";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
