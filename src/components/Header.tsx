@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import IconButton from "./IconButton";
@@ -10,10 +10,10 @@ import useUserInfo from "@hooks/useUserInfo";
 import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
+import { validateImage } from "@lib/validateImage";
 import Logo from "@images/image_logo.png";
 import AlarmIcon from "@icons/ic_alarm.svg";
 import MenuIcon from "@icons/ic_menu.svg";
-import DefaultProfileIcon from "@icons/ic_profile.svg";
 
 const AlarmMenu = () => {
   const [isOpen, handleIsOpen] = useModal();
@@ -72,11 +72,7 @@ const ProfileMenu = () => {
   );
 };
 
-const HeaderLoggedIn = ({
-  profileIconSrc,
-}: {
-  profileIconSrc: string | undefined;
-}) => {
+const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -85,13 +81,13 @@ const HeaderLoggedIn = ({
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+    
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
         <AlarmMenu />
         <IconButton
-          src={profileIconSrc || DefaultProfileIcon}
+          src={profileIconSrc}
           alt="프로필 아이콘"
           className="h-[32px] w-[32px] rounded-full"
           unoptimized={true}
@@ -153,41 +149,30 @@ const MenuLoggedIn = () => {
 
 const Header = () => {
   const { isLoggedIn } = useIsLoggedIn();
-  const [profileIconSrc, setProfileIconSrc] = useState<string | undefined>(
-    undefined,
-  );
-  // const profileIconRef = useRef(undefined); // const profileIcon = undefined;
-  // profileIconRef.current; // = undefined
-
+  const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  useEffect(() => {
-    const fetchProfileImage = async () => {
-      try {
-        if (isLoggedIn) {
-          const userInfo = await getUserInfo();
-          const code = userInfo?.profile?.code;
-          if (code) {
-            const profile = await getProfile(code);
-            const profileImageUrl = profile.image as string;
-            setProfileIconSrc(profileImageUrl);
-          } else {
-            setProfileIconSrc(DefaultProfileIcon);
-          }
+  const fetchProfileImage = useCallback(async () => {
+    try {
+      if (isLoggedIn) {
+        const userInfo = await getUserInfo();
+        const code = userInfo.profile?.code;
+        if (code) {
+          const profile = await getProfile(code);
+          const profileImageUrl = validateImage(profile.image);
+          setProfileIconSrc(profileImageUrl);
         }
-      } catch (error) {
-        console.error("이미지를 불러오는데 실패했습니다 ", error);
-        setProfileIconSrc(DefaultProfileIcon);
       }
-    };
+    } catch (error) {
+      console.error("이미지를 불러오는데 실패했습니다 ", error);
+    }
+  }, [isLoggedIn]);
 
+  useEffect(() => {
     fetchProfileImage();
   }, [isLoggedIn]);
 
