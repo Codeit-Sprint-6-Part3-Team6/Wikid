@@ -1,5 +1,5 @@
 import Input from "@components/Input";
-import { refineProfileInfo } from "@lib/handleProfileProperties";
+import { refineProfileInfo } from "@lib/purifyProfileProperties";
 import { Profile } from "@lib/types/Profile";
 
 type ProfileInfoListProps = {

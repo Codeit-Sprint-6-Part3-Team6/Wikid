@@ -1,5 +1,5 @@
 import axios from "@lib/api/axios";
-import { filterProfileProperties } from "@lib/handleProfileProperties";
+import { filterProfileProperties } from "@lib/purifyProfileProperties";
 import {
   Code,
   Profile,
