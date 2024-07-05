@@ -10,10 +10,11 @@ import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import QuizModal from "@components/wikipage/QuizModal";
 import useEditMode from "@hooks/useEditMode";
+import { useAuth } from "@context/AuthContext";
 //import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
 import { getProfile, checkIsEditing, patchProfile } from "@lib/api/profileApi";
-import { Profile, profileEditResponse } from "@lib/types/Profile";
+import { Profile } from "@lib/types/Profile";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const code = context.query["code"];
@@ -69,13 +70,17 @@ function WikiPage({
     refreshTimer,
     isTimeOutModalOpen,
     errorMessage,
-    handleQuizInputFocus,
+    deleteError,
   } = useEditMode();
+  const { isLoggedIn } = useAuth();
   const router = useRouter();
-  // const
 
   const handleEditClick = () => {
-    triggerEditMode(initialProfile.code);
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      triggerEditMode(initialProfile.code);
+    }
   };
 
   const handleWikiContentChange = (value: string) => {
@@ -304,7 +309,7 @@ function WikiPage({
         onClick={handleQuizSubmit}
         code={initialProfile.code}
         errorMessage={errorMessage}
-        onFocus={handleQuizInputFocus}
+        deleteError={deleteError}
       />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.
