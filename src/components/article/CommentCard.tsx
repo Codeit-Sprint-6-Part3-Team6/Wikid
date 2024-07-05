@@ -47,7 +47,7 @@ const CommentCard = ({
 
   const isAuthor = comment.writer.id === user?.id;
   const imageSrc =
-    comment.writer.image && comment.writer.image.includes("sprint") // "https://example.com/..." 이 이미지 때문에 에러떠서 임시로 이렇게 구현했어요.
+    comment.writer.image && comment.writer.image.includes("sprint")
       ? comment.writer.image
       : profileIcon;
 

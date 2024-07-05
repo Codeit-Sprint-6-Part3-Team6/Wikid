@@ -15,11 +15,10 @@ import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 
 const ArticlePage = () => {
-  const router = useRouter();
-  const { boardId } = router.query;
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const router = useRouter();
+  const { boardId } = router.query;
   const { user } = useUserInfo();
 
   const fetchArticle = async (id: string | string[]) => {
