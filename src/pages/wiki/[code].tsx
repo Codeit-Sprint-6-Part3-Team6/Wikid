@@ -108,6 +108,10 @@ function WikiPage({
     setProfileImage(null);
   };
 
+  const handleIsOpen = () => {
+    setIsCancelWarningOpen((prev) => !prev);
+  };
+
   const handleSubmitClick = async (timeOut: boolean = false) => {
     if (confirm("수정사항을 저장하시겠습니까?")) {
       setIsSaving(true);
@@ -289,7 +293,7 @@ function WikiPage({
       <AlarmModal
         type="alert"
         isOpen={isCancelWarningOpen}
-        handleIsOpen={setIsCancelWarningOpen}
+        handleIsOpen={handleIsOpen}
         heading="저장하지 않고 나가시겠어요?"
         message="작성하신 모든 내용이 사라집니다."
         buttonText="페이지 나가기"

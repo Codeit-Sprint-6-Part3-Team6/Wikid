@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import { Camera, X } from "lucide-react";
 import Image from "next/image";
+import Button from "@components/Button";
 import Modal from "@components/Modal";
-import Button from "../Button";
 
 type ImageUploadModalProps = {
   isOpen: boolean;

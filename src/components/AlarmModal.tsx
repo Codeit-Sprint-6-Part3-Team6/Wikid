@@ -6,7 +6,7 @@ import Modal from "./Modal";
 type AlarmModalProps = {
   type: "confirm" | "alert";
   isOpen: boolean;
-  handleIsOpen: Dispatch<SetStateAction<boolean>>;
+  handleIsOpen: () => void;
   heading: string;
   message: string;
   buttonText: string;
