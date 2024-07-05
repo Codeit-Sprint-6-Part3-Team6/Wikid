@@ -28,7 +28,7 @@ const AlarmMenu = () => {
         totalCount={totalCount}
         onClick={handleIsOpen}
       />
-      <div className="absolute -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
+      <div className="absolute z-50 -left-[230px] top-[45px] sm:-left-[250px] lg:-left-[350px]">
         <NotificationList
           isOpen={isOpen}
           handleIsOpen={handleIsOpen}

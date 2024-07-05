@@ -44,7 +44,12 @@ export default function QuizModal({
             </p>
           </div>
           <div>
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onClick(userAnswer, code);
+              }}
+            >
               <label
                 htmlFor="security-answer"
                 className="mb-2 block text-xl font-semibold text-[#474D66]"
@@ -58,13 +63,16 @@ export default function QuizModal({
                 id="security-answer"
                 error={errorMessage}
                 onFocus={onFocus}
+                onKeyDown={onFocus}
               />
               <Button
-                onClick={() => onClick(userAnswer, code)}
                 text="확인"
                 color="green"
                 type="button"
                 className="mt-6 h-[40px] w-[355px]"
+                onClick={() => {
+                  onClick(userAnswer, code);
+                }}
               />
             </form>
           </div>
@@ -77,43 +85,4 @@ export default function QuizModal({
     </>
   );
 }
-
-{
-  /* <div className="flex flex-col">
-            <div className="rounded-full bg-[#F7F7FA] p-3 motion-reduce:animate-bounce">
-              <LockKeyhole />
-            </div>
-            <p className="mb-7 text-center text-[#8F95B2]">
-              다음 퀴즈를 맞추고 <br />
-              위키를 작성해 보세요.
-            </p>
-          </div>
-          <div>
-            <form>
-              <label
-                htmlFor="security-answer"
-                className="mb-2 block text-xl font-semibold text-[#474D66]"
-              >
-                {securityQuestion}
-              </label>
-              <Input
-                value={userAnswer}
-                onChange={handleInput}
-                placeholder={"답안을 입력해 주세요"}
-                id="security-answer"
-                error=""
-              />
-              <Button
-                onClick={() => onClick(userAnswer, code)}
-                text="확인"
-                color="green"
-                type="button"
-                className="mt-6 h-[40px] w-[355px]"
-              />
-            </form>
-          </div>
-          <div className="mt-5 flex items-center justify-center text-center text-[12px] text-[#8F95B2]">
-            위키드는 지인들과 함께하는 즐거운 공간입니다. <br />
-            지인에게 상처를 주지 않도록 작성해 주세요.
-          </div> */
-}
+  
