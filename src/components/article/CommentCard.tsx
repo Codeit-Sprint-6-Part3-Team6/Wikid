@@ -5,6 +5,7 @@ import CardContainer from "./CardContainer";
 import CommentInput from "./CommentInput";
 import useUserInfo from "@hooks/useUserInfo";
 import { formatDate } from "@lib/dateFormatter";
+import { validateImage } from "@lib/validateImage";
 import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 import profileIcon from "@icons/ic_profile.svg";
@@ -22,6 +23,7 @@ const CommentCard = ({
 }: CommentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const imageSrc = validateImage(comment.writer.image);
 
   const { user } = useUserInfo();
 
@@ -46,21 +48,19 @@ const CommentCard = ({
   };
 
   const isAuthor = comment.writer.id === user?.id;
-  const imageSrc =
-    comment.writer.image && comment.writer.image.includes("sprint") // "https://example.com/..." 이 이미지 때문에 에러떠서 임시로 이렇게 구현했어요.
-      ? comment.writer.image
-      : profileIcon;
 
   return (
     <CardContainer className="mb-[16px] items-start py-[16px] md:py-[22px] lg:mb-[24px]">
       <div className="flex flex-1 grow items-start gap-[15px] md:gap-[20px]">
-        <Image
-          src={imageSrc}
-          alt="프로필 이미지"
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
+        <div className="flex h-[50px] w-[50px] flex-shrink-0">
+          <Image
+            src={imageSrc}
+            alt="프로필 이미지"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+        </div>
         <div className="flex w-full flex-col">
           <span className="text-[16px] font-semibold md:mb-[6px] md:text-[18px]">
             {comment.writer.name}

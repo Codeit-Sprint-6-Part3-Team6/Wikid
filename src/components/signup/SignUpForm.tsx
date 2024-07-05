@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
 import useSignUpValidation from "@hooks/useSignUpValidation";
 import useToast from "@hooks/useToast";
-import { postSignUp } from "@lib/api/authApi";
+import { useAuth } from "@context/AuthContext";
 
 const SignUpForm = () => {
   const { toastOpened, showToast } = useToast();
   const [toastText, setToastText] = useState("");
   const [toastColor, setToastColor] = useState("");
 
-  const router = useRouter();
+  const { signup } = useAuth();
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   const isFormValid =
@@ -26,29 +25,17 @@ const SignUpForm = () => {
 
     const { name, email, password, passwordConfirmation } = formData;
 
-    try {
-      const response = await postSignUp({
-        name,
-        email,
-        password,
-        passwordConfirmation,
-      });
+    const error = await signup({ name, email, password, passwordConfirmation });
 
-      if (response.status === 201) {
-        setToastText("회원가입에 성공하였습니다");
-        setToastColor("green");
-        showToast(); // 회원가입 성공 후 페이지 이동 시, 토스트 적용 안됨, 근데 성공했을 때도 알림이 필요한가요?
-        router.push("login"); // 회원가입 성공 후 로그인 페이지로 이동
-      }
-    } catch (error: any) {
-      if (error.response.status === 400) {
-        setToastText(error.response.data.message);
-        setToastColor("red");
-        showToast();
+    if (error instanceof Error) {
+      setToastColor("red");
+      showToast();
+
+      const errorResponse = error as any;
+      if (errorResponse.response && errorResponse.response.status === 400) {
+        setToastText(errorResponse.response.data.message);
       } else {
-        setToastText("비밀번호 변경에 실패하였습니다");
-        setToastColor("red");
-        showToast();
+        setToastText("회원가입 실패");
       }
     }
   }
@@ -58,7 +45,7 @@ const SignUpForm = () => {
       <h1 className="text-[24px] font-semibold text-gray800">회원가입</h1>
       <form className="flex w-full flex-col gap-[24px]" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-[32px]">
-          <div>
+          <div className="flex flex-col gap-[10px]">
             <label>이름</label>
             <Input
               type="text"

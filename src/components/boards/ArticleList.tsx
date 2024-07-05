@@ -4,9 +4,10 @@ import { ArticleType } from "@lib/types/articleType";
 interface ArticleListProps {
   items: ArticleType[];
   totalCount: number;
+  firstIndex: number;
 }
 
-const ArticleList = ({ items, totalCount }: ArticleListProps) => {
+const ArticleList = ({ items, totalCount, firstIndex }: ArticleListProps) => {
   const classBoardBox =
     "relative flex h-[50px] border-b border-solid border-gray200 pr-[40%] items-center";
   const classBoardInfo =
@@ -27,13 +28,14 @@ const ArticleList = ({ items, totalCount }: ArticleListProps) => {
 
       {items?.map((article, index) => {
         const articleDate = article.createdAt.split("T")[0];
+        const indexNumber = totalCount - (firstIndex + index);
         return (
           <li key={article.id}>
             <Link
               href={`/boards/${article.id}`}
               className={`${classBoardBox} duration-500 ease-in-out hover:bg-gray-50`}
             >
-              <p className={`${classBoardText} w-[15%]`}>{totalCount - index}</p>
+              <p className={`${classBoardText} w-[15%]`}>{indexNumber}</p>
               <p className={`${classBoardText} w-[85%]`}>{article.title}</p>
               <div className={classBoardInfo}>
                 <p className={`${classBoardText} w-[30%]`}>

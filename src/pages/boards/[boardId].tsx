@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
@@ -14,11 +15,10 @@ import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 
 const ArticlePage = () => {
-  const router = useRouter();
-  const { boardId } = router.query;
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const router = useRouter();
+  const { boardId } = router.query;
   const { user } = useUserInfo();
 
   const fetchArticle = async (id: string | string[]) => {
@@ -147,9 +147,12 @@ const ArticlePage = () => {
               height={600}
             />
           )}
-          <p className="mt-[15px] text-[14px] leading-relaxed md:mt-[20px] md:text-[16px]">
-            {article.content}
-          </p>
+          <p
+            className="mt-[15px] text-[14px] leading-relaxed md:mt-[20px] md:text-[16px]"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(article.content),
+            }}
+          />
         </CardContainer>
       )}
       <LinkButton

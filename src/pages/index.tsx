@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import Button from "@components/Button";
+import LinkButton from "@components/LinkButton";
 import profile from "@images/image_landing1.png";
 import example1 from "@images/image_landing2.png";
 import example2 from "@images/image_landing3.png";
@@ -39,8 +38,9 @@ function SectionLayout({
 }: SectionLayoutProps) {
   return (
     <div
+      style={{ backgroundColor: `var(--color-${bgColor})` }}
       id="viewport"
-      className={`bg-[${bgColor}] pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px]`}
+      className={`pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px]`}
     >
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <div
@@ -58,25 +58,31 @@ function SectionLayout({
 
 function TopSection() {
   return (
-    <SectionLayout bgColor="#ECF0FA" innerContainer={true}>
+    <SectionLayout bgColor="gray20" innerContainer={true}>
       <section
         id="TopSection"
-        className="flex flex-col items-center gap-[15px]"
+        className="flex flex-col items-center gap-[40px]"
       >
-        <h2 className="text-[40px] font-[300] leading-[46px] md:text-[60px]">
-          남들이 만드는
-        </h2>
-        <h1 className="md:text[90px] text-[60px] font-[700] leading-[69px]">
-          나만의 위키
-        </h1>
-        <Link href={"/"}>
+        <div className="text-center leading-none">
+          <h2 className="mb-4 text-[40px] font-[300] md:text-[60px]">
+            남들이 만드는
+          </h2>
+          <h1 className="text-[60px] font-[700] md:text-[90px]">나만의 위키</h1>
+        </div>
+        <LinkButton
+          text="위키 만들기"
+          link="/mypage"
+          color="gray"
+          className="h-[59px] w-[170px] text-[24px] font-bold"
+        />
+        {/* <Link href={"/"}>
           <Button
             color="white"
             text="위키 만들기"
             className="md-h-[59px] h-[54px] w-full max-w-[152px] rounded-2xl border-none bg-gray500 px-[30px] py-[15px] text-[20px] font-bold text-white"
             type="button"
           />
-        </Link>
+        </Link> */}
         <div>
           <Image
             alt="/"
@@ -137,7 +143,7 @@ function FeatureMessage({
 
 function FeatureWrite() {
   return (
-    <SectionLayout bgColor="#474d66" innerContainer>
+    <SectionLayout bgColor="gray500" innerContainer>
       <section
         id="feature/write-leftSide"
         className="flex items-end justify-center gap-[10px] md:gap-[20px] lg:gap-[40px]"
@@ -171,7 +177,7 @@ function FeatureWrite() {
 
 function FeatureShare() {
   return (
-    <SectionLayout bgColor="#F7F7FA" innerContainer={false}>
+    <SectionLayout bgColor="gray50" innerContainer={false}>
       <div
         id="inner-container"
         className="m-auto max-w-[1024px] p-[36px] md:p-[68px]"
@@ -224,7 +230,7 @@ function FeatureShare() {
 
 function FeatureView() {
   return (
-    <SectionLayout bgColor="#ECF0FA" innerContainer>
+    <SectionLayout bgColor="gray10" innerContainer>
       <section id="feature/view" className="flex flex-col">
         <FeatureMessage
           header="VIEW"
@@ -259,19 +265,17 @@ function FeatureView() {
 
 function BottomSection() {
   return (
-    <SectionLayout bgColor="#474d66" innerContainer={true}>
+    <SectionLayout bgColor="gray500" innerContainer={true}>
       <section className="flex flex-col items-center justify-between gap-[40px]">
         <h1 className="text-[30px] text-white md:text-[60px]">
           나만의 위키 만들어 보기
         </h1>
-        <Link href={"/"}>
-          <Button
-            text="지금 시작하기"
-            type="button"
-            color="white"
-            className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
-          />
-        </Link>
+        <LinkButton
+          text="지금 시작하기"
+          color="white"
+          link="/mypage"
+          className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
+        />
       </section>
     </SectionLayout>
   );

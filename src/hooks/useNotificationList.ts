@@ -5,10 +5,10 @@ import {
 } from "@lib/api/notificationListApi";
 import { NotificationItemType } from "@lib/types/Notifications";
 
-export const useNotificationList = (isOpen) => {
+export const useNotificationList = (isOpen: boolean) => {
   const [notificationList, setNotificationList] = useState<
-    NotificationItemType[] | null
-  >(null);
+    NotificationItemType[]
+  >([]);
   const totalCount = notificationList?.length;
 
   useEffect(() => {
@@ -19,8 +19,11 @@ export const useNotificationList = (isOpen) => {
     fetchData();
   }, [isOpen]);
 
-  const handleDeleteClick = (id: number) => {
-    deleteNotifications(id);
+  const handleDeleteClick = async (id: number) => {
+    await deleteNotifications(id);
+    setNotificationList((prevList) => {
+      return prevList.filter((item) => item.id !== id);
+    });
   };
 
   return { totalCount, notificationList, handleDeleteClick };

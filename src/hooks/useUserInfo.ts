@@ -3,6 +3,9 @@ import { getUserInfo } from "@lib/api/userApi";
 
 interface UserInfo {
   id: number;
+  profile: {
+    code: string;
+  };
 }
 
 const useUserInfo = () => {

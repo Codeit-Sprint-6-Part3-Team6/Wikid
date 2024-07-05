@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import axios from "axios";
 import useToast from "@hooks/useToast";
 import { checkIsEditing, postProfileEdit } from "@lib/api/profileApi";
 import { getUserInfo } from "@lib/api/userApi";
@@ -11,6 +12,7 @@ function useEditMode() {
   });
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isTimeOutModalOpen, setIsTimeOutModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [resolveFunction, setResolveFunction] = useState<
     ((value: boolean) => void) | null
   >(null);
@@ -89,6 +91,10 @@ function useEditMode() {
     }
   };
 
+  const deleteError = () => {
+    setErrorMessage("");
+  };
+
   const tryEdit = async (answer: string, code: Code) => {
     console.log("tryEdit");
     console.log(code);
@@ -99,9 +105,9 @@ function useEditMode() {
       });
       return result;
     } catch (error) {
-      if (error instanceof Error) {
-        if (error.message === "보안 답변이 일치하지 않습니다.") {
-          alert(error.message);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data.message === "보안 답변이 일치하지 않습니다.") {
+          setErrorMessage(error.response.data.message);
         }
       }
     }
@@ -109,6 +115,8 @@ function useEditMode() {
 
   const refreshTimer = async () => {
     clearTimeout(timeDelayerRef.current);
+    console.log("refreshTimer 들어옴");
+    console.log(300000 - (Date.now() - lastRefreshedRef.current) < 5000);
     timeDelayerRef.current = setTimeout(
       async () => {
         const result = await tryEdit(answerRef.current, codeRef.current);
@@ -136,6 +144,8 @@ function useEditMode() {
     isEditMode,
     refreshTimer,
     isTimeOutModalOpen,
+    errorMessage,
+    deleteError,
   };
 }
 

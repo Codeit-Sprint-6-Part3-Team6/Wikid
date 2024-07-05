@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { X } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 import Button from "./Button";
+import Modal from "./Modal";
 
 // AlarmModalProps type에 아직 미숙한 부분 있을 수 있습니다.
 type AlarmModalProps = {
   type: "confirm" | "alert";
   isOpen: boolean;
-  handleIsOpen: Dispatch<SetStateAction<boolean>>;
+  handleIsOpen: () => void;
   heading: string;
   message: string;
   buttonText: string;
@@ -24,31 +24,21 @@ export default function AlarmModal({
 }: AlarmModalProps) {
   return (
     <>
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-[#474D664D]">
-          <div className="flex h-[215px] w-[335px] flex-col justify-center gap-4 rounded-xl bg-white p-5 shadow-xl sm:w-[395px]">
-            <button
-              onClick={() => handleIsOpen(false)}
-              className="place-self-end text-[#8F95B2]"
-            >
-              <X />
-            </button>
-            <p className="text-[16px] text-[#474D66] sm:text-[18px]">
-              {heading}
-            </p>
-            <p className="text-[14px] text-[#8F95B2] sm:text-[16px]">
-              {message}
-            </p>
-            <Button
-              onClick={onClick}
-              text={buttonText}
-              color={type == "confirm" ? "green" : "red"}
-              type={"button"}
-              className={`h-[40px] min-w-[65px] place-self-end px-3 text-white ${type === "alert" ? `border-none` : ""}`}
-            />
-          </div>
+      <Modal handleIsOpen={handleIsOpen} isOpen={isOpen}>
+        <div className="mt-[20px] flex flex-col gap-[10px] text-[18px]">
+          <p className="text-[16px] text-[#474D66] sm:text-[18px]">{heading}</p>
+          <p className="text-[14px] text-[#8F95B2] sm:text-[16px]">{message}</p>
         </div>
-      )}
+        <div className="mt-[33px] place-self-end">
+          <Button
+            onClick={onClick}
+            text={buttonText}
+            color={type == "confirm" ? "green" : "red"}
+            type={"button"}
+            className={`h-[40px] min-w-[65px] px-3 text-white ${type === "alert" ? `border-none` : ""}`}
+          />
+        </div>
+      </Modal>
     </>
   );
 }

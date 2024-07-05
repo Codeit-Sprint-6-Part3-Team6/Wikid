@@ -35,6 +35,8 @@ const useLoginValidation = () => {
 
     if (formData.password.trim().length === 0) {
       validationErrors.password = "비밀번호를 입력해 주세요.";
+    } else if (formData.password.trim().length < 8) {
+      validationErrors.password = "8자 이상 작성해 주세요.";
     } else if (formData.password !== "user_set_password") {
       validationErrors.password = "비밀번호가 일치하지 않습니다.";
     }
@@ -71,7 +73,9 @@ const useLoginValidation = () => {
         errorMessage =
           formData.password.trim().length === 0
             ? "비밀번호를 입력해 주세요."
-            : "";
+            : formData.password.trim().length < 8
+              ? "비밀번호를 8자 이상 작성해 주세요."
+              : "";
         break;
       default:
         errorMessage = "";

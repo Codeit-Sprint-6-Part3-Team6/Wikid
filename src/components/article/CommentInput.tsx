@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
+import { useAuth } from "@context/AuthContext";
 import { inputCounter } from "@lib/inputCounter";
 
 interface CommentInputProps {
@@ -20,30 +21,31 @@ const CommentInput = ({
 }: CommentInputProps) => {
   const [inputCount, setInputCount] = useState(0);
   const [content, setContent] = useState(initialContent);
+  const [isContentValid, setIsContentValid] = useState(false);
   const router = useRouter();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     setInputCount(initialContent.length);
+    setIsContentValid(initialContent.trim().length > 0);
   }, [initialContent]);
 
   const handleInputCount = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     inputCounter(e, setInputCount, setContent);
+    setIsContentValid(e.target.value.trim().length > 0);
   };
 
   const handleSave = async () => {
-    if (!content.trim()) return; // 입력된 내용이 공백으로만 이루어진 경우 함수 실행 중지
-
     try {
       await onSaveComment(content);
       if (type === "create") {
         setContent("");
         setInputCount(0); // 댓글 등록 후 input 초기화
+        setIsContentValid(false);
       }
     } catch (err: any) {
-      const status = err.response?.status;
-      if (status === 401 || status === 400) {
+      if (!isLoggedIn) {
         const confirmed = window.confirm(
-          // alert창은 로그인 페이지로 이동하는 선택지 밖에 없으니까 confirm 함수 사용해서 취소도 가능하게 했어요
           "로그인이 필요한 서비스입니다. 로그인 하시겠습니까?",
         );
         if (confirmed) {
@@ -89,12 +91,13 @@ const CommentInput = ({
             type="button"
             text={type === "edit" ? "저장" : "댓글 등록"}
             color="green"
-            className={`rounded-md transition-all duration-500 hover:bg-green300 ${
+            className={`rounded-md transition-all duration-500 ${
               type === "edit"
                 ? "h-[30px] w-[55px] text-[12px]"
                 : "h-[45px] w-[120px]"
             }`}
             onClick={handleSave}
+            disabled={!isContentValid}
           />
         </div>
       </div>

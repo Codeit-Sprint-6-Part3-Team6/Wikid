@@ -1,15 +1,13 @@
 import Image from "next/image";
-import defaultProfile from "@icons/ic_profile.svg";
+import { validateImage } from "@lib/validateImage";
 
-type ProfileImageProps = {
-  imageUrl: string | null;
-};
+function ProfileImage({ imageUrl }: { imageUrl: string | null }) {
+  const imageSrc = validateImage(imageUrl);
 
-function ProfileImage({ imageUrl }: ProfileImageProps) {
   return (
     <div className="relative h-[200px] w-[200px]">
       <Image
-        src={imageUrl === null ? defaultProfile : imageUrl}
+        src={imageSrc}
         alt="Profile"
         className="rounded-full object-cover"
         fill
