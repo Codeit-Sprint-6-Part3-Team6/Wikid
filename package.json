@@ -22,7 +22,8 @@
     "react-dom": "^18",
     "react-lottie-player": "^2.0.0",
     "react-quill": "^2.0.0",
-    "react-router-dom": "^6.24.0"
+    "react-router-dom": "^6.24.0",
+    "react-slick": "^0.30.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

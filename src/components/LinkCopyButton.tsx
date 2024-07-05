@@ -25,10 +25,12 @@ function LinkCopyButton({ link, className }: LinkCopyButtonProps) {
       <button
         type="button"
         onClick={handleClick}
-        className={`${className} flex items-center gap-[5px] rounded-[10px] bg-green100 px-[10px] py-[5px] leading-6 text-green200`}
+        className={`${className} flex max-w-[240px] items-center gap-[5px] rounded-[10px] bg-green100 px-[10px] py-[5px] leading-6 text-green200`}
       >
         <Image src={linkIcon} alt="link" />
-        {link.length > 30 ? link.slice(0, 30) + "..." : link}
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+          {link}
+        </p>
       </button>
       <Toast type="green" isToastOpened={toastOpened}>
         내 위키 링크가 복사되었습니다.

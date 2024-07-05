@@ -19,7 +19,7 @@ const PaginationBar = ({
   handleNextPage,
 }: PaginationProps) => {
   const commonClass =
-    "flex h-[45px] w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] duration-300 ease-in-out";
+    "flex h-[40px] w-[40px] md:h-[45px] md:w-[45px] items-center justify-center rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] duration-300 ease-in-out";
 
   const getPageNumbers = () => {
     const totalVisible = 5; // 최대 보이는 페이지 번호 수
@@ -53,7 +53,7 @@ const PaginationBar = ({
   };
 
   return (
-    <div className="mt-[80px] flex justify-center gap-[15px]">
+    <div className="mt-[80px] flex justify-center gap-[7px] md:gap-[15px]">
       <button
         type="button"
         onClick={handlePrevPage}
