@@ -18,17 +18,23 @@ function ArticleEditPage() {
     (content as string) || "",
   );
   const [imageContent, setImageContent] = useState((image as string) || "");
+  const [isTitleValid, setIsTitleValid] = useState(false);
+  const [isContentValid, setIsContentValid] = useState(false);
 
   useEffect(() => {
     setInputCount(titleContent.length);
-  }, [titleContent]);
+    setIsTitleValid(titleContent.trim().length > 0);
+    setIsContentValid(articleContent.trim().length > 0);
+  }, [titleContent, articleContent]);
 
   const handleInputCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     inputCounter(e, setInputCount, setTitleContent);
+    setIsTitleValid(e.target.value.trim().length > 0);
   };
 
   const handleChange = (value: string) => {
     setArticleContent(value);
+    setIsContentValid(value.trim().length > 0);
   };
 
   const handlePostArticle = async (e: React.FormEvent) => {
@@ -74,6 +80,7 @@ function ArticleEditPage() {
             text={id ? "수정하기" : "등록하기"}
             onClick={id ? handleEditArticle : handlePostArticle}
             className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+            disabled={!isTitleValid || !isContentValid}
           />
         </div>
         <div className="w-full">
