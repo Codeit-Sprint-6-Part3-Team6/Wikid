@@ -2,17 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import LinkCopyButton from "@components/LinkCopyButton";
 import { Profile } from "@lib/types/Profile";
-import profileIcon from "@icons/ic_profile.svg";
+import { validateImage } from "@lib/validateImage";
 
 interface UserWikiCardProps {
   profile: Profile;
 }
 
 const UserWikiCard = ({ profile }: UserWikiCardProps) => {
-  const imageSrc =
-    profile.image && profile.image.includes("sprint") // "https://example.com/..." 이 이미지 때문에 에러떠서 임시로 이렇게 구현했어요.
-      ? profile.image
-      : profileIcon;
+  const imageSrc = validateImage(profile.image);
 
   return (
     <div className="relative mb-[24px] h-[140px] rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]">
