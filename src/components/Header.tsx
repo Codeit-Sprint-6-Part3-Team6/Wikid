@@ -62,7 +62,7 @@ const ProfileMenu = () => {
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         계정 설정
       </Link>
-      <Link href={`wiki/${code}`} className="h-[44px] leading-[44px]">
+      <Link href={`/wiki/${code}`} className="h-[44px] leading-[44px]">
         내 위키
       </Link>
       <button onClick={logout} className="h-[44px] leading-[44px]">
