@@ -16,10 +16,10 @@ const SignUpForm = () => {
   const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
 
   const isFormValid =
-    errors.name === "" &&
-    errors.email === "" &&
-    errors.password === "" &&
-    errors.passwordConfirmation === "";
+    formData.name !== "" &&
+    formData.email !== "" &&
+    formData.password &&
+    formData.passwordConfirmation;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
