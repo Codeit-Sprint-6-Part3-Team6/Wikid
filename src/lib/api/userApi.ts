@@ -1,6 +1,6 @@
 import axios from "@lib/api/axios";
-import { UserInfo } from "@lib/types/UserInfo";
 import { ChangePasswordForm } from "@lib/types/User";
+import { UserInfo } from "@lib/types/UserInfo";
 
 // 유저 정보 불러오기
 export const getUserInfo = async () => {
