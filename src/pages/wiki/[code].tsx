@@ -193,7 +193,9 @@ function WikiPage({
 
   return (
     <>
-      <div className={`mx-auto flex w-[1600px] justify-between gap-20 pb-28`}>
+      <div
+        className={`mx-auto flex max-w-[1600px] justify-between gap-20 px-[100px] pb-28`}
+      >
         <div className="mt-20 w-full">
           <div className="mb-8 flex items-center justify-between">
             <div className="text-[48px] font-semibold text-gray500">
