@@ -1,0 +1,70 @@
+.ql-editor {
+  font-family: "Pretendard" !important;
+  padding: 0 !important;
+}
+
+.ql-picker-label,
+.ql-picker-item {
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.ql-picker-options {
+  border-radius: 8px;
+  padding: 4px 8px 0 !important;
+  left: -8px;
+  top: 110% !important;
+}
+
+.ql-picker-item {
+  margin-bottom: 4px;
+}
+.ql-picker-item::before {
+  line-height: normal;
+}
+
+button.ql-active {
+  background-color: var(--color-gray200) !important;
+  border-radius: 4px;
+}
+
+.ql-stroke {
+  stroke: var(--color-gray400) !important;
+}
+.ql-picker-label:hover .ql-stroke {
+  stroke: #06c !important;
+}
+
+.quill > .ql-container {
+  border: none !important;
+}
+
+.ql-toolbar::after,
+.ql-formats::after {
+  content: none !important;
+}
+
+.wiki .ql-editor {
+  font-size: 16px !important;
+}
+
+.article .ql-editor {
+  font-size: 20px !important;
+}
+
+.textPresenter h1 {
+  font-size: 2em;
+}
+.textPresenter h2,
+.textPresenter .ql-size-large {
+  font-size: 1.5em;
+}
+.textPresenter h3 {
+  font-size: 1.17em;
+}
+.textPresenter .ql-size-small {
+  font-size: 0.75em;
+}
+.textPresenter .ql-size-huge {
+  font-size: 2.5em;
+}

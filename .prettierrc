@@ -14,9 +14,9 @@
     "^@components/",
     "^[./]",
     "^@hooks/",
+    "^@utils/",
     "^@context/",
     "^@lib/",
-    "^@types/",
     "^@styles/",
     "^@images/",
     "^@icons/*"

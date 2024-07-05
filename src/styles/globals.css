@@ -6,8 +6,9 @@
   /* font color */
   --color-black: #000000;
   --color-white: #ffffff;
+  --color-gray50: #f7f7fa;
   --color-gray100: #f9f9f9;
-  --color-gray200: #f9f9f9;
+  --color-gray200: #e4e5f0;
   --color-gray300: #c6cada;
   --color-gray400: #8f95b2;
   --color-gray500: #474d66;
@@ -16,9 +17,11 @@
   --color-green200: #4cbfa4;
   --color-green300: #32a68a;
   --color-red100: #fbeded;
-  --color-red100: #d14343;
+  --color-red300: #d14343;
   --color-purple: #8e66ff;
   --color-yellow: #fdd181;
+  --color-gray10: #ecf0fa;
+  --color-gray20: #f1f4fd;
 }
 * {
   margin: 0;
