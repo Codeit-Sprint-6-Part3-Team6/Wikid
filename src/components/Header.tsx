@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import IconButton from "./IconButton";
 import NotificationList from "./notification/NotificationList";
-import useIsLoggedIn from "@hooks/useIsLoggedIn";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
 import useUserInfo from "@hooks/useUserInfo";
@@ -52,19 +51,19 @@ const HeaderLoggedOut = () => {
   );
 };
 
-const ProfileMenu = () => {
+const ProfileMenu = ({ code }: { code: string | undefined }) => {
   const { logout } = useAuth();
-  const { user } = useUserInfo();
-  const code = user?.profile.code;
 
   return (
     <div className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         계정 설정
       </Link>
-      <Link href={`wiki/${code}`} className="h-[44px] leading-[44px]">
-        내 위키
-      </Link>
+      {code && (
+        <Link href={`wiki/${code}`} className="h-[44px] leading-[44px]">
+          내 위키
+        </Link>
+      )}
       <button onClick={logout} className="h-[44px] leading-[44px]">
         로그아웃
       </button>
@@ -82,6 +81,9 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const { user } = useUserInfo();
+  const code = user?.profile?.code;
+
   return (
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
@@ -98,7 +100,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
       </div>
       {isMenuOpen && (
         <div onClick={handleMenuClick}>
-          <ProfileMenu />
+          <ProfileMenu code={code} />
         </div>
       )}
     </div>
@@ -124,7 +126,7 @@ const MenuLoggedOut = () => {
 const MenuLoggedIn = () => {
   const { logout } = useAuth();
   const { user } = useUserInfo();
-  const code = user?.profile.code;
+  const code = user?.profile?.code;
 
   return (
     <div className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
@@ -137,9 +139,11 @@ const MenuLoggedIn = () => {
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         마이페이지
       </Link>
-      <Link href={`/wiki/${code}`} className="h-[44px] leading-[44px]">
-        내 위키
-      </Link>
+      {code && (
+        <Link href={`/wiki/${code}`} className="h-[44px] leading-[44px]">
+          내 위키
+        </Link>
+      )}
       <button onClick={logout} className="h-[44px] leading-[44px]">
         로그아웃
       </button>
@@ -148,7 +152,7 @@ const MenuLoggedIn = () => {
 };
 
 const Header = () => {
-  const { isLoggedIn } = useIsLoggedIn();
+  const { isLoggedIn } = useAuth();
   const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
