@@ -4,7 +4,10 @@ import AnimationJson from "../../public/Animation404.json";
 
 export default function NotFound() {
   return (
-    <div className="mt-[90px] flex flex-col items-center">
+    <div
+      className="flex flex-col items-center justify-center"
+      style={{ minHeight: "calc(100vh - 80px)" }}
+    >
       <Animation
         loop
         animationData={AnimationJson}
