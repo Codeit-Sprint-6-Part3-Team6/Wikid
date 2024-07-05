@@ -1,6 +1,6 @@
 interface ButtonProps {
   text: string;
-  color: "green" | "white" | "red";
+  color: "green" | "white" | "red" | "gray";
   type: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?:
@@ -18,12 +18,17 @@ const Button = ({
   onClick,
   className,
 }: ButtonProps) => {
-  const primaryStyle =
-    color === "green"
-      ? "bg-green200 text-white"
-      : color === "white"
-        ? "bg-white text-green200"
-        : "bg-red300 text-white";
+  let primaryStyle = "";
+
+  if (color === "green") {
+    primaryStyle = "bg-green200 text-white";
+  } else if (color === "white") {
+    primaryStyle = "bg-white text-green200";
+  } else if (color === "red") {
+    primaryStyle === "bg-red300 text-white";
+  } else {
+    primaryStyle === "bg-gray300 text-white";
+  }
 
   const disabledStyle = disabled
     ? "cursor-not-allowed border-gray300 bg-gray300 text-white"
