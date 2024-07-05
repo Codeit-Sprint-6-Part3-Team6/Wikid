@@ -12,7 +12,7 @@ type QuizModalProps = {
   onClick: (answer: string, code: Code) => Promise<void>;
   code: Code;
   errorMessage: string;
-  onFocus: () => void;
+  deleteError: () => void;
 };
 
 export default function QuizModal({
@@ -22,12 +22,13 @@ export default function QuizModal({
   isOpen,
   code,
   errorMessage,
-  onFocus,
+  deleteError,
 }: QuizModalProps) {
   const [userAnswer, setUserAnswer] = useState<string>("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserAnswer(e.target.value);
+    deleteError();
   };
 
   return (
@@ -58,21 +59,17 @@ export default function QuizModal({
               </label>
               <Input
                 value={userAnswer}
-                onChange={handleInput}
+                onChange={handleChange}
                 placeholder={"답안을 입력해 주세요"}
                 id="security-answer"
                 error={errorMessage}
-                onFocus={onFocus}
-                onKeyDown={onFocus}
+                onFocus={deleteError}
               />
               <Button
                 text="확인"
                 color="green"
-                type="button"
+                type="submit"
                 className="mt-6 h-[40px] w-[355px]"
-                onClick={() => {
-                  onClick(userAnswer, code);
-                }}
               />
             </form>
           </div>
@@ -85,4 +82,3 @@ export default function QuizModal({
     </>
   );
 }
-  

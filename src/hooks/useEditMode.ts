@@ -91,7 +91,7 @@ function useEditMode() {
     }
   };
 
-  const handleQuizInputFocus = () => {
+  const deleteError = () => {
     setErrorMessage("");
   };
 
@@ -145,7 +145,7 @@ function useEditMode() {
     refreshTimer,
     isTimeOutModalOpen,
     errorMessage,
-    handleQuizInputFocus,
+    deleteError,
   };
 }
 
