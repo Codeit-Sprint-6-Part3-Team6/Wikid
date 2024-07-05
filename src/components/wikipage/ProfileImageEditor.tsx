@@ -1,7 +1,7 @@
 import Image from "next/image";
 import IconButton from "@components/IconButton";
-import xIcon from "@icons/ic_X.svg";
 import cameraIcon from "@icons/ic_camera.svg";
+import xIcon from "@icons/ic_x.svg";
 
 type ProfileImageEditorProps = {
   imageUrl: string | null;
