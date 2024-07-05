@@ -44,7 +44,7 @@ const WikiListBox = () => {
 
   return (
     <>
-      <div className="mb-[60px]">
+      <div className="mb-[30px] md:mb-[60px]">
         <Input
           value={search}
           onChange={handleSearchChange}

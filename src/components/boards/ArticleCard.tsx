@@ -10,14 +10,14 @@ interface ArticleCardProps {
 
 const ArticleCard = ({ items }: ArticleCardProps) => {
   return (
-    <div className="flex gap-[15px]">
+    <div className="flex flex-wrap justify-between gap-[15px_0] lg:flex-nowrap lg:gap-[15px]">
       {items?.map((article) => {
         const articleDate = article.createdAt.split("T")[0];
         return (
           <Link
             href={`/boards/${article.id}`}
             key={article.id}
-            className="group basis-1/4 overflow-hidden rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]"
+            className="group basis-[49%] overflow-hidden rounded-[10px] shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] lg:basis-1/4"
           >
             <div className="relative h-[130px] w-full overflow-hidden">
               <Image
