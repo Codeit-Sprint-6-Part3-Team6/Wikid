@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 
 type ModalProps = {
   isOpen: boolean;
-  handleIsOpen: Dispatch<SetStateAction<boolean>>;
+  handleIsOpen: () => void;
   children: React.ReactNode;
 };
 
