@@ -84,6 +84,14 @@ function ArticleEditPage() {
     }
   };
 
+  const handleLinkButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (confirm("작성 중인 내용이 있습니다. 목록으로 이동하시겠습니까?")) {
+      router.push("/boards");
+    } else {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col items-center px-[20px] pb-[46px] md:px-[60px]">
@@ -93,12 +101,11 @@ function ArticleEditPage() {
               {id ? "게시글 수정하기" : "게시글 등록하기"}
             </h1>
             <Button
+              text="목록으로"
+              color="white"
               type="button"
-              color="green"
-              text={id ? "수정하기" : "등록하기"}
-              onClick={id ? handleEditArticle : handlePostArticle}
-              className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
-              disabled={!isTitleValid || !isContentValid}
+              onClick={handleLinkButtonClick}
+              className="h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300"
             />
           </div>
           <div className="w-full">
@@ -143,11 +150,14 @@ function ArticleEditPage() {
             editorRef={editorRef}
           />
         </CardContainer>
-        <LinkButton
-          text="목록으로"
-          link="/boards"
-          color="white"
-          className="my-[40px] h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300 lg:my-[60px]"
+
+        <Button
+          type="button"
+          color="green"
+          text={id ? "수정하기" : "등록하기"}
+          onClick={id ? handleEditArticle : handlePostArticle}
+          className="my-[40px] h-[45px] w-[140px] transition-all duration-500 hover:bg-green300 lg:my-[60px]"
+          disabled={!isTitleValid || !isContentValid}
         />
       </div>
       <ImageUploadModal

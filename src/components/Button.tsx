@@ -5,7 +5,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?:
     | (() => Promise<void>)
-    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
+    | ((e: React.MouseEvent<HTMLButtonElement>) => void | Promise<void>)
     | (() => void);
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
