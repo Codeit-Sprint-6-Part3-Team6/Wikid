@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import Link from "next/link";
+import useOutsideClick from "@hooks/useOutsideClick";
 import useUserInfo from "@hooks/useUserInfo";
 import { elapsedTimeConverter } from "@lib/elapsedTimeConverter";
 import { NotificationItemType } from "@lib/types/Notifications";
@@ -19,10 +20,16 @@ export default function NotificationList({
   totalCount,
   handleDeleteClick,
 }: NotificationListProps) {
+  const handleOutsideClick = () => {
+    handleIsOpen();
+  };
+  const notificationRef = useOutsideClick(handleOutsideClick);
+
   return (
     <>
       {isOpen && (
         <div
+          ref={notificationRef}
           id="outer-most-div"
           className="max-h-[285px] w-[280px] rounded-xl bg-[#CED8D5] px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]"
         >
