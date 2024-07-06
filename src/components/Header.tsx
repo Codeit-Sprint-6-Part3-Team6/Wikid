@@ -111,7 +111,7 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
 const MenuLoggedOut = () => {
   return (
     <div className="absolute left-[-90px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
-      <Link href="/wikilist" className="h-[44px] leading-[44px] text-green-500">
+      <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
       <Link href="/boards" className="h-[44px] leading-[44px]">
