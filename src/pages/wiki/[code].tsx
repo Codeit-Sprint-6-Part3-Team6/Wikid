@@ -203,11 +203,11 @@ function WikiPage({
   return (
     <>
       <div
-        className={`mx-auto flex max-w-[1600px] justify-between gap-20 px-[100px] pb-28`}
+        className={`mx-auto flex max-w-[1600px] flex-col px-5 py-10 pb-28 md:px-[60px] md:py-[60px] lg:grid lg:grid-cols-[1fr_auto] lg:gap-20 lg:gap-y-0 lg:px-[100px] lg:py-20`}
       >
-        <div className="mt-20 w-full">
-          <div className="mb-8 flex items-center justify-between">
-            <div className="text-[48px] font-semibold text-gray500">
+        <div className="">
+          <div className="mb-6 flex items-center justify-between md:mb-8">
+            <div className="text-[32px] font-semibold leading-none text-gray500 md:text-[48px]">
               {initialProfile.name}
             </div>
             {!initialProfile.content ||
@@ -233,39 +233,41 @@ function WikiPage({
                 type="button"
                 color="green"
                 text="위키 참여하기"
-                className="px-[42px] py-[10.5px]"
+                className="px-[22px] py-[9.5px] md:px-[42px] md:py-[10.5px]"
                 onClick={handleEditClick}
               />
             )}
           </div>
-          {isEditMode.content ? (
-            <TextEditor
-              type="wiki"
-              name={initialProfile.name}
-              className="mt-10"
-              content={content}
-              onChange={handleWikiContentChange}
-              onClick={handleIsOpen}
-            />
-          ) : (
-            <>
-              <LinkCopyButton
-                link={`http://localhost:3000/wiki/${initialProfile.code}`}
-                className="mb-14"
-              />
-              {!initialIsEditable && (
-                <div
-                  style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
-                  className="mb-5 mt-[-40px] flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat px-[55px] leading-6 text-gray500"
-                >
-                  {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
-                </div>
-              )}
-              <ContentPresenter content={initialProfile.content} />
-            </>
+          <LinkCopyButton
+            link={`http://localhost:3000/wiki/${initialProfile.code}`}
+            className="mb-4 lg:mb-14"
+          />
+          {!initialIsEditable && (
+            <div
+              style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
+              className="mb-5 flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat pl-[54px] leading-6 text-gray500 md:pr-[54px] lg:mt-[-40px]"
+            >
+              {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
+            </div>
           )}
         </div>
-        <div className={`mt-10 w-[320px] flex-shrink-0`}>
+
+        {isEditMode.content ? (
+          <TextEditor
+            type="wiki"
+            name={initialProfile.name}
+            className="mt-10"
+            content={content}
+            onChange={handleWikiContentChange}
+            onClick={handleIsOpen}
+          />
+        ) : (
+          <div className="order-1 mt-6 lg:mt-0">
+            <ContentPresenter content={initialProfile.content} />
+          </div>
+        )}
+
+        <div className="flex-shrink-0 lg:col-[2/span_1] lg:row-[1/span_2] lg:w-[320px]">
           <ProfileCard
             className=""
             profile={profile}

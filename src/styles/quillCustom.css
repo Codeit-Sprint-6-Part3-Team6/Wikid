@@ -71,3 +71,9 @@ button.ql-active {
 .textPresenter img {
   max-height: 40vh;
 }
+
+@media (max-width: 767px) {
+  .textPresenter {
+    overflow-wrap: anywhere;
+  }
+}
