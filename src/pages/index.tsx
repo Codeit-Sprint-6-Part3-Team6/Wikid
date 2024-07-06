@@ -1,5 +1,6 @@
 import Image from "next/image";
 import LinkButton from "@components/LinkButton";
+import styles from "@styles/main.module.css";
 import profile from "@images/image_landing1.png";
 import example1 from "@images/image_landing2.png";
 import example2 from "@images/image_landing3.png";
@@ -40,7 +41,7 @@ function SectionLayout({
     <div
       style={{ backgroundColor: `var(--color-${bgColor})` }}
       id="viewport"
-      className={`pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px]`}
+      className={`relative pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px]`}
     >
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <div
@@ -144,6 +145,11 @@ function FeatureMessage({
 function FeatureWrite() {
   return (
     <SectionLayout bgColor="gray500" innerContainer>
+      <div className={styles.event_wrap}>
+        <div className={styles.wave_box}>
+          <div className={styles.wave}></div>
+        </div>
+      </div>
       <section
         id="feature/write-leftSide"
         className="flex items-end justify-center gap-[10px] md:gap-[20px] lg:gap-[40px]"
