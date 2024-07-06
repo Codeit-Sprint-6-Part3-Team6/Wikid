@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import IconButton from "./IconButton";
-import NotificationList from "./notification/NotificationList";
+import NotificationList from "./NotificationList";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
 import useUserInfo from "@hooks/useUserInfo";
