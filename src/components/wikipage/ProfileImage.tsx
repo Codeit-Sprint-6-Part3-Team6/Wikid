@@ -5,7 +5,7 @@ function ProfileImage({ imageUrl }: { imageUrl: string | null }) {
   const imageSrc = validateImage(imageUrl);
 
   return (
-    <div className="relative h-[200px] w-[200px]">
+    <div className="relative h-28 w-28 flex-shrink-0 md:h-24 md:w-24 lg:h-[200px] lg:w-[200px]">
       <Image
         src={imageSrc}
         alt="Profile"

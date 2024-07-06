@@ -24,10 +24,12 @@ export default function ProfileInfoList({
 }: ProfileInfoListProps) {
   const infoList = refineProfileInfo(profile);
 
-  const className = isEditMode ? "max-w-[320px]" : "max-w-[260px]";
+  const className = isEditMode ? "lg:max-w-[320px]" : "lg:max-w-[260px]";
 
   return (
-    <div className={`${className} flex w-full flex-col gap-4`}>
+    <div
+      className={`${className} grid w-full gap-3 border-t-[1px] border-solid border-gray200 pt-3 md:grid-cols-2 md:grid-rows-5 md:border-none md:pt-0 lg:flex lg:flex-col lg:flex-wrap lg:gap-4`}
+    >
       {infoList.map((info) => (
         <ProfileInfo
           key={info[0]}
@@ -50,7 +52,7 @@ function ProfileInfo({
   onBlur,
 }: ProfileInfoProps) {
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-center gap-7 md:gap-5">
       <div className="w-[60px] flex-shrink-0 text-sm font-normal leading-6 text-gray400">
         {info[1]}
       </div>
