@@ -222,13 +222,23 @@ const Header = () => {
         </Link>
         <Link
           href="/wikilist"
-          className={`hidden text-[14px] font-normal text-gray800 md:block ${router.pathname === "/wikilist" ? "font-semibold text-green200" : ""}`}
+          className={`hidden text-[14px] font-normal text-gray800 md:block ${
+            router.pathname.startsWith("/wikilist") ||
+            router.pathname.startsWith("/wiki")
+              ? "font-semibold text-green200"
+              : ""
+          }`}
         >
           위키목록
         </Link>
         <Link
           href="/boards"
-          className={`hidden text-[14px] font-normal text-gray800 md:block ${router.pathname === "/boards" ? "font-semibold text-green200" : ""}`}
+          className={`hidden text-[14px] font-normal text-gray800 md:block ${
+            router.pathname.startsWith("/boards") ||
+            router.pathname === "/addboard"
+              ? "font-semibold text-green200"
+              : ""
+          }`}
         >
           자유게시판
         </Link>
