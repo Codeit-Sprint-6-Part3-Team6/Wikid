@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "@components/Button";
 import Dropdown from "@components/Dropdown";
 import Input from "@components/Input";
+import Loading from "@components/Loading";
 import NoResult from "@components/NoResult";
 import PaginationBar from "@components/PaginationBar";
 import ArticleList from "./ArticleList";
@@ -18,6 +19,7 @@ const ArticleListBox = () => {
   const [search, setSearch] = useState<string>("");
   const [totalCount, setTotalCount] = useState<number>(0);
   const [searching, setSearching] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { currentPage, handleGoPage, handlePrevPage, handleNextPage } =
     usePagination({
@@ -26,6 +28,7 @@ const ArticleListBox = () => {
     });
 
   const handleLoad = async (options: ArticleQueryOptions) => {
+    setIsLoading(true);
     try {
       const { list, totalCount } = await getArticleList(options);
       setItems(list);
@@ -36,6 +39,8 @@ const ArticleListBox = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -99,23 +104,29 @@ const ArticleListBox = () => {
         />
       </div>
 
-      {items.length > 0 ? (
-        <>
-          <ArticleList
-            items={items}
-            totalCount={totalCount}
-            firstIndex={firstIndex}
-          />
-          <PaginationBar
-            currentPage={currentPage}
-            totalPage={totalPage}
-            handleGoPage={handleGoPage}
-            handlePrevPage={handlePrevPage}
-            handleNextPage={handleNextPage}
-          />
-        </>
+      {isLoading ? (
+        <Loading />
       ) : (
-        <NoResult item={search} />
+        <>
+          {items.length > 0 ? (
+            <>
+              <ArticleList
+                items={items}
+                totalCount={totalCount}
+                firstIndex={firstIndex}
+              />
+              <PaginationBar
+                currentPage={currentPage}
+                totalPage={totalPage}
+                handleGoPage={handleGoPage}
+                handlePrevPage={handlePrevPage}
+                handleNextPage={handleNextPage}
+              />
+            </>
+          ) : (
+            <NoResult item={search} />
+          )}
+        </>
       )}
     </>
   );

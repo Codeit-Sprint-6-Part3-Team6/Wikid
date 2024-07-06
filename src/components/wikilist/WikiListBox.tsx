@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Input from "@components/Input";
+import Loading from "@components/Loading";
 import NoResult from "@components/NoResult";
 import PaginationBar from "@components/PaginationBar";
 import UserWikiList from "./UserWikiList";
@@ -14,6 +15,7 @@ const WikiListBox = () => {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { currentPage, handleGoPage, handlePrevPage, handleNextPage } =
     usePagination({
@@ -22,6 +24,7 @@ const WikiListBox = () => {
     });
 
   const handleLoad = async (options: ProfileQueryOptions) => {
+    setIsLoading(true);
     try {
       const { list, totalCount } = await getProfileList(options);
       setItems(list);
@@ -29,13 +32,23 @@ const WikiListBox = () => {
       setTotalCount(totalCount);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const delay = 300;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-    setSearch(name);
-    handleLoad({ page: 1, pageSize: PAGE_SIZE, name });
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      const name = e.target.value;
+      setSearch(name);
+      handleLoad({ page: 1, pageSize: PAGE_SIZE, name });
+    }, delay);
   };
 
   useEffect(() => {
@@ -58,19 +71,25 @@ const WikiListBox = () => {
           </div>
         )}
       </div>
-      {items.length > 0 ? (
-        <>
-          <UserWikiList items={items} />
-          <PaginationBar
-            currentPage={currentPage}
-            totalPage={totalPage}
-            handleGoPage={handleGoPage}
-            handlePrevPage={handlePrevPage}
-            handleNextPage={handleNextPage}
-          />
-        </>
+      {isLoading ? (
+        <Loading />
       ) : (
-        <NoResult item={search} />
+        <>
+          {items.length > 0 ? (
+            <>
+              <UserWikiList items={items} />
+              <PaginationBar
+                currentPage={currentPage}
+                totalPage={totalPage}
+                handleGoPage={handleGoPage}
+                handlePrevPage={handlePrevPage}
+                handleNextPage={handleNextPage}
+              />
+            </>
+          ) : (
+            <NoResult item={search} />
+          )}
+        </>
       )}
     </>
   );
