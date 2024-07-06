@@ -67,15 +67,24 @@ const ProfileMenu = ({ handleMenuClick, code }: ProfileMenuProps) => {
       ref={profileMenuRef}
       className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
     >
-      <Link href="/mypage" className="h-[44px] leading-[44px]">
+      <Link
+        href="/mypage"
+        className="h-[44px] w-full text-center leading-[44px] hover:scale-105"
+      >
         계정 설정
       </Link>
       {code && (
-        <Link href={`wiki/${code}`} className="h-[44px] leading-[44px]">
+        <Link
+          href={`wiki/${code}`}
+          className="h-[44px] w-full text-center leading-[44px] hover:scale-105"
+        >
           내 위키
         </Link>
       )}
-      <button onClick={logout} className="h-[44px] leading-[44px]">
+      <button
+        onClick={logout}
+        className="h-[44px] w-full leading-[44px] hover:scale-105"
+      >
         로그아웃
       </button>
     </div>
@@ -157,23 +166,38 @@ const MenuLoggedIn = ({ handleMenuClick }) => {
   return (
     <div
       ref={MenuLoggedInRef}
-      className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
+      className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white text-center"
     >
-      <Link href="/wikilist" className="h-[44px] leading-[44px]">
+      <Link
+        href="/wikilist"
+        className="h-[44px] w-full leading-[44px] hover:scale-105"
+      >
         위키목록
       </Link>
-      <Link href="/boards" className="h-[44px] leading-[44px]">
+      <Link
+        href="/boards"
+        className="h-[44px] w-full leading-[44px] hover:scale-105"
+      >
         자유게시판
       </Link>
-      <Link href="/mypage" className="h-[44px] leading-[44px]">
+      <Link
+        href="/mypage"
+        className="h-[44px] w-full leading-[44px] hover:scale-105"
+      >
         마이페이지
       </Link>
       {code && (
-        <Link href={`/wiki/${code}`} className="h-[44px] leading-[44px]">
+        <Link
+          href={`/wiki/${code}`}
+          className="h-[44px] w-full leading-[44px] hover:scale-105"
+        >
           내 위키
         </Link>
       )}
-      <button onClick={logout} className="h-[44px] leading-[44px]">
+      <button
+        onClick={logout}
+        className="h-[44px] w-full leading-[44px] hover:scale-105"
+      >
         로그아웃
       </button>
     </div>
