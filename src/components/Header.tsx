@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import IconButton from "./IconButton";
 import NotificationList from "./NotificationList";
 import useModal from "@hooks/useModal";
@@ -153,6 +154,7 @@ const MenuLoggedIn = () => {
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
+  const router = useRouter();
   const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -192,13 +194,13 @@ const Header = () => {
         </Link>
         <Link
           href="/wikilist"
-          className="hidden text-[14px] font-normal text-gray800 md:block"
+          className={`hidden text-[14px] font-normal text-gray800 md:block ${router.pathname === "/wikilist" ? "font-semibold text-green200" : ""}`}
         >
           위키목록
         </Link>
         <Link
           href="/boards"
-          className="hidden text-[14px] font-normal text-gray800 md:block"
+          className={`hidden text-[14px] font-normal text-gray800 md:block ${router.pathname === "/boards" ? "font-semibold text-green200" : ""}`}
         >
           자유게시판
         </Link>
