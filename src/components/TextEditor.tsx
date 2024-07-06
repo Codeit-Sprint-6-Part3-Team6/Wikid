@@ -92,7 +92,9 @@ function TextEditor({
       ref={editorRef}
       className={`flex flex-col justify-center ${type} ${className} w-full ${type === "article" ? "px-[30px]" : ""}`} //!w-[${type === "wiki" ? 1120 : 1060}px]
     >
-      {type === "wiki" && name && <WikiEditorToolbar />}
+      {type === "wiki" && name && (
+        <WikiEditorToolbar onClick={handleImageButtonClick} />
+      )}
       <QuillNoSSRWrapper
         style={{ height: "100%", overflow: "auto" }}
         theme="snow"
