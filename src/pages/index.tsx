@@ -30,18 +30,21 @@ type SectionLayoutProps = {
   bgColor: string;
   innerContainer: boolean;
   children: React.ReactNode;
+  wave?: boolean;
 };
 
 function SectionLayout({
   bgColor,
   innerContainer = true,
   children,
+  wave,
 }: SectionLayoutProps) {
+  const waveStyles = `${wave ? "-mt-[400px]" : ""}`;
   return (
     <div
       style={{ backgroundColor: `var(--color-${bgColor})` }}
       id="viewport"
-      className={`relative pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px]`}
+      className={`relative pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px] ${waveStyles}`}
     >
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <div
@@ -84,7 +87,7 @@ function TopSection() {
             type="button"
           />
         </Link> */}
-        <div>
+        <div className="relative z-10">
           <Image
             alt="/"
             src={profile}
@@ -144,7 +147,7 @@ function FeatureMessage({
 
 function FeatureWrite() {
   return (
-    <SectionLayout bgColor="gray500" innerContainer>
+    <SectionLayout bgColor="gray500" innerContainer wave={true}>
       <div className={styles.event_wrap}>
         <div className={styles.wave_box}>
           <div className={styles.wave}></div>
