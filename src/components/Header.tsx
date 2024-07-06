@@ -6,6 +6,7 @@ import IconButton from "./IconButton";
 import NotificationList from "./NotificationList";
 import useModal from "@hooks/useModal";
 import useNotificationList from "@hooks/useNotificationList";
+import useOutsideClick from "@hooks/useOutsideClick";
 import useUserInfo from "@hooks/useUserInfo";
 import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
@@ -52,11 +53,20 @@ const HeaderLoggedOut = () => {
   );
 };
 
-const ProfileMenu = ({ code }: { code: string | undefined }) => {
+type ProfileMenuProps = {
+  code: string | undefined;
+  handleMenuClick: () => void;
+};
+
+const ProfileMenu = ({ handleMenuClick, code }: ProfileMenuProps) => {
   const { logout } = useAuth();
+  const profileMenuRef = useOutsideClick(handleMenuClick);
 
   return (
-    <div className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div
+      ref={profileMenuRef}
+      className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
+    >
       <Link href="/mypage" className="h-[44px] leading-[44px]">
         계정 설정
       </Link>
@@ -101,16 +111,25 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
       </div>
       {isMenuOpen && (
         <div onClick={handleMenuClick}>
-          <ProfileMenu code={code} />
+          <ProfileMenu handleMenuClick={handleMenuClick} code={code} />
         </div>
       )}
     </div>
   );
 };
 
-const MenuLoggedOut = () => {
+type MenuLoggedOutProps = {
+  handleMenuClick: () => void;
+};
+
+const MenuLoggedOut = ({ handleMenuClick }: MenuLoggedOutProps) => {
+  const MenuLoggedOutRef = useOutsideClick(handleMenuClick);
+
   return (
-    <div className="absolute left-[-90px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div
+      ref={MenuLoggedOutRef}
+      className="absolute left-[-90px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
+    >
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
@@ -124,13 +143,22 @@ const MenuLoggedOut = () => {
   );
 };
 
-const MenuLoggedIn = () => {
+type MenuLoggedIn = {
+  handleMenuClick: () => void;
+};
+
+const MenuLoggedIn = ({ handleMenuClick }) => {
   const { logout } = useAuth();
   const { user } = useUserInfo();
   const code = user?.profile?.code;
 
+  const MenuLoggedInRef = useOutsideClick(handleMenuClick);
+
   return (
-    <div className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
+    <div
+      ref={MenuLoggedInRef}
+      className="absolute left-[-45px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
+    >
       <Link href="/wikilist" className="h-[44px] leading-[44px]">
         위키목록
       </Link>
@@ -224,7 +252,11 @@ const Header = () => {
         />
         {isMenuOpen && (
           <div onClick={handleMenuClick}>
-            {isLoggedIn ? <MenuLoggedIn /> : <MenuLoggedOut />}
+            {isLoggedIn ? (
+              <MenuLoggedIn handleMenuClick={handleMenuClick} />
+            ) : (
+              <MenuLoggedOut handleMenuClick={handleMenuClick} />
+            )}
           </div>
         )}
       </div>
