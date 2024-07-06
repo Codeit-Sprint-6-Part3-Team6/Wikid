@@ -43,16 +43,15 @@ export default function ImageUploadModal({
         >
           <label
             htmlFor="file-input"
-            className={`${previewImageUrl ? "h-[355px] w-[350px]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
+            className={`${previewImageUrl ? "max-h-[40vh] min-h-[160px] max-w-[40vw]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
           >
             {!previewImageUrl && <Camera className="animate-bounce" />}
             {previewImageUrl && (
-              <Image
+              <img
                 alt="image-preview"
-                className="h-full rounded-xl"
+                className="min-h-[90%] min-w-[90%] rounded-lg"
                 src={previewImageUrl}
-                fill
-              ></Image>
+              ></img>
             )}
           </label>
           {/* 보이지 않는 input이라서 공통 component를 사용하지 않고 기존의 input으로 남겨두겠습니다. */}
