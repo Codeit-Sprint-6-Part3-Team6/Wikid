@@ -140,11 +140,10 @@ const ArticlePage = () => {
             )}
           </div>
           {article.image && (
-            <Image
+            <img
               src={article.image}
               alt="게시글 이미지"
-              width={800}
-              height={600}
+              className="max-h-[40vh] self-start object-contain"
             />
           )}
           <p

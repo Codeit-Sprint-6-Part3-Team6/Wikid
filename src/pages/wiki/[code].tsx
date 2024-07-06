@@ -14,6 +14,7 @@ import { useAuth } from "@context/AuthContext";
 //import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
 import { getProfile, checkIsEditing, patchProfile } from "@lib/api/profileApi";
+import { getImageFile } from "@lib/getImageFile";
 import { Profile } from "@lib/types/Profile";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -132,12 +133,7 @@ function WikiPage({
           await refreshTimer();
         }
         if (profileImage !== initialProfile.image && profileImage !== null) {
-          const res = await fetch(profileImage);
-          const blob = await res.blob(); // blob: binary large object, 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용
-          const parts = blob.type.split("/"); // type 문자열로부터 확장자 추출
-          const imageFile = new File([blob], `image.${parts[1]}`, {
-            type: blob.type,
-          });
+          const imageFile = await getImageFile(profileImage);
           const imageUrl = (await getImageUrl(imageFile)).url;
 
           setProfile((prevProfile) => ({
