@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
@@ -14,33 +15,34 @@ import { ArticleType } from "@lib/types/articleType";
 import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 
-const ArticlePage = () => {
-  const [article, setArticle] = useState<ArticleType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+type ArticlePageProps = {
+  initialArticle: ArticleType | null;
+};
+
+const ArticlePage = ({ initialArticle }: ArticlePageProps) => {
+  const [article, setArticle] = useState<ArticleType | null>(initialArticle);
   const router = useRouter();
   const { boardId } = router.query;
   const { user } = useUserInfo();
 
   const fetchArticle = async (id: string | string[]) => {
     try {
-      setIsLoading(true);
       const nextArticle = await getArticle(id);
       setArticle(nextArticle);
     } catch (err) {
       console.error("게시글 불러오기 실패", err);
       alert("게시글 불러오기에 실패했습니다.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (typeof boardId === "string" || Array.isArray(boardId)) {
+    if (
+      !initialArticle &&
+      (typeof boardId === "string" || Array.isArray(boardId))
+    ) {
       fetchArticle(boardId);
-    } else {
-      setIsLoading(false);
     }
-  }, [boardId]);
+  }, [boardId, initialArticle]);
 
   const handleEditArticle = () => {
     if (article) {
@@ -68,10 +70,6 @@ const ArticlePage = () => {
         alert("게시글 삭제에 실패했습니다.");
       }
   };
-
-  if (isLoading) {
-    return <div className="mt-8 text-center">로딩 중 ...</div>;
-  }
 
   if (!article) {
     return (
@@ -164,6 +162,23 @@ const ArticlePage = () => {
       {boardId && typeof boardId === "string" && <Comment boardId={boardId} />}
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { boardId } = context.params as { boardId: string };
+  let initialArticle = null;
+
+  try {
+    initialArticle = await getArticle(boardId);
+  } catch (error) {
+    console.error("게시글 불러오기 실패", error);
+  }
+
+  return {
+    props: {
+      initialArticle,
+    },
+  };
 };
 
 export default ArticlePage;
