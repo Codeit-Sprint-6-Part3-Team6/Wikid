@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import AlarmModal from "@components/AlarmModal";
 import Button from "@components/Button";
+import ImageUploadModal from "@components/ImageUploadModal";
 import LinkCopyButton from "@components/LinkCopyButton";
 import TextEditor from "@components/TextEditor";
 import Toast from "@components/Toast";
@@ -10,6 +11,7 @@ import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import QuizModal from "@components/wikipage/QuizModal";
 import useEditMode from "@hooks/useEditMode";
+import useModal from "@hooks/useModal";
 import { useAuth } from "@context/AuthContext";
 //import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
@@ -74,6 +76,7 @@ function WikiPage({
     deleteError,
   } = useEditMode();
   const { isLoggedIn } = useAuth();
+  const [isOpen, handleIsOpen] = useModal();
   const router = useRouter();
 
   const handleEditClick = () => {
@@ -86,6 +89,18 @@ function WikiPage({
 
   const handleWikiContentChange = (value: string) => {
     setContent(value);
+  };
+
+  const handleImageUpload = async (imagePreviewUrl: string) => {
+    try {
+      const imageFile = await getImageFile(imagePreviewUrl);
+      const imageUrl = (await getImageUrl(imageFile)).url;
+      const imgTag = `<img src="${imageUrl}" />`;
+      setContent((prevContent) => prevContent + imgTag);
+      handleIsOpen();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleInputFocusOut = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -109,14 +124,13 @@ function WikiPage({
     setProfileImage(null);
   };
 
-  const handleIsOpen = () => {
+  const handleCancelWarningOpen = () => {
     setIsCancelWarningOpen((prev) => !prev);
   };
 
   const handleSubmitClick = async (timeOut: boolean = false) => {
     if (confirm("수정사항을 저장하시겠습니까?")) {
       setIsSaving(true);
-      console.log(`handleSubmit ${timeOut}`);
       if (
         initialProfile === profile && //항상 최신
         initialProfile.content === content && //업데이트필요
@@ -124,12 +138,10 @@ function WikiPage({
       ) {
         alert("수정사항이 없습니다.");
         if (timeOut) {
-          console.log("reloaded Second");
           router.reload();
         }
       } else {
         if (timeOut) {
-          console.log("refreshed in blabla");
           await refreshTimer();
         }
         if (profileImage !== initialProfile.image && profileImage !== null) {
@@ -145,7 +157,6 @@ function WikiPage({
           profileImage !== initialProfile.image &&
           profileImage === null
         ) {
-          console.log("이미지 삭제함");
           //이미지 삭제함
           setProfile((prevProfile) => ({
             ...prevProfile,
@@ -153,7 +164,6 @@ function WikiPage({
             image: profileImage,
           }));
         } else {
-          console.log("이미지는 변화가 없는데 소개글만 바뀜");
           // 이미지는 변화가 없는데 소개글만 바뀜
           setProfile((prevProfile) => ({
             ...prevProfile,
@@ -186,7 +196,6 @@ function WikiPage({
 
   useEffect(() => {
     if (isEditMode.content && isSaving === false) {
-      console.log("refreshed");
       refreshTimer();
     }
   }, [profile, content, profileImage]);
@@ -236,6 +245,7 @@ function WikiPage({
               className="mt-10"
               content={content}
               onChange={handleWikiContentChange}
+              onClick={handleIsOpen}
             />
           ) : (
             <>
@@ -289,7 +299,7 @@ function WikiPage({
       <AlarmModal
         type="alert"
         isOpen={isCancelWarningOpen}
-        handleIsOpen={handleIsOpen}
+        handleIsOpen={handleCancelWarningOpen}
         heading="저장하지 않고 나가시겠어요?"
         message="작성하신 모든 내용이 사라집니다."
         buttonText="페이지 나가기"
@@ -312,6 +322,11 @@ function WikiPage({
         code={initialProfile.code}
         errorMessage={errorMessage}
         deleteError={deleteError}
+      />
+      <ImageUploadModal
+        isOpen={isOpen}
+        handleIsOpen={handleIsOpen}
+        onClick={handleImageUpload}
       />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.

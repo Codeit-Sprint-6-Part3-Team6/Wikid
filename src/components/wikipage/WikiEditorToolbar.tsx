@@ -1,4 +1,6 @@
-function WikiEditorToolbar() {
+import IconButton from "@components/IconButton";
+
+function WikiEditorToolbar({ onClick }: { onClick?: () => void }) {
   return (
     <div
       id="toolbar"
@@ -35,7 +37,13 @@ function WikiEditorToolbar() {
         <select className="ql-align !w-6 !p-0" />
       </span>
       <span className="ql-formats !mr-0 !flex gap-5">
-        <button className="ql-image !w-6 !p-0" />
+        <IconButton
+          src="/icons/ic_image.svg"
+          alt="이미지 업로드"
+          onClick={onClick}
+          width={24}
+          height={24}
+        />
         <button className="ql-video !w-6 !p-0" />
         <button className="ql-link !w-6 !p-0" />
       </span>
