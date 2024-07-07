@@ -4,7 +4,7 @@ function ArticleEditorToolbar({ onClick }: { onClick?: () => void }) {
   return (
     <div
       id="toolbar"
-      className="mb-3 ml-auto mr-auto mt-3 !flex !h-11 !w-full items-center justify-between overflow-x-scroll rounded-[21.5px] !border-[#e2e8f0] !px-4 !py-[10px] md:overflow-x-auto"
+      className="mb-3 ml-auto mr-auto mt-3 !flex !h-11 !w-full items-center justify-between overflow-x-scroll rounded-[21.5px] !border-[#e2e8f0] !px-4 !py-[10px] md:overflow-x-visible"
     >
       <div className="flex gap-4">
         <span className="ql-formats !mr-0 !flex gap-1">
