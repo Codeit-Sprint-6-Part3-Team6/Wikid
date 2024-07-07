@@ -267,7 +267,10 @@ function WikiPage({
           />
         ) : (
           <div className="order-1 mt-6 lg:mt-0">
-            <ContentPresenter content={initialProfile.content} />
+            <ContentPresenter
+              content={initialProfile.content}
+              onClick={handleEditClick}
+            />
           </div>
         )}
 
