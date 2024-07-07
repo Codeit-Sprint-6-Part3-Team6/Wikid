@@ -49,9 +49,9 @@ const Dropdown = ({ options, order, onClick, type }: DropdownProps) => {
     };
   }, []);
 
-  const containerClass = `relative cursor-pointer items-center ${type === "sort" ? "w-[140px]" : "w-auto"}`;
-  const dropdownButtonClass = `flex h-[45px] ${type === "sort" ? "w-[140px]" : "w-full"} cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200`;
-  const dropdownMenuClass = `absolute top-full mt-1.5 ${type === "sort" ? "w-[140px]" : "w-full"} rounded-lg bg-white p-1.5 text-gray-800 bg-white z-10 shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]`;
+  const containerClass = `relative cursor-pointer items-center ${type === "sort" ? "w-full md:w-[140px]" : "w-auto"}`;
+  const dropdownButtonClass = `flex h-[45px] w-full cursor-pointer items-center justify-between rounded-lg bg-gray50 px-5 text-gray-800 transition-all duration-500 hover:bg-gray-200`;
+  const dropdownMenuClass = `absolute top-full mt-1.5 w-full rounded-lg bg-white p-1.5 text-gray-800 bg-white z-10 shadow-[0_4px_20px_0_rgba(0,0,0,0.08)]`;
 
   return (
     <div className={containerClass} ref={dropdownRef}>

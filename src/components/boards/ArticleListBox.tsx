@@ -81,7 +81,7 @@ const ArticleListBox = () => {
 
   return (
     <>
-      <div className="flex gap-[20px]">
+      <div className="flex flex-col gap-[20px] md:flex-row">
         <form onSubmit={handleSearchSubmit} className="flex w-full gap-[20px]">
           <Input
             value={search}
