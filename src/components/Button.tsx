@@ -21,7 +21,8 @@ const Button = ({
   let primaryStyle = "";
 
   if (color === "green") {
-    primaryStyle = "bg-green200 text-white";
+    primaryStyle =
+      "bg-green200 text-white transition-all duration-500 hover:bg-green300";
   } else if (color === "white") {
     primaryStyle = "bg-white text-green200";
   } else if (color === "red") {
