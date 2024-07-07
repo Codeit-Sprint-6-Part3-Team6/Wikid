@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Image from "next/image";
-import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import LinkButton from "@components/LinkButton";
 import styles from "@styles/main.module.css";
@@ -58,7 +57,7 @@ function SectionLayout({
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <div
           id="inner-container"
-          className={`${innerContainer ? "m-auto max-w-[1024px] p-[0_36px] md:p-[0_68px]" : ""}`}
+          className={`${innerContainer ? "m-auto max-w-[1024px] p-[0_20px] md:p-[0_36px] lg:p-[0_68px]" : ""}`}
         >
           {children}
         </div>
@@ -214,6 +213,9 @@ function FeatureShare() {
     pauseOnHover: true,
     variableWidth: true,
     centerMode: true,
+    afterChange: () => {
+      AOS.refresh();
+    },
   };
   const itemStyles =
     "relative h-[76px] w-[76px] md:h-[147px] md:w-[147px] lg:h-[360px] lg:w-[360px]";
@@ -332,15 +334,15 @@ function Footer() {
     <div className="bg-gray600 px-[20px] py-[40px] text-gray500 md:px-[48px] md:py-[60px] lg:p-[80px]">
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <section className="text-white">
-          <p className="text-[10px] font-[700] md:text-[16px]">
+          <p className="text-[12px] font-[700] md:text-[16px]">
             Copyright ⓒ Wikied. All Rights Reserved
           </p>
-          <p className="mb-[20px] mt-[10px] text-[8px] md:text-[14px]">
+          <p className="mb-[20px] mt-[10px] text-[11px] md:text-[14px]">
             사업자등록번호 000-00-00000 | 통신판매신고 제2020-서울-00000호 |
             대표 : 이지은 <br />
             서울특별시 중구 청계천로 123, 위키드빌딩
           </p>
-          <div className="flex gap-[15px] text-[8px] md:gap-[30px] md:text-[14px]">
+          <div className="flex gap-[15px] text-[11px] md:gap-[30px] md:text-[14px]">
             <p>서비스 이용약관</p>
             <p>개인정보 취급방침</p>
             <p>전자금융거래 기본약관</p>
