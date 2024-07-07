@@ -3,7 +3,7 @@ import { CommentType } from "@lib/types/commentType";
 
 export const getComments = async (
   targetId: string,
-  limit: number = 10,
+  limit: number = 20,
 ): Promise<CommentType[]> => {
   try {
     const res = await axios.get(`articles/${targetId}/comments?limit=${limit}`);

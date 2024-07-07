@@ -64,7 +64,7 @@ const ArticleListPage = ({ bestArticles }: ArticleListPageProps) => {
             type="button"
             onClick={handlePostButtonClick}
             color="green"
-            className="h-[45px] w-[160px] transition-all duration-500 hover:bg-green300"
+            className="h-[45px] w-[160px]"
           />
         </div>
         <BestArticleList bestArticles={bestArticles} />
