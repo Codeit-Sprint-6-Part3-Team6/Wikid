@@ -4,7 +4,7 @@ function WikiEditorToolbar({ onClick }: { onClick?: () => void }) {
   return (
     <div
       id="toolbar"
-      className="relative mb-8 flex h-[60px] items-center gap-5 overflow-x-scroll rounded-xl border-8 !border-[var(--color-gray50)] bg-[var(--color-gray50)] !px-5 md:justify-center md:overflow-x-auto md:p-0"
+      className="relative mb-8 flex h-[60px] items-center gap-5 rounded-xl border-8 !border-[var(--color-gray50)] bg-[var(--color-gray50)] !px-5 md:justify-center md:p-0"
     >
       <span className="ql-formats !mr-0 !flex gap-5 border-r border-solid border-[var(--color-gray200)] pr-5">
         <button className="ql-bold !w-6 !p-0" />
