@@ -70,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         Cookies.set("refreshToken", refreshToken, { secure: true });
 
         setIsLoggedIn(true);
-        // window.location.reload();
+        window.location.reload();
         router.push("/");
       }
     } catch (error: any) {
