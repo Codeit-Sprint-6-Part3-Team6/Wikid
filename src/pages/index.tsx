@@ -1,19 +1,28 @@
+import React, { useEffect } from "react";
+import Slider from "react-slick";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Image from "next/image";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import LinkButton from "@components/LinkButton";
 import styles from "@styles/main.module.css";
+import itemImage1 from "@images/image_item1.png";
+import itemImage2 from "@images/image_item2.png";
+import itemImage3 from "@images/image_item3.png";
+import itemImage4 from "@images/image_item4.png";
 import profile from "@images/image_landing1.png";
 import example1 from "@images/image_landing2.png";
 import example2 from "@images/image_landing3.png";
 import example3 from "@images/image_landing4.png";
 import bell from "@images/image_landing5.png";
-import megaphone from "@images/image_landing6.png";
-import w from "@images/image_landing7.png";
-import chat from "@images/image_landing8.png";
-import magnifier1 from "@images/image_landing9.png";
 import keyboard from "@images/image_landing11.png";
-import empty from "@images/image_landing13.png";
 
 export default function Home() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <>
       <TopSection />
@@ -39,17 +48,17 @@ function SectionLayout({
   children,
   wave,
 }: SectionLayoutProps) {
-  const waveStyles = `${wave ? "-mt-[400px]" : ""}`;
+  const waveStyles = `${wave ? "-mt-[calc(100vw*(200/375))] pt-[calc(100vw*(170/375))] lg:-mt-[400px] lg:pt-[370px] " : "pt-[100px] md:pt-[160px] lg:pt-[200px]"}`;
   return (
     <div
       style={{ backgroundColor: `var(--color-${bgColor})` }}
       id="viewport"
-      className={`relative pb-[100px] pt-[100px] text-gray500 md:pb-[160px] md:pt-[160px] lg:pb-[200px] lg:pt-[200px] ${waveStyles}`}
+      className={`relative pb-[100px] text-gray500 md:pb-[160px] lg:pb-[200px] ${waveStyles}`}
     >
       <div id="outer-container" className="m-auto max-w-[1920px]">
         <div
           id="inner-container"
-          className={`${innerContainer ? "m-auto max-w-[1024px] p-[36px] md:p-[68px]" : ""}`}
+          className={`${innerContainer ? "m-auto max-w-[1024px] p-[0_36px] md:p-[0_68px]" : ""}`}
         >
           {children}
         </div>
@@ -68,26 +77,29 @@ function TopSection() {
         className="flex flex-col items-center gap-[40px]"
       >
         <div className="text-center leading-none">
-          <h2 className="mb-4 text-[40px] font-[300] md:text-[60px]">
+          <h2
+            className="mb-4 text-[40px] font-[300] md:text-[60px]"
+            data-aos="fade-up"
+          >
             남들이 만드는
           </h2>
-          <h1 className="text-[60px] font-[700] md:text-[90px]">나만의 위키</h1>
+          <h1
+            className="text-[60px] font-[700] md:text-[90px]"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            나만의 위키
+          </h1>
         </div>
-        <LinkButton
-          text="위키 만들기"
-          link="/mypage"
-          color="gray"
-          className="h-[59px] w-[170px] text-[24px] font-bold"
-        />
-        {/* <Link href={"/"}>
-          <Button
-            color="white"
+        <div data-aos="fade-up" data-aos-delay="400">
+          <LinkButton
             text="위키 만들기"
-            className="md-h-[59px] h-[54px] w-full max-w-[152px] rounded-2xl border-none bg-gray500 px-[30px] py-[15px] text-[20px] font-bold text-white"
-            type="button"
+            link="/mypage"
+            color="gray"
+            className="h-[59px] w-[170px] text-[24px] font-bold"
           />
-        </Link> */}
-        <div className="relative z-10">
+        </div>
+        <div className="relative z-10" data-aos="fade-up" data-aos-delay="600">
           <Image
             alt="/"
             src={profile}
@@ -131,12 +143,15 @@ function FeatureMessage({
       <h1
         id="header"
         className="text-[10px] font-[700] text-green200 md:text-[20px] lg:text-[30px]"
+        data-aos="fade-up"
       >
         {header}
       </h1>
       <p
         id="description"
         className={`${className} lg:md-[60px] mb-[5px] mt-[10px] text-[16px] font-[400] md:mb-[40px] md:mt-[20px] md:text-[32px] md:leading-[32px] lg:mt-[20px] lg:text-[50px] lg:leading-[57px]`}
+        data-aos="fade-up"
+        data-aos-delay="200"
       >
         {FirstLine} <br />
         {SecondLine}
@@ -168,7 +183,7 @@ function FeatureWrite() {
             SecondLine="직접 작성해 봐요"
             className="text-white"
           />
-          <div>
+          <div data-aos="fade-up" data-aos-delay="300">
             <Image
               alt="/"
               src={keyboard}
@@ -176,7 +191,11 @@ function FeatureWrite() {
             />
           </div>
         </div>
-        <div id="feature/write-rightSide">
+        <div
+          id="feature/write-rightSide"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
           <Image alt="/" src={example1} className="w-full max-w-[520px]" />
         </div>
       </section>
@@ -185,6 +204,19 @@ function FeatureWrite() {
 }
 
 function FeatureShare() {
+  const settings = {
+    dots: false,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 0,
+    speed: 10000,
+    cssEase: "linear",
+    pauseOnHover: true,
+    variableWidth: true,
+    centerMode: true,
+  };
+  const itemStyles =
+    "relative h-[76px] w-[76px] md:h-[147px] md:w-[147px] lg:h-[360px] lg:w-[360px]";
   return (
     <SectionLayout bgColor="gray50" innerContainer={false}>
       <div
@@ -201,37 +233,29 @@ function FeatureShare() {
           />
         </section>
       </div>
-      <div className="flex gap-[10px] md:gap-[20px] lg:gap-[70px]">
-        <Image
-          alt="/"
-          src={empty}
-          className="min-w-[0px] rounded-2xl bg-[#DEE5F5]"
-        />
-        <Image
-          alt="/"
-          src={megaphone}
-          className="min-w-[0px] rounded-2xl bg-[#B2A5FD]"
-        />
-        <Image
-          alt="/"
-          src={w}
-          className="min-w-[0px] rounded-2xl bg-[#ADEDDE]"
-        />
-        <Image
-          alt="/"
-          src={chat}
-          className="min-w-[0px] rounded-2xl bg-[#DEE5F5]"
-        />
-        <Image
-          alt="/"
-          src={magnifier1}
-          className="min-w-[0px] rounded-2xl bg-[#DEE5F5]"
-        />
-        <Image
-          alt="/"
-          src={empty}
-          className="min-w-[0px] rounded-2xl bg-[#DEE5F5]"
-        />
+      <div className={styles.slider_container}>
+        <Slider {...settings}>
+          <div className="m-[0_5px] md:m-[0_10px] lg:m-[0_35px]">
+            <div className={itemStyles}>
+              <Image alt="/" src={itemImage1} fill className="h-full w-full" />
+            </div>
+          </div>
+          <div className="m-[0_5px] md:m-[0_10px] lg:m-[0_35px]">
+            <div className={itemStyles}>
+              <Image alt="/" src={itemImage2} fill className="h-full w-full" />
+            </div>
+          </div>
+          <div className="m-[0_5px] md:m-[0_10px] lg:m-[0_35px]">
+            <div className={itemStyles}>
+              <Image alt="/" src={itemImage3} fill className="h-full w-full" />
+            </div>
+          </div>
+          <div className="m-[0_5px] md:m-[0_10px] lg:m-[0_35px]">
+            <div className={itemStyles}>
+              <Image alt="/" src={itemImage4} fill className="h-full w-full" />
+            </div>
+          </div>
+        </Slider>
       </div>
     </SectionLayout>
   );
@@ -246,10 +270,16 @@ function FeatureView() {
           FirstLine="친구들이 달아준,"
           SecondLine="내용을 확인해 봐요"
         />
-        <div className="mb-[10px] mt-[40px] md:mb-[22px] md:mt-[80px] lg:mb-[40px] lg:mt-[120px]">
+        <div
+          className="mb-[10px] mt-[40px] md:mb-[22px] md:mt-[80px] lg:mb-[40px] lg:mt-[120px]"
+          data-aos="fade-up"
+        >
           <Image alt="/" src={example2} />
         </div>
-        <div className="flex justify-between gap-[10px] md:gap-[20px] lg:gap-[40px]">
+        <div
+          className="flex justify-between gap-[10px] md:gap-[20px] lg:gap-[40px]"
+          data-aos="fade-up"
+        >
           <div>
             <Image
               alt="/"
@@ -276,15 +306,20 @@ function BottomSection() {
   return (
     <SectionLayout bgColor="gray500" innerContainer={true}>
       <section className="flex flex-col items-center justify-between gap-[40px]">
-        <h1 className="text-[30px] text-white md:text-[60px]">
+        <h1
+          className="text-[30px] leading-none text-white md:text-[60px]"
+          data-aos="fade-up"
+        >
           나만의 위키 만들어 보기
         </h1>
-        <LinkButton
-          text="지금 시작하기"
-          color="white"
-          link="/mypage"
-          className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
-        />
+        <div data-aos="fade-up" data-aos-delay="200">
+          <LinkButton
+            text="지금 시작하기"
+            color="white"
+            link="/mypage"
+            className="h-[54px] w-[160px] rounded-2xl border-none bg-white text-[20px] font-[700] text-gray500"
+          />
+        </div>
       </section>
     </SectionLayout>
   );
