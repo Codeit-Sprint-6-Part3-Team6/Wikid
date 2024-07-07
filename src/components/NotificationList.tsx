@@ -41,7 +41,7 @@ export default function NotificationList({
             <X onClick={handleIsOpen} className="z-50 cursor-pointer" />
           </div>
           <div
-            className={`${notificationList.length ? "max-h-[230px]" : `h-[230px]`} overflow-y-scroll`}
+            className={`${notificationList.length ? "max-h-[235px]" : `h-[235px]`} overflow-y-auto`}
           >
             <div className="my-[20px] flex flex-col items-center gap-3">
               {notificationList.length ? (
