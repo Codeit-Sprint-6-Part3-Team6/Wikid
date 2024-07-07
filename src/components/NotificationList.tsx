@@ -32,7 +32,7 @@ export default function NotificationList({
         <div
           ref={notificationRef}
           id="outer-most-div"
-          className={`${notificationList.length ? "max-h-[285px] bg-[#CED8D5]" : "h-[285px] bg-[#f89bfa]"} relative w-[280px] rounded-xl px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]`}
+          className={`${notificationList.length ? "max-h-[285px] bg-[#CED8D5]" : "h-[285px] bg-[#CED8D5]"} relative w-[280px] rounded-xl px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]`}
         >
           <div className="flex w-full items-center justify-between text-[#1B1B1B]">
             <p className="text-[16px] font-[500] sm:text-[20px]">
