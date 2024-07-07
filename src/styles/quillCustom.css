@@ -72,6 +72,10 @@ button.ql-active {
   max-height: 40vh;
 }
 
+#toolbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .textPresenter {
     overflow-wrap: anywhere;

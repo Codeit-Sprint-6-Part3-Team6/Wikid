@@ -23,7 +23,11 @@ const IconButton: React.FC<IconButtonProps> = ({
   totalCount,
 }) => {
   return (
-    <button type="button" onClick={onClick} className="relative !p-0">
+    <button
+      type="button"
+      onClick={onClick}
+      className={`${totalCount ? "relative" : ""} !p-0`}
+    >
       <Image
         width={width}
         height={height}

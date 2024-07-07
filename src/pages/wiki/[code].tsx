@@ -203,16 +203,16 @@ function WikiPage({
   return (
     <>
       <div
-        className={`mx-auto flex max-w-[1600px] flex-col px-5 py-10 pb-28 md:px-[60px] md:py-[60px] lg:grid lg:grid-cols-[1fr_auto] lg:gap-20 lg:gap-y-0 lg:px-[100px] lg:py-20`}
+        className={`mx-auto flex max-w-[1600px] flex-col px-5 py-10 pb-28 md:px-[60px] md:py-[60px] lg:grid lg:grid-cols-[1fr_auto] lg:grid-rows-[auto_1fr] lg:gap-20 lg:gap-y-0 lg:px-[100px] lg:py-20`}
       >
-        <div className="">
+        <div className={`${isEditMode.profile ? "absolute lg:static" : ""}`}>
           <div className="mb-6 flex items-center justify-between md:mb-8">
             <div className="text-[32px] font-semibold leading-none text-gray500 md:text-[48px]">
               {initialProfile.name}
             </div>
             {!initialProfile.content ||
             isEditMode.profile ? undefined : isEditMode.content ? (
-              <div className="mt-8 flex justify-end gap-[10px]">
+              <div className="flex justify-end gap-[10px]">
                 <Button
                   type="button"
                   text="취소"
@@ -238,17 +238,21 @@ function WikiPage({
               />
             )}
           </div>
-          <LinkCopyButton
-            link={`http://localhost:3000/wiki/${initialProfile.code}`}
-            className="mb-4 lg:mb-14"
-          />
-          {!initialIsEditable && (
-            <div
-              style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
-              className="mb-5 flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat pl-[54px] leading-6 text-gray500 md:pr-[54px] lg:mt-[-40px]"
-            >
-              {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
-            </div>
+          {!isEditMode.content && (
+            <>
+              <LinkCopyButton
+                link={`http://localhost:3000/wiki/${initialProfile.code}`}
+                className="mb-4 lg:mb-14"
+              />
+              {!initialIsEditable && (
+                <div
+                  style={{ backgroundImage: `url("/icons/ic_problem.svg")` }}
+                  className="mb-5 flex h-[54px] w-full items-center rounded-[10px] bg-gray50 bg-[20px_center] bg-no-repeat pl-[54px] leading-6 text-gray500 md:pr-[54px] lg:mt-[-40px]"
+                >
+                  {"앞 사람의 편집이 끝나면 위키 참여가 가능합니다."}
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -256,7 +260,7 @@ function WikiPage({
           <TextEditor
             type="wiki"
             name={initialProfile.name}
-            className="mt-10"
+            className="order-1 mt-10 lg:order-none lg:mt-0"
             content={content}
             onChange={handleWikiContentChange}
             onClick={handleIsOpen}
@@ -267,7 +271,7 @@ function WikiPage({
           </div>
         )}
 
-        <div className="flex-shrink-0 lg:col-[2/span_1] lg:row-[1/span_2] lg:w-[320px]">
+        <div className="flex flex-shrink-0 flex-col lg:col-[2/span_1] lg:row-[1/span_2] lg:block lg:w-[320px]">
           <ProfileCard
             className=""
             profile={profile}
@@ -279,7 +283,7 @@ function WikiPage({
             onDeleteClick={handleDeleteProfileImageClick}
           />
           {isEditMode.profile && (
-            <div className="mt-8 flex justify-end gap-[10px]">
+            <div className="-order-1 mb-4 flex justify-end gap-[10px] md:mb-5 lg:order-none lg:mt-8">
               <Button
                 type="button"
                 text="취소"

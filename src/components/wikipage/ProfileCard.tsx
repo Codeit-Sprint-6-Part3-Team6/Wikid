@@ -25,11 +25,11 @@ function ProfileCard({
   onFileChange,
   onDeleteClick,
 }: ProfileCardProps) {
-  const style = `${className} ${isEditMode ? "md:px-[40px]" : "md:px-[30px]"}`;
+  const style = `${className} ${isEditMode ? "lg:px-[40px]" : "lg:px-[30px]"}`;
 
   return (
     <div
-      className={`${style} flex w-full flex-col items-center gap-6 rounded-[10px] px-10 py-6 shadow-[0_4px_20px_0_#00000014] md:flex-row md:gap-8 md:py-4 lg:flex-col lg:gap-[60px] lg:pb-[30px] lg:pt-[60px]`}
+      className={`${style} flex w-full flex-col items-center gap-6 rounded-[10px] px-6 py-6 shadow-[0_4px_20px_0_#00000014] md:flex-row md:gap-8 md:py-4 lg:flex-col lg:gap-[60px] lg:pb-[30px] lg:pt-[60px]`}
     >
       {isEditMode ? (
         <ProfileImageEditor

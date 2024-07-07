@@ -105,7 +105,7 @@ function ArticleEditPage() {
               color="white"
               type="button"
               onClick={handleLinkButtonClick}
-              className="h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300"
+              className="h-10 w-[72px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300 md:h-[45px] md:w-[140px]"
             />
           </div>
           <div className="w-full">
