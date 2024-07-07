@@ -19,10 +19,10 @@ function ProfileImageEditor({
   };
 
   return (
-    <div className="relative h-[200px]">
+    <div className="relative h-28 w-28 flex-shrink-0 lg:h-[200px] lg:w-[200px]">
       <label
         style={backgroundImage}
-        className={`flex h-[200px] w-[200px] cursor-pointer items-center justify-center rounded-full bg-[#0000004d] bg-cover bg-center bg-no-repeat bg-blend-multiply hover:bg-[#00000080]`}
+        className={`flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#0000004d] bg-cover bg-center bg-no-repeat bg-blend-multiply hover:bg-[#00000080]`}
       >
         <Image
           className="h-[36px] w-[36px]"
@@ -38,7 +38,7 @@ function ProfileImageEditor({
       </label>
       {imageUrl && (
         <IconButton
-          className="absolute right-0 top-0"
+          className="md absolute right-[-4px] top-[-4px] w-[18px] md:w-4 lg:right-0 lg:top-0 lg:w-auto"
           src={xIcon}
           alt="x-button"
           onClick={onClick}
