@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { X } from "lucide-react";
 import Link from "next/link";
 import SmallCat from "./SmallCat";
@@ -21,24 +22,36 @@ export default function NotificationList({
   totalCount,
   handleDeleteClick,
 }: NotificationListProps) {
-  const handleOutsideClick = () => {
+  const [clickCount, setClickCount] = useState<number>(1);
+  const [catBgColor, setCatBgColor] = useState("bg-[#fcf47c]");
+
+  const handleCloseClick = () => {
     handleIsOpen();
+    setClickCount(clickCount + 1);
+    if (clickCount % 3 == 1) {
+      setCatBgColor("bg-[#f89bfa]");
+    } else if (clickCount % 3 == 2) {
+      setCatBgColor("bg-[#51f5b6]");
+    } else {
+      setCatBgColor("bg-[#5c6ef7]");
+    }
   };
-  const notificationRef = useOutsideClick(handleOutsideClick);
+
+  console.log(clickCount);
 
   return (
     <>
       {isOpen && (
         <div
-          ref={notificationRef}
+          // ref={ref}
           id="outer-most-div"
-          className={`${notificationList.length ? "max-h-[285px] bg-[#CED8D5]" : "h-[285px] bg-[#f89bfa]"} relative w-[280px] rounded-xl px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]`}
+          className={`${notificationList.length ? "max-h-[285px] bg-[#CED8D5]" : `h-[285px] ${catBgColor}`} relative w-[280px] rounded-xl px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]`}
         >
           <div className="flex w-full items-center justify-between text-[#1B1B1B]">
             <p className="text-[16px] font-[500] sm:text-[20px]">
               {notificationList.length ? `알림 ${totalCount}개` : ""}
             </p>
-            <X onClick={handleIsOpen} className="z-50 cursor-pointer" />
+            <X onClick={handleCloseClick} className="z-50 cursor-pointer" />
           </div>
           <div
             className={`${notificationList.length ? "max-h-[230px]" : `h-[230px]`} overflow-y-scroll`}
