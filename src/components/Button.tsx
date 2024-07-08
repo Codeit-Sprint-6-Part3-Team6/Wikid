@@ -5,7 +5,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?:
     | (() => Promise<void>)
-    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
+    | ((e: React.MouseEvent<HTMLButtonElement>) => void | Promise<void>)
     | (() => void);
   className?: string; // text, color를 제외한 모든 스타일 속성들
 }
@@ -21,7 +21,8 @@ const Button = ({
   let primaryStyle = "";
 
   if (color === "green") {
-    primaryStyle = "bg-green200 text-white";
+    primaryStyle =
+      "bg-green200 text-white transition-all duration-500 hover:bg-green300";
   } else if (color === "white") {
     primaryStyle = "bg-white text-green200";
   } else if (color === "red") {

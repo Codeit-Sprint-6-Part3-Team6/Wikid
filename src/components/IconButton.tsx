@@ -10,6 +10,7 @@ interface IconButtonProps {
   width?: number;
   height?: number;
   totalCount?: number;
+  menuRef?: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -21,9 +22,15 @@ const IconButton: React.FC<IconButtonProps> = ({
   width,
   height,
   totalCount,
+  menuRef,
 }) => {
   return (
-    <button type="button" onClick={onClick} className="relative">
+    <button
+      type="button"
+      onClick={onClick}
+      className={`${totalCount ? "relative" : ""} !p-0`}
+      ref={menuRef}
+    >
       <Image
         width={width}
         height={height}

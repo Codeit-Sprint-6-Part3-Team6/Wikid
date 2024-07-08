@@ -27,23 +27,18 @@ function useEditMode() {
     const isEditing = await checkIsEditing(code);
 
     if (isEditing) {
-      console.log("editing");
       showToast();
     } else {
-      console.log("not editing");
       setIsQuizOpen(true);
       const permission = await askPermissionPromise();
       if (permission) {
-        console.log("permission true");
         const isProfileYours = await compareCode(code);
         if (isProfileYours) {
-          console.log("mine");
           setIsEditMode({
             content: true,
             profile: true,
           });
         } else {
-          console.log("notMine");
           setIsEditMode({
             content: true,
             profile: false,
@@ -59,7 +54,6 @@ function useEditMode() {
   };
 
   const compareCode = async (code: Code) => {
-    console.log("compareCode");
     try {
       const userInfo = await getUserInfo();
       return userInfo.profile.code === code;
@@ -69,7 +63,6 @@ function useEditMode() {
   };
 
   const askPermissionPromise = async () => {
-    console.log("askPermission");
     return new Promise<boolean>((resolve) => {
       setResolveFunction(() => resolve);
     });
@@ -80,7 +73,6 @@ function useEditMode() {
   };
 
   const handleQuizSubmit = async (answer: string, code: Code) => {
-    console.log("handleQuizSubmit");
     answerRef.current = answer;
     codeRef.current = code;
     const result = await tryEdit(answer, code);
@@ -96,8 +88,6 @@ function useEditMode() {
   };
 
   const tryEdit = async (answer: string, code: Code) => {
-    console.log("tryEdit");
-    console.log(code);
     try {
       const result = await postProfileEdit({
         code,
@@ -115,8 +105,6 @@ function useEditMode() {
 
   const refreshTimer = async () => {
     clearTimeout(timeDelayerRef.current);
-    console.log("refreshTimer 들어옴");
-    console.log(300000 - (Date.now() - lastRefreshedRef.current) < 5000);
     timeDelayerRef.current = setTimeout(
       async () => {
         const result = await tryEdit(answerRef.current, codeRef.current);

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Camera, X } from "lucide-react";
 import Image from "next/image";
 import Button from "@components/Button";
@@ -7,7 +7,7 @@ import Modal from "@components/Modal";
 type ImageUploadModalProps = {
   isOpen: boolean;
   handleIsOpen: () => void;
-  onClick: () => void;
+  onClick: (imageSrc: string) => void;
 };
 
 export default function ImageUploadModal({
@@ -24,8 +24,12 @@ export default function ImageUploadModal({
     }
   };
 
+  useEffect(() => {
+    setPreviewImageUrl("");
+  }, [isOpen]);
+
   return (
-    <Modal isOpen={true} handleIsOpen={handleIsOpen}>
+    <Modal isOpen={isOpen} handleIsOpen={handleIsOpen}>
       <div className="flex flex-col">
         <p className="text-center text-[16px] font-semibold text-[#474D66] sm:text-[18px]">
           이미지
@@ -33,22 +37,21 @@ export default function ImageUploadModal({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onClick();
+            onClick(previewImageUrl);
           }}
           className="mt-[15px] flex flex-col"
         >
           <label
             htmlFor="file-input"
-            className={`${previewImageUrl ? "h-[355px] w-[350px]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
+            className={`${previewImageUrl ? "max-h-[40vh] min-h-[160px] max-w-[40vw]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
           >
             {!previewImageUrl && <Camera className="animate-bounce" />}
             {previewImageUrl && (
-              <Image
+              <img
                 alt="image-preview"
-                className="h-full rounded-xl"
+                className="min-h-[90%] min-w-[90%] rounded-lg"
                 src={previewImageUrl}
-                fill
-              ></Image>
+              ></img>
             )}
           </label>
           {/* 보이지 않는 input이라서 공통 component를 사용하지 않고 기존의 input으로 남겨두겠습니다. */}
@@ -62,7 +65,8 @@ export default function ImageUploadModal({
             type="button"
             text="삽입하기"
             color={`${previewImageUrl ? "green" : "gray"}`}
-            onClick={onClick}
+            disabled={!previewImageUrl}
+            onClick={() => onClick(previewImageUrl)}
             className={`mt-[20px] place-self-end border-none px-5 py-3 ${previewImageUrl ? "" : "bg-gray300 text-white"}`}
           />
         </form>

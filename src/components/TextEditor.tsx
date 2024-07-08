@@ -64,7 +64,6 @@ const articleFormats = [
   "underline",
   "align",
   "list",
-  "image",
   "color",
   "link",
 ];
@@ -75,6 +74,8 @@ interface TextEditorProps {
   content?: string;
   className?: string;
   onChange: (value: string) => void;
+  onClick?: () => void;
+  editorRef?: React.RefObject<HTMLDivElement>;
 }
 
 function TextEditor({
@@ -83,12 +84,17 @@ function TextEditor({
   className,
   content = "",
   onChange,
+  onClick: handleImageButtonClick,
+  editorRef,
 }: TextEditorProps) {
   return (
     <div
-      className={`flex flex-col justify-center ${type} ${className} w-full min-w-[800px] ${type === "article" ? "px-[30px]" : ""}`} //!w-[${type === "wiki" ? 1120 : 1060}px]
+      ref={editorRef}
+      className={`flex flex-col justify-center ${type} ${className} w-full ${type === "article" ? "px-[30px]" : ""}`} //!w-[${type === "wiki" ? 1120 : 1060}px]
     >
-      {type === "wiki" && name && <WikiEditorToolbar />}
+      {type === "wiki" && name && (
+        <WikiEditorToolbar onClick={handleImageButtonClick} />
+      )}
       <QuillNoSSRWrapper
         style={{ height: "100%", overflow: "auto" }}
         theme="snow"
@@ -98,7 +104,9 @@ function TextEditor({
         value={content}
         onChange={onChange}
       />
-      {type === "article" && <ArticleEditorToolbar />}
+      {type === "article" && (
+        <ArticleEditorToolbar onClick={handleImageButtonClick} />
+      )}
     </div>
   );
 }
