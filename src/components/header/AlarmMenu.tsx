@@ -12,7 +12,9 @@ const AlarmMenu = () => {
   const toggleNotification = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
-  const alarmRef = useOutsideClick(() => setIsNotificationOpen(false));
+  const alarmRef = useOutsideClick<HTMLDivElement>(() =>
+    setIsNotificationOpen(false),
+  );
 
   return (
     <>

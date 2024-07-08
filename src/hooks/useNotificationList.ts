@@ -19,7 +19,7 @@ export const useNotificationList = (isOpen: boolean) => {
         const { list } = await getNotifications();
         setNotificationList(list);
       } catch (error) {
-        throw error("error happened");
+        throw error;
       } finally {
         setIsLoading(false);
       }
