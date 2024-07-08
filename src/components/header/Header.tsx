@@ -7,6 +7,7 @@ import AlarmMenu from "./AlarmMenu";
 import HeaderLoggedIn from "./HeaderLoggedIn";
 import HeaderLoggedOut from "./HeaderLoggedOut";
 import Menu from "./Menu";
+import useOutsideClick from "@hooks/useOutsideClick";
 import useUserInfo from "@hooks/useUserInfo";
 import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
@@ -20,17 +21,13 @@ const Header = () => {
   const router = useRouter();
   const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { user } = useUserInfo();
   const code = user?.profile?.code;
-
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => !prev);
   };
 
-  const handleMenuClick = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const hamburgerMenuRef = useOutsideClick(() => setIsMenuOpen(false));
 
   const fetchProfileImage = useCallback(async () => {
     try {
@@ -93,19 +90,17 @@ const Header = () => {
         ) : (
           <HeaderLoggedOut />
         )}
-        <IconButton
-          src={MenuIcon}
-          alt="메뉴 아이콘"
-          className="block h-[32px] w-[32px] md:hidden"
-          onClick={toggleMenu}
-        />
+        <div ref={hamburgerMenuRef} className="flex items-center">
+          <IconButton
+            src={MenuIcon}
+            alt="메뉴 아이콘"
+            className="block h-[32px] w-[32px] md:hidden"
+            onClick={toggleMenu}
+          />
+        </div>
         {isMenuOpen && (
-          <div onClick={handleMenuClick} className="relative">
-            <Menu
-              isLoggedIn={isLoggedIn}
-              handleMenuClick={handleMenuClick}
-              code={code}
-            />
+          <div className="relative">
+            <Menu isLoggedIn={isLoggedIn} code={code} />
           </div>
         )}
       </div>

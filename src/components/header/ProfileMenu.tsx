@@ -1,21 +1,15 @@
 import Link from "next/link";
-import useOutsideClick from "@hooks/useOutsideClick";
 import { useAuth } from "@context/AuthContext";
 
 type ProfileMenuProps = {
   code: string | undefined;
-  handleMenuClick: () => void;
 };
 
-const ProfileMenu = ({ handleMenuClick, code }: ProfileMenuProps) => {
+const ProfileMenu = ({ code }: ProfileMenuProps) => {
   const { logout } = useAuth();
-  const profileMenuRef = useOutsideClick(handleMenuClick);
 
   return (
-    <div
-      ref={profileMenuRef}
-      className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white"
-    >
+    <div className="absolute left-[-35px] top-[40px] z-10 flex w-[120px] flex-col items-center gap-[5px] rounded-[10px] border-[0.5px] border-solid border-gray400 bg-white">
       <Link
         href="/mypage"
         className="h-[44px] w-full text-center leading-[44px] hover:scale-105"
