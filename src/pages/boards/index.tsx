@@ -3,8 +3,41 @@ import Button from "@components/Button";
 import ArticleListBox from "@components/boards/ArticleListBox";
 import BestArticleList from "@components/boards/BestArticleList";
 import { useAuth } from "@context/AuthContext";
+import { getArticleList } from "@lib/api/articleApi";
+import { ArticleType, ArticleQueryOptions } from "@lib/types/articleType";
 
-const ArticleListPage = () => {
+const PAGE_SIZE = 4;
+
+interface ArticleListPageProps {
+  bestArticles: ArticleType[];
+}
+
+export async function getServerSideProps() {
+  try {
+    const options: ArticleQueryOptions = {
+      page: 1,
+      pageSize: PAGE_SIZE,
+      orderBy: "like",
+    };
+    const { list } = await getArticleList(options);
+
+    return {
+      props: {
+        bestArticles: list,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      props: {
+        bestArticles: [],
+      },
+    };
+  }
+}
+
+const ArticleListPage = ({ bestArticles }: ArticleListPageProps) => {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
 
@@ -31,10 +64,10 @@ const ArticleListPage = () => {
             type="button"
             onClick={handlePostButtonClick}
             color="green"
-            className="h-[45px] w-[160px] transition-all duration-500 hover:bg-green300"
+            className="h-[45px] w-[160px]"
           />
         </div>
-        <BestArticleList />
+        <BestArticleList bestArticles={bestArticles} />
         <ArticleListBox />
       </div>
     </main>

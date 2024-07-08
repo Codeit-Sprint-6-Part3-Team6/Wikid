@@ -113,14 +113,14 @@ const ArticlePage = () => {
                     color="green"
                     type="button"
                     onClick={handleEditArticle}
-                    className="h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                    className="h-[45px] w-[140px]"
                   />
                   <Button
                     text="삭제하기"
                     color="green"
                     type="button"
                     onClick={handleDeleteArticle}
-                    className="ml-[14px] h-[45px] w-[140px] transition-all duration-500 hover:bg-green300"
+                    className="ml-[14px] h-[45px] w-[140px]"
                   />
                 </div>
               </div>
@@ -140,11 +140,10 @@ const ArticlePage = () => {
             )}
           </div>
           {article.image && (
-            <Image
+            <img
               src={article.image}
               alt="게시글 이미지"
-              width={800}
-              height={600}
+              className="max-h-[40vh] self-start object-contain"
             />
           )}
           <p
@@ -159,7 +158,7 @@ const ArticlePage = () => {
         text="목록으로"
         link="/boards"
         color="white"
-        className="my-[40px] h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300 lg:my-[60px]"
+        className="my-[40px] h-[45px] w-[140px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-gray50 lg:my-[60px]"
       />
       {boardId && typeof boardId === "string" && <Comment boardId={boardId} />}
     </div>

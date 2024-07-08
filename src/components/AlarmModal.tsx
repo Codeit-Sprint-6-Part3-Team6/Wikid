@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import Button from "./Button";
 import Modal from "./Modal";
 
@@ -35,7 +34,7 @@ export default function AlarmModal({
             text={buttonText}
             color={type == "confirm" ? "green" : "red"}
             type={"button"}
-            className={`h-[40px] min-w-[65px] px-3 text-white ${type === "alert" ? `border-none` : ""}`}
+            className={`h-[40px] min-w-[65px] px-3 text-white ${type == "alert" ? "bg-[#d14343]" : ""}`}
           />
         </div>
       </Modal>

@@ -68,3 +68,16 @@ button.ql-active {
 .textPresenter .ql-size-huge {
   font-size: 2.5em;
 }
+.textPresenter img {
+  max-height: 40vh;
+}
+
+#toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .textPresenter {
+    overflow-wrap: anywhere;
+  }
+}

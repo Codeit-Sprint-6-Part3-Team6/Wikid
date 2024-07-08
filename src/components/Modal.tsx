@@ -11,7 +11,7 @@ export default function Modal({ isOpen, handleIsOpen, children }: ModalProps) {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 flex h-[100vh] w-full items-center justify-center">
+        <div className="fixed inset-0 z-50 flex h-[100vh] w-full items-center justify-center">
           <div
             onClick={handleIsOpen}
             className="absolute inset-[0px] bg-[#474D664D]"

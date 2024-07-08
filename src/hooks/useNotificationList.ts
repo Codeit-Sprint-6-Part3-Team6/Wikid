@@ -10,11 +10,19 @@ export const useNotificationList = (isOpen: boolean) => {
     NotificationItemType[]
   >([]);
   const totalCount = notificationList?.length;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      const { list } = await getNotifications();
-      setNotificationList(list);
+      setIsLoading(true);
+      try {
+        const { list } = await getNotifications();
+        setNotificationList(list);
+      } catch (error) {
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchData();
   }, [isOpen]);
@@ -26,7 +34,7 @@ export const useNotificationList = (isOpen: boolean) => {
     });
   };
 
-  return { totalCount, notificationList, handleDeleteClick };
+  return { totalCount, notificationList, handleDeleteClick, isLoading };
 };
 
 export default useNotificationList;

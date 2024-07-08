@@ -1,10 +1,15 @@
 import DOMPurify from "isomorphic-dompurify";
 import Button from "@components/Button";
 
-function ContentPresenter({ content }: { content: string }) {
+type ContentPresenterProps = {
+  content: string;
+  onClick: () => void;
+};
+
+function ContentPresenter({ content, onClick }: ContentPresenterProps) {
   return content ? (
     <div
-      className="textPresenter pb-36 text-[16px] leading-[1.42]"
+      className="textPresenter text-[16px] leading-[1.42] md:pb-24 lg:pb-36"
       dangerouslySetInnerHTML={{
         __html: DOMPurify.sanitize(content),
       }}
@@ -19,6 +24,7 @@ function ContentPresenter({ content }: { content: string }) {
         text="시작하기"
         color="green"
         className="px-5 py-2"
+        onClick={onClick}
       />
     </div>
   );
