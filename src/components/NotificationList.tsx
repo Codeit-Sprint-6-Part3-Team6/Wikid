@@ -1,10 +1,11 @@
-import { X } from "lucide-react";
+import { useState } from "react";
 import Link from "next/link";
+import IconButton from "./IconButton";
 import SmallCat from "./SmallCat";
-import useOutsideClick from "@hooks/useOutsideClick";
 import useUserInfo from "@hooks/useUserInfo";
 import { elapsedTimeConverter } from "@lib/elapsedTimeConverter";
 import { NotificationItemType } from "@lib/types/Notifications";
+import closeIcon from "@icons/ic_small_x.svg";
 
 type NotificationListProps = {
   isOpen: boolean;
@@ -21,16 +22,14 @@ export default function NotificationList({
   totalCount,
   handleDeleteClick,
 }: NotificationListProps) {
-  const handleOutsideClick = () => {
+  const handleCloseClick = () => {
     handleIsOpen();
   };
-  const notificationRef = useOutsideClick(handleOutsideClick);
 
   return (
     <>
       {isOpen && (
         <div
-          ref={notificationRef}
           id="outer-most-div"
           className={`${notificationList.length ? "max-h-[285px] bg-[#CED8D5]" : "h-[285px] bg-[#CED8D5]"} relative w-[280px] rounded-xl px-[20px] py-[24px] text-[11px] shadow-xl sm:w-[310px] sm:text-[13px] lg:w-[368px] lg:text-[14px]`}
         >
@@ -38,10 +37,17 @@ export default function NotificationList({
             <p className="text-[16px] font-[500] sm:text-[20px]">
               {notificationList.length ? `알림 ${totalCount}개` : ""}
             </p>
-            <X onClick={handleIsOpen} className="z-50 cursor-pointer" />
+            <div className="z-50 flex justify-end">
+              <IconButton
+                alt={closeIcon}
+                src={closeIcon}
+                onClick={handleCloseClick}
+                className="cursor-pointer"
+              />
+            </div>
           </div>
           <div
-            className={`${notificationList.length ? "max-h-[235px]" : `h-[235px]`} overflow-y-auto`}
+            className={`${notificationList.length ? "max-h-[235px]" : `h-[235px]`} notification overflow-y-auto`}
           >
             <div className="my-[20px] flex flex-col items-center gap-3">
               {notificationList.length ? (
@@ -90,7 +96,12 @@ function NotificationItem({ data, onClick }: NotificationItemProps) {
           <p className="text-[#1B1B1B]">{data.content}</p>
         </div>
       </Link>
-      <X onClick={handleCloseClick} className="cursor-pointer" />
+      <IconButton
+        alt={closeIcon}
+        src={closeIcon}
+        className="cursor-pointer"
+        onClick={handleCloseClick}
+      />
     </div>
   );
 }

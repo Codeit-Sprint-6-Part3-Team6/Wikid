@@ -79,6 +79,10 @@ a {
   margin: 0 auto;
 }
 
+.notification::-webkit-scrollbar {
+  display: none;
+}
+
 /* 태블릿 */
 @media all and (max-width: 1199px) {
   .inner {
