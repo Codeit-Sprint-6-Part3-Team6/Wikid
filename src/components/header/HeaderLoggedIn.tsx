@@ -11,7 +11,9 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const menuRef = useOutsideClick(() => setIsMenuOpen(false));
+  const menuRef = useOutsideClick<HTMLButtonElement>(() =>
+    setIsMenuOpen(false),
+  );
 
   const { user } = useUserInfo();
   const code = user?.profile?.code;
@@ -20,17 +22,16 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
     <div className="hidden md:block">
       <div className="flex items-center gap-[20px]">
         <AlarmMenu />
-        <div ref={menuRef} className="flex items-center">
-          <IconButton
-            src={profileIconSrc}
-            alt="프로필 아이콘"
-            className="h-[32px] w-[32px] rounded-full"
-            unoptimized={true}
-            width={32}
-            height={32}
-            onClick={toggleMenu}
-          />
-        </div>
+        <IconButton
+          src={profileIconSrc}
+          alt="프로필 아이콘"
+          className="h-[32px] w-[32px] rounded-full"
+          unoptimized={true}
+          width={32}
+          height={32}
+          onClick={toggleMenu}
+          menuRef={menuRef}
+        />
       </div>
       {isMenuOpen && (
         <div>

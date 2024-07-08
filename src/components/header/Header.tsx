@@ -27,7 +27,9 @@ const Header = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  const hamburgerMenuRef = useOutsideClick(() => setIsMenuOpen(false));
+  const hamburgerMenuRef = useOutsideClick<HTMLButtonElement>(() =>
+    setIsMenuOpen(false),
+  );
 
   const fetchProfileImage = useCallback(async () => {
     try {
@@ -90,14 +92,13 @@ const Header = () => {
         ) : (
           <HeaderLoggedOut />
         )}
-        <div ref={hamburgerMenuRef} className="flex items-center">
-          <IconButton
-            src={MenuIcon}
-            alt="메뉴 아이콘"
-            className="block h-[32px] w-[32px] md:hidden"
-            onClick={toggleMenu}
-          />
-        </div>
+        <IconButton
+          src={MenuIcon}
+          alt="메뉴 아이콘"
+          className="block h-[32px] w-[32px] md:hidden"
+          onClick={toggleMenu}
+          menuRef={hamburgerMenuRef}
+        />
         {isMenuOpen && (
           <div className="relative">
             <Menu isLoggedIn={isLoggedIn} code={code} />
