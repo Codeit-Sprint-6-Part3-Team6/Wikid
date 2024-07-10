@@ -2,23 +2,36 @@ import React, { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
-import useSignUpValidation from "@hooks/useSignUpValidation";
+import useAuthValidation from "@hooks/useAuthValidation";
 import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
+import { SignUpFormDataType } from "@lib/types/Auth";
 
 const SignUpForm = () => {
   const { toastOpened, showToast } = useToast();
   const [toastText, setToastText] = useState("");
-  const [toastColor, setToastColor] = useState("");
-
   const { signup } = useAuth();
-  const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
+  const { errors, checkValidation } =
+    useAuthValidation<SignUpFormDataType>("signup");
+  const [formData, setFormData] = useState<SignUpFormDataType>({
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+  });
 
-  const isFormValid =
-    formData.name !== "" &&
-    formData.email !== "" &&
-    formData.password &&
-    formData.passwordConfirmation;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+
+    if (e.target.name === "passwordConfirmation") {
+      checkValidation(e.target.name, e.target.value, formData["password"]);
+    } else {
+      checkValidation(e.target.name, e.target.value);
+    }
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,7 +41,6 @@ const SignUpForm = () => {
     const error = await signup({ name, email, password, passwordConfirmation });
 
     if (error instanceof Error) {
-      setToastColor("red");
       showToast();
 
       const errorResponse = error as any;
@@ -39,6 +51,10 @@ const SignUpForm = () => {
       }
     }
   }
+
+  const isSubmitDisabled =
+    Object.values(formData).some((value) => value === "") ||
+    Object.values(errors).some((value) => value !== "");
 
   return (
     <div className="flex w-[335px] flex-col items-center justify-center gap-[50px] md:w-[400px]">
@@ -53,7 +69,6 @@ const SignUpForm = () => {
               placeholder="이름을 입력해 주세요"
               value={formData.name}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.name}
             />
           </div>
@@ -65,7 +80,6 @@ const SignUpForm = () => {
               placeholder="이메일을 입력해 주세요"
               value={formData.email}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.email}
             />
           </div>
@@ -77,7 +91,6 @@ const SignUpForm = () => {
               placeholder="비밀번호를 입력해 주세요"
               value={formData.password}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.password}
             />
           </div>
@@ -89,7 +102,6 @@ const SignUpForm = () => {
               placeholder="비밀번호를 입력해 주세요"
               value={formData.passwordConfirmation}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.passwordConfirmation}
             />
           </div>
@@ -99,10 +111,10 @@ const SignUpForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-full"
-          disabled={!isFormValid}
+          disabled={isSubmitDisabled}
         />
       </form>
-      <Toast type={toastColor} isToastOpened={toastOpened}>
+      <Toast type="red" isToastOpened={toastOpened}>
         {toastText}
       </Toast>
     </div>

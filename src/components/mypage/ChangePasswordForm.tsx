@@ -2,21 +2,35 @@ import React, { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
-import useSignUpValidation from "@hooks/useSignUpValidation";
+import useAuthValidation from "@hooks/useAuthValidation";
 import useToast from "@hooks/useToast";
 import { patchUserPassword } from "@lib/api/userApi";
+import { ChangePasswordFormDataType } from "@lib/types/Auth";
 
 const ChangePasswordForm = () => {
   const { toastOpened, showToast } = useToast();
   const [toastText, setToastText] = useState("");
   const [toastColor, setToastColor] = useState("");
+  const { errors, checkValidation } =
+    useAuthValidation<ChangePasswordFormDataType>("changePassword");
+  const [formData, setFormData] = useState<ChangePasswordFormDataType>({
+    currentPassword: "",
+    password: "",
+    passwordConfirmation: "",
+  });
 
-  const { formData, errors, handleChange, handleBlur } = useSignUpValidation();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
 
-  const isFormValid =
-    formData.currentPassword !== "" &&
-    formData.password !== "" &&
-    formData.passwordConfirmation;
+    if (e.target.name === "passwordConfirmation") {
+      checkValidation(e.target.name, e.target.value, formData["password"]);
+    } else {
+      checkValidation(e.target.name, e.target.value);
+    }
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,6 +61,10 @@ const ChangePasswordForm = () => {
     }
   }
 
+  const isSubmitDisabled =
+    Object.values(formData).some((value) => value === "") ||
+    Object.values(errors).some((value) => value !== "");
+
   return (
     <form
       className="flex w-[335px] flex-col gap-[16px] md:w-[400px]"
@@ -63,7 +81,6 @@ const ChangePasswordForm = () => {
             value={formData.currentPassword}
             placeholder="기존 비밀번호"
             onChange={handleChange}
-            onBlur={handleBlur}
             error={errors.currentPassword}
           />
           <Input
@@ -73,7 +90,6 @@ const ChangePasswordForm = () => {
             placeholder="새 비밀번호"
             onChange={handleChange}
             error={errors.password}
-            onBlur={handleBlur}
           />
           <Input
             type="password"
@@ -82,7 +98,6 @@ const ChangePasswordForm = () => {
             placeholder="새 비밀번호 확인"
             onChange={handleChange}
             error={errors.passwordConfirmation}
-            onBlur={handleBlur}
           />
         </div>
       </div>
@@ -91,7 +106,7 @@ const ChangePasswordForm = () => {
         text="변경하기"
         color="green"
         className="ml-auto h-[40px] w-[89px]"
-        disabled={!isFormValid}
+        disabled={isSubmitDisabled}
       />
       <Toast type={toastColor} isToastOpened={toastOpened}>
         {toastText}
