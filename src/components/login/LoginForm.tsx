@@ -2,28 +2,40 @@ import { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import Toast from "@components/Toast";
-import useLoginValidation from "@hooks/useLoginValidation";
+import useAuthValidation from "@hooks/useAuthValidation";
 import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
+import { LoginFormDataType } from "@lib/types/Auth";
 
 const LoginForm = () => {
   const { toastOpened, showToast } = useToast();
   const [toastText, setToastText] = useState("");
-  const [toastColor, setToastColor] = useState("");
-
-  const { formData, errors, handleChange, handleBlur } = useLoginValidation();
   const { login } = useAuth();
+  const { errors, checkValidation } =
+    useAuthValidation<LoginFormDataType>("login");
+  const [formData, setFormData] = useState<LoginFormDataType>({
+    email: "",
+    password: "",
+  });
 
-  const isFormValid = formData.email !== "" && formData.password !== "";
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+
+    checkValidation(e.target.name, e.target.value);
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { email, password } = formData;
 
-    const error = await login({ email, password });
+    const error = await login({
+      email: formData.email,
+      password: formData.password,
+    });
 
     if (error instanceof Error) {
-      setToastColor("red");
       showToast();
       const errorResponse = error as any;
       if (errorResponse.response && errorResponse.response.status === 400) {
@@ -33,6 +45,10 @@ const LoginForm = () => {
       }
     }
   }
+
+  const isSubmitDisabled =
+    Object.values(formData).some((value) => value === "") ||
+    Object.values(errors).some((value) => value !== "");
 
   return (
     <div className="flex w-[335px] flex-col items-center justify-center gap-[50px] md:w-[400px]">
@@ -47,7 +63,6 @@ const LoginForm = () => {
               placeholder="이메일을 입력해 주세요"
               value={formData.email}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.email}
             />
           </div>
@@ -59,7 +74,6 @@ const LoginForm = () => {
               placeholder="비밀번호를 입력해 주세요"
               value={formData.password}
               onChange={handleChange}
-              onBlur={handleBlur}
               error={errors.password}
             />
           </div>
@@ -69,9 +83,9 @@ const LoginForm = () => {
           color="green"
           type="submit"
           className="h-[45px] w-full"
-          disabled={!isFormValid}
+          disabled={isSubmitDisabled}
         />
-        <Toast type={toastColor} isToastOpened={toastOpened}>
+        <Toast type={"red"} isToastOpened={toastOpened}>
           {toastText}
         </Toast>
       </form>

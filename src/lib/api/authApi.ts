@@ -1,5 +1,5 @@
 import axios from "@lib/api/axios";
-import { SignUpForm, SignInForm } from "@lib/types/Auth";
+import { SignUpFormDataType, LoginFormDataType } from "@lib/types/Auth";
 
 // 회원가입
 export const postSignUp = async ({
@@ -7,7 +7,7 @@ export const postSignUp = async ({
   email,
   password,
   passwordConfirmation,
-}: SignUpForm) => {
+}: SignUpFormDataType) => {
   const res = await axios.post("auth/signUp", {
     name,
     email,
@@ -19,7 +19,7 @@ export const postSignUp = async ({
 };
 
 // 로그인
-export const postSignIn = async ({ email, password }: SignInForm) => {
+export const postSignIn = async ({ email, password }: LoginFormDataType) => {
   const res = await axios.post("auth/signIn", {
     email,
     password,
