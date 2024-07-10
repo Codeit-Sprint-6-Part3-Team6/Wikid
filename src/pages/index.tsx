@@ -90,7 +90,7 @@ function TopSection() {
             나만의 위키
           </h1>
         </div>
-        <div data-aos="fade-up" data-aos-delay="400">
+        <div data-aos="fade-up" data-aos-delay="200">
           <LinkButton
             text="위키 만들기"
             link="/mypage"
@@ -272,16 +272,10 @@ function FeatureView() {
           FirstLine="친구들이 달아준,"
           SecondLine="내용을 확인해 봐요"
         />
-        <div
-          className="mb-[10px] mt-[40px] md:mb-[22px] md:mt-[80px] lg:mb-[40px] lg:mt-[120px]"
-          data-aos="fade-up"
-        >
+        <div className="mb-[10px] mt-[40px] md:mb-[22px] md:mt-[80px] lg:mb-[40px] lg:mt-[120px]">
           <Image alt="/" src={example2} />
         </div>
-        <div
-          className="flex justify-between gap-[10px] md:gap-[20px] lg:gap-[40px]"
-          data-aos="fade-up"
-        >
+        <div className="flex justify-between gap-[10px] md:gap-[20px] lg:gap-[40px]">
           <div>
             <Image
               alt="/"
@@ -308,13 +302,10 @@ function BottomSection() {
   return (
     <SectionLayout bgColor="gray500" innerContainer={true}>
       <section className="flex flex-col items-center justify-between gap-[40px]">
-        <h1
-          className="text-[30px] leading-none text-white md:text-[60px]"
-          data-aos="fade-up"
-        >
+        <h1 className="text-[30px] leading-none text-white md:text-[60px]">
           나만의 위키 만들어 보기
         </h1>
-        <div data-aos="fade-up" data-aos-delay="200">
+        <div>
           <LinkButton
             text="지금 시작하기"
             color="white"
