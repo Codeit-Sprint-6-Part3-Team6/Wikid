@@ -1,11 +1,12 @@
-import { useState, useRef, ChangeEvent, useEffect } from "react";
+import { useState, useRef, ChangeEvent } from "react";
+import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import ImageUploadModal from "@components/ImageUploadModal";
-import Loading from "@components/Loading";
 import TextEditor from "@components/TextEditor";
 import CardContainer from "@components/article/CardContainer";
 import useApiRequest from "@hooks/useApiRequest";
+import useEditorContent from "@hooks/useEditorContent";
 import useModal from "@hooks/useModal";
 import { postArticle, editArticle, getArticle } from "@lib/api/articleApi";
 import { getImageUrl } from "@lib/api/imageApi";
@@ -14,21 +15,20 @@ import { getImageFile } from "@lib/getImageFile";
 import { ArticleType, PatchArticleProps, PostArticleProps } from "@lib/types/articleType";
 import { validateImage } from "@lib/validateImage";
 
-function ArticleEditPage() {
+function ArticleEditPage({ article: initialArticle }: { article: ArticleType | null }) {
+  const [title, setTitle] = useState(initialArticle ? initialArticle.title : "");
+  const [image, setImage] = useState(initialArticle ? initialArticle.image : "");
+  const { content, handleContentChange } = useEditorContent(
+    initialArticle ? initialArticle.content : "",
+  );
+
   const router = useRouter();
   const { boardId } = router.query;
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [image, setImage] = useState("");
-  const [isOpen, handleIsOpen] = useModal();
+  const { isOpen, toggleIsOpen } = useModal();
   const editorRef = useRef<HTMLDivElement>(null);
+
   const postArticleOptions = useRef({ title, content, image }).current;
   const editArticleOptions = useRef({ title, content, image, id: boardId }).current;
-  const { data: article } = useApiRequest<ArticleType, string | string[]>(
-    getArticle,
-    boardId,
-    true,
-  );
   const { toggleTrigger: togglePostTrigger } = useApiRequest<ArticleType, PostArticleProps>(
     postArticle,
     postArticleOptions,
@@ -42,18 +42,13 @@ function ArticleEditPage() {
     () => router.push(`/boards/${boardId}`),
   );
 
-  const handleContentChange = (value: string) => {
-    //얘네 훅화
-    setContent(value);
-  };
-
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  const handleImagePreview = (imageSrc: string) => {
+  const handleImageInsertClick = (imageSrc: string) => {
     setImage(imageSrc);
-    handleIsOpen();
+    toggleIsOpen();
   };
 
   const handlePostArticle = async (e: React.FormEvent) => {
@@ -87,14 +82,6 @@ function ArticleEditPage() {
       e.preventDefault();
     }
   };
-
-  useEffect(() => {
-    if (article) {
-      setContent(article.content);
-      setTitle(article.title);
-      setImage(article.image);
-    }
-  }, [article]);
 
   return (
     <>
@@ -149,7 +136,7 @@ function ArticleEditPage() {
             type="article"
             content={content}
             onChange={handleContentChange}
-            onClick={handleIsOpen}
+            onClick={toggleIsOpen}
             className="relative h-[55lvh]"
             editorRef={editorRef}
           />
@@ -164,9 +151,34 @@ function ArticleEditPage() {
           disabled={!title || !content}
         />
       </div>
-      <ImageUploadModal isOpen={isOpen} handleIsOpen={handleIsOpen} onClick={handleImagePreview} />
+      <ImageUploadModal
+        isOpen={isOpen}
+        toggleIsOpen={toggleIsOpen}
+        onClick={handleImageInsertClick}
+      />
     </>
   );
 }
 
 export default ArticleEditPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const boardId = context.query["boardId"];
+
+  let article: ArticleType | null = null;
+  try {
+    if (boardId) {
+      article = await getArticle(boardId);
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      article,
+    },
+  };
+}

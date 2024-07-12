@@ -11,9 +11,9 @@ import ContentPresenter from "@components/wikipage/ContentPresenter";
 import ProfileCard from "@components/wikipage/ProfileCard";
 import QuizModal from "@components/wikipage/QuizModal";
 import useEditMode from "@hooks/useEditMode";
+import useEditorContent from "@hooks/useEditorContent";
 import useModal from "@hooks/useModal";
 import { useAuth } from "@context/AuthContext";
-//import useModal from "@hooks/useModal";
 import { getImageUrl } from "@lib/api/imageApi";
 import { getProfile, checkIsEditing, patchProfile } from "@lib/api/profileApi";
 import { getImageFile } from "@lib/getImageFile";
@@ -26,7 +26,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     profile = await getProfile(code);
   } catch (error) {
-    console.error(error);
+    return {
+      notFound: true,
+    };
   }
 
   let isEditable: boolean = false;
@@ -34,10 +36,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const response = await checkIsEditing(code);
     isEditable = response ? false : true;
   } catch (error) {
-    console.error(error);
-  }
-
-  if (!profile) {
     return {
       notFound: true,
     };
@@ -59,7 +57,7 @@ function WikiPage({
   isEditable: boolean;
 }) {
   const [profile, setProfile] = useState<Profile>(initialProfile);
-  const [content, setContent] = useState(initialProfile.content); // 나중에 저장할 때 한 번에 바꿔서 send
+  const { content, setContent, handleContentChange } = useEditorContent(initialProfile.content);
   const [profileImage, setProfileImage] = useState(initialProfile.image); // 나중에 저장할 때 한 번에 바꿔서 send
   const [isSaving, setIsSaving] = useState(false);
   const [isCancelWarningOpen, setIsCancelWarningOpen] = useState(false);
@@ -76,7 +74,7 @@ function WikiPage({
     deleteError,
   } = useEditMode();
   const { isLoggedIn } = useAuth();
-  const [isOpen, handleIsOpen] = useModal();
+  const { isOpen, toggleIsOpen } = useModal();
   const router = useRouter();
 
   const handleEditClick = () => {
@@ -87,17 +85,13 @@ function WikiPage({
     }
   };
 
-  const handleWikiContentChange = (value: string) => {
-    setContent(value);
-  };
-
   const handleImageUpload = async (imagePreviewUrl: string) => {
     try {
       const imageFile = await getImageFile(imagePreviewUrl);
       const imageUrl = (await getImageUrl(imageFile)).url;
       const imgTag = `<img src="${imageUrl}" />`;
       setContent((prevContent) => prevContent + imgTag);
-      handleIsOpen();
+      toggleIsOpen();
     } catch (error) {
       console.error(error);
     }
@@ -256,8 +250,8 @@ function WikiPage({
             name={initialProfile.name}
             className="order-1 mt-10 lg:order-none lg:mt-0"
             content={content}
-            onChange={handleWikiContentChange}
-            onClick={handleIsOpen}
+            onChange={handleContentChange}
+            onClick={toggleIsOpen}
           />
         ) : (
           <div className="order-1 mt-6 lg:mt-0">
@@ -323,7 +317,7 @@ function WikiPage({
         errorMessage={errorMessage}
         deleteError={deleteError}
       />
-      <ImageUploadModal isOpen={isOpen} handleIsOpen={handleIsOpen} onClick={handleImageUpload} />
+      <ImageUploadModal isOpen={isOpen} toggleIsOpen={toggleIsOpen} onClick={handleImageUpload} />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.
       </Toast>
