@@ -2,6 +2,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@components/header/Header";
 import { AuthProvider } from "@context/AuthContext";
+import { ErrorToastProvider } from "@context/ErrorToastContext";
+import { LoadingProvider } from "@context/LoadingContext";
 import "@styles/globals.css";
 import "@styles/quillCustom.css";
 
@@ -17,10 +19,14 @@ export default function App({ Component, pageProps }: AppProps) {
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
         />
       </Head>
-      <AuthProvider>
-        <Header />
-        <Component {...pageProps} />
-      </AuthProvider>
+      <LoadingProvider>
+        <ErrorToastProvider>
+          <AuthProvider>
+            <Header />
+            <Component {...pageProps} />
+          </AuthProvider>
+        </ErrorToastProvider>
+      </LoadingProvider>
     </>
   );
 }

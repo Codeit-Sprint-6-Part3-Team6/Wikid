@@ -19,12 +19,7 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
       >
         <div className="flex items-start gap-[20px] md:items-center md:gap-[32px]">
           <div className="relative h-[60px] w-[60px] md:h-[85px] md:w-[85px]">
-            <Image
-              src={imageSrc}
-              alt={profile.name}
-              fill
-              className="rounded-full object-cover"
-            />
+            <Image src={imageSrc} alt={profile.name} fill className="rounded-full object-cover" />
           </div>
           <div>
             <div className="mb-[10px] text-[20px] font-semibold md:mb-[15px] md:text-[24px]">
@@ -36,7 +31,7 @@ const UserWikiCard = ({ profile }: UserWikiCardProps) => {
         </div>
       </Link>
       <LinkCopyButton
-        link={`http://localhost:3000/wiki/${profile.code}`}
+        link={`${process.env.NEXT_PUBLIC_SITE_URL}/${profile.code}`}
         className="absolute bottom-[25px] left-[105px] right-[25px] md:left-auto md:right-[35px]"
       />
     </div>

@@ -110,9 +110,7 @@ function WikiPage({
     }));
   };
 
-  const handleImageInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImageInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const url = URL.createObjectURL(e.target.files[0]);
       setProfileImage(url);
@@ -153,10 +151,7 @@ function WikiPage({
             content,
             image: imageUrl,
           }));
-        } else if (
-          profileImage !== initialProfile.image &&
-          profileImage === null
-        ) {
+        } else if (profileImage !== initialProfile.image && profileImage === null) {
           //이미지 삭제함
           setProfile((prevProfile) => ({
             ...prevProfile,
@@ -210,8 +205,7 @@ function WikiPage({
             <div className="text-[32px] font-semibold leading-none text-gray500 md:text-[48px]">
               {initialProfile.name}
             </div>
-            {!initialProfile.content ||
-            isEditMode.profile ? undefined : isEditMode.content ? (
+            {!initialProfile.content || isEditMode.profile ? undefined : isEditMode.content ? (
               <div className="flex justify-end gap-[10px]">
                 <Button
                   type="button"
@@ -241,7 +235,7 @@ function WikiPage({
           {!isEditMode.content && (
             <>
               <LinkCopyButton
-                link={`http://localhost:3000/wiki/${initialProfile.code}`}
+                link={`${process.env.NEXT_PUBLIC_SITE_URL}/${initialProfile.code}`}
                 className="mb-4 lg:mb-14"
               />
               {!initialIsEditable && (
@@ -267,10 +261,7 @@ function WikiPage({
           />
         ) : (
           <div className="order-1 mt-6 lg:mt-0">
-            <ContentPresenter
-              content={initialProfile.content}
-              onClick={handleEditClick}
-            />
+            <ContentPresenter content={initialProfile.content} onClick={handleEditClick} />
           </div>
         )}
 
@@ -332,11 +323,7 @@ function WikiPage({
         errorMessage={errorMessage}
         deleteError={deleteError}
       />
-      <ImageUploadModal
-        isOpen={isOpen}
-        handleIsOpen={handleIsOpen}
-        onClick={handleImageUpload}
-      />
+      <ImageUploadModal isOpen={isOpen} handleIsOpen={handleIsOpen} onClick={handleImageUpload} />
       <Toast type="red" isToastOpened={toastOpened}>
         다른 친구가 편집하고 있어요. 나중에 다시 시도해 주세요.
       </Toast>

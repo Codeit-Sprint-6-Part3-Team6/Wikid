@@ -24,3 +24,16 @@ export type ArticleQueryOptions = {
   orderBy?: string;
   keyword?: string;
 };
+
+export type PostArticleProps = {
+  title: string;
+  image: string;
+  content: string;
+};
+
+export type PatchArticleProps = {
+  id?: string | string[];
+  title: string;
+  image: string;
+  content: string;
+};
