@@ -1,18 +1,13 @@
 import { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
-import Toast from "@components/Toast";
 import useAuthValidation from "@hooks/useAuthValidation";
-import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
 import { LoginFormDataType } from "@lib/types/Auth";
 
 const LoginForm = () => {
-  const { toastOpened, showToast } = useToast();
-  const [toastText, setToastText] = useState("");
   const { login } = useAuth();
-  const { errors, checkValidation } =
-    useAuthValidation<LoginFormDataType>("login");
+  const { errors, checkValidation } = useAuthValidation<LoginFormDataType>("login");
   const [formData, setFormData] = useState<LoginFormDataType>({
     email: "",
     password: "",
@@ -30,20 +25,9 @@ const LoginForm = () => {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const error = await login({
-      email: formData.email,
-      password: formData.password,
-    });
+    const { email, password } = formData;
 
-    if (error instanceof Error) {
-      showToast();
-      const errorResponse = error as any;
-      if (errorResponse.response && errorResponse.response.status === 400) {
-        setToastText(errorResponse.response.data.message);
-      } else {
-        setToastText("로그인 실패");
-      }
-    }
+    login({ email, password });
   }
 
   const isSubmitDisabled =
@@ -85,9 +69,6 @@ const LoginForm = () => {
           className="h-[45px] w-full"
           disabled={isSubmitDisabled}
         />
-        <Toast type={"red"} isToastOpened={toastOpened}>
-          {toastText}
-        </Toast>
       </form>
     </div>
   );

@@ -29,18 +29,18 @@ function ArticleEditPage({ article: initialArticle }: { article: ArticleType | n
 
   const postArticleOptions = useRef({ title, content, image }).current;
   const editArticleOptions = useRef({ title, content, image, id: boardId }).current;
-  const { toggleTrigger: togglePostTrigger } = useApiRequest<ArticleType, PostArticleProps>(
-    postArticle,
-    postArticleOptions,
-    false,
-    () => router.push("/boards"),
-  );
-  const { toggleTrigger: togglePatchTrigger } = useApiRequest<ArticleType, PatchArticleProps>(
-    editArticle,
-    editArticleOptions,
-    false,
-    () => router.push(`/boards/${boardId}`),
-  );
+
+  const { toggleTrigger: togglePostTrigger } = useApiRequest<
+    ({ title, image, content }: PostArticleProps) => Promise<ArticleType>,
+    ArticleType,
+    PostArticleProps
+  >(postArticle, postArticleOptions, false, () => router.push("/boards"));
+
+  const { toggleTrigger: togglePatchTrigger } = useApiRequest<
+    ({ title, image, content, id }: PatchArticleProps) => Promise<ArticleType>,
+    ArticleType,
+    PatchArticleProps
+  >(editArticle, editArticleOptions, false, () => router.push(`/boards/${boardId}`));
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
