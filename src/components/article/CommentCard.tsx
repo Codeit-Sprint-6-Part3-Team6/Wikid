@@ -3,7 +3,7 @@ import Image from "next/image";
 import { CommentType } from "../../lib/types/commentType";
 import CardContainer from "./CardContainer";
 import CommentInput from "./CommentInput";
-import useUserInfo from "@hooks/useUserInfo";
+import { useAuth } from "@context/AuthContext";
 import { formatDate } from "@lib/dateFormatter";
 import { validateImage } from "@lib/validateImage";
 import deleteIcon from "@icons/ic_delete.svg";
@@ -16,16 +16,11 @@ interface CommentCardProps {
   onDeleteComment: (commentId: number) => void;
 }
 
-const CommentCard = ({
-  comment,
-  onEditComment,
-  onDeleteComment,
-}: CommentCardProps) => {
+const CommentCard = ({ comment, onEditComment, onDeleteComment }: CommentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const imageSrc = validateImage(comment.writer.image);
-
-  const { user } = useUserInfo();
+  const { user } = useAuth();
 
   const handleEdit = async (newContent: string) => {
     try {
@@ -74,9 +69,7 @@ const CommentCard = ({
               className="mb-[10px]"
             />
           ) : (
-            <span className="mb-[4px] md:mb-[10px] md:text-[16px]">
-              {comment.content}
-            </span>
+            <span className="mb-[4px] md:mb-[10px] md:text-[16px]">{comment.content}</span>
           )}
           <span className="text-[12px] text-gray400 md:text-[14px]">
             {formatDate(new Date(comment.createdAt))}

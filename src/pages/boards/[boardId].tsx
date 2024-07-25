@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import LinkButton from "@components/LinkButton";
+import Loading from "@components/Loading";
 import CardContainer from "@components/article/CardContainer";
 import Comment from "@components/article/Comment";
 import LikeToggleButton from "@components/article/LikeToggleButton";
-import useUserInfo from "@hooks/useUserInfo";
+import useApiRequest from "@hooks/useApiRequest";
+import { useAuth } from "@context/AuthContext";
 import { deleteArticle, getArticle } from "@lib/api/articleApi";
 import { formatDate } from "@lib/dateFormatter";
 import { ArticleType } from "@lib/types/articleType";
@@ -15,42 +16,21 @@ import deleteIcon from "@icons/ic_delete.svg";
 import editIcon from "@icons/ic_edit.svg";
 
 const ArticlePage = () => {
-  const [article, setArticle] = useState<ArticleType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
   const { boardId } = router.query;
-  const { user } = useUserInfo();
-
-  const fetchArticle = async (id: string | string[]) => {
-    try {
-      setIsLoading(true);
-      const nextArticle = await getArticle(id);
-      setArticle(nextArticle);
-    } catch (err) {
-      console.error("게시글 불러오기 실패", err);
-      alert("게시글 불러오기에 실패했습니다.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof boardId === "string" || Array.isArray(boardId)) {
-      fetchArticle(boardId);
-    } else {
-      setIsLoading(false);
-    }
-  }, [boardId]);
+  const { data: article } = useApiRequest<
+    (targetId: string | string[]) => Promise<ArticleType>,
+    ArticleType,
+    string | string[]
+  >(getArticle, boardId, true);
+  const { user } = useAuth();
 
   const handleEditArticle = () => {
     if (article) {
       router.push({
         pathname: "/addboard",
         query: {
-          id: boardId,
-          title: article.title,
-          image: article.image,
-          content: article.content,
+          boardId,
         },
       });
     }
@@ -69,14 +49,8 @@ const ArticlePage = () => {
       }
   };
 
-  if (isLoading) {
-    return <div className="mt-8 text-center">로딩 중 ...</div>;
-  }
-
   if (!article) {
-    return (
-      <div className="mt-8 text-center">해당 게시글을 찾지 못했습니다.</div>
-    );
+    return <Loading />;
   }
 
   const isAuthor = article.writer.id === user?.id;
@@ -86,9 +60,7 @@ const ArticlePage = () => {
       {boardId && typeof boardId === "string" && (
         <CardContainer className="mt-[20px] flex-col py-[20px] md:mt-[40px] md:py-[40px] lg:mt-[60px]">
           <div className="mb-[14px] flex w-full items-center justify-between md:mb-[30px]">
-            <h1 className="text-[24px] font-semibold md:text-[32px]">
-              {article.title}
-            </h1>
+            <h1 className="text-[24px] font-semibold md:text-[32px]">{article.title}</h1>
             {isAuthor && (
               <div>
                 <div className="flex gap-3.5 md:hidden">

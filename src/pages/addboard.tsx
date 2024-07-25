@@ -1,90 +1,81 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, ChangeEvent } from "react";
+import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
 import ImageUploadModal from "@components/ImageUploadModal";
-import LinkButton from "@components/LinkButton";
 import TextEditor from "@components/TextEditor";
 import CardContainer from "@components/article/CardContainer";
+import useApiRequest from "@hooks/useApiRequest";
+import useEditorContent from "@hooks/useEditorContent";
 import useModal from "@hooks/useModal";
-import { postArticle, editArticle } from "@lib/api/articleApi";
+import { postArticle, editArticle, getArticle } from "@lib/api/articleApi";
 import { getImageUrl } from "@lib/api/imageApi";
 import { formatDate } from "@lib/dateFormatter";
 import { getImageFile } from "@lib/getImageFile";
-import { inputCounter } from "@lib/inputCounter";
+import { ArticleType, PatchArticleProps, PostArticleProps } from "@lib/types/articleType";
 import { validateImage } from "@lib/validateImage";
 
-function ArticleEditPage() {
-  const router = useRouter();
-  const { id, title, image, content } = router.query;
-
-  const [inputCount, setInputCount] = useState(0);
-  const [titleContent, setTitleContent] = useState((title as string) || "");
-  const [articleContent, setArticleContent] = useState(
-    (content as string) || "",
+function ArticleEditPage({ article: initialArticle }: { article: ArticleType | null }) {
+  const [title, setTitle] = useState(initialArticle ? initialArticle.title : "");
+  const [image, setImage] = useState(initialArticle ? initialArticle.image : "");
+  const { content, handleContentChange } = useEditorContent(
+    initialArticle ? initialArticle.content : "",
   );
-  const [imageContent, setImageContent] = useState((image as string) || "");
-  const [isTitleValid, setIsTitleValid] = useState(false);
-  const [isContentValid, setIsContentValid] = useState(false);
-  const [isOpen, handleIsOpen] = useModal();
+
+  const router = useRouter();
+  const { boardId } = router.query;
+  const { isOpen, toggleIsOpen } = useModal();
   const editorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setInputCount(titleContent.length);
-    setIsTitleValid(titleContent.trim().length > 0);
-    setIsContentValid(articleContent.trim().length > 0);
-  }, [titleContent, articleContent]);
+  const postArticleOptions = useRef({ title, content, image }).current;
+  const editArticleOptions = useRef({ title, content, image, id: boardId }).current;
+  const { toggleTrigger: togglePostTrigger } = useApiRequest<ArticleType, PostArticleProps>(
+    postArticle,
+    postArticleOptions,
+    false,
+    () => router.push("/boards"),
+  );
+  const { toggleTrigger: togglePatchTrigger } = useApiRequest<ArticleType, PatchArticleProps>(
+    editArticle,
+    editArticleOptions,
+    false,
+    () => router.push(`/boards/${boardId}`),
+  );
 
-  const handleInputCount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    inputCounter(e, setInputCount, setTitleContent);
-    setIsTitleValid(e.target.value.trim().length > 0);
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
   };
 
-  const handleChange = (value: string) => {
-    setArticleContent(value);
-    setIsContentValid(value.trim().length > 0);
-  };
-
-  const handleImagePreview = (imageSrc: string) => {
-    setImageContent(imageSrc);
-    handleIsOpen();
+  const handleImageInsertClick = (imageSrc: string) => {
+    setImage(imageSrc);
+    toggleIsOpen();
   };
 
   const handlePostArticle = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      let imageUrl = "";
-      if (imageContent) {
-        const imageFile = await getImageFile(imageContent);
-        imageUrl = (await getImageUrl(imageFile)).url;
-      }
-      await postArticle(titleContent, imageUrl, articleContent);
-      alert("게시글이 등록되었습니다.");
-      router.push("/boards");
-    } catch (err) {
-      console.error("게시글 등록 실패", err);
-      alert("게시글 등록에 실패했습니다.");
+
+    if (image) {
+      const imageFile = await getImageFile(image);
+      const imageUrl = (await getImageUrl(imageFile)).url;
+      setImage(imageUrl);
     }
+
+    togglePostTrigger();
   };
 
   const handleEditArticle = async () => {
-    if (id) {
-      try {
-        let imageUrl = imageContent;
-        if (imageContent && validateImage(imageContent) !== imageContent) {
-          const imageFile = await getImageFile(imageContent);
-          imageUrl = (await getImageUrl(imageFile)).url;
-        }
-        await editArticle(id as string, titleContent, imageUrl, articleContent);
-        alert("게시글이 수정되었습니다.");
-        router.push(`/boards/${id}`);
-      } catch (err) {
-        console.error("게시글 수정 실패", err);
-        alert("게시글 수정에 실패했습니다.");
+    if (boardId) {
+      if (image && validateImage(image) !== image) {
+        const imageFile = await getImageFile(image);
+        const imageUrl = (await getImageUrl(imageFile)).url;
+        setImage(imageUrl);
       }
+
+      togglePatchTrigger();
     }
   };
 
-  const handleLinkButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleReturnButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (confirm("작성 중인 내용이 있습니다. 목록으로 이동하시겠습니까?")) {
       router.push("/boards");
     } else {
@@ -98,13 +89,13 @@ function ArticleEditPage() {
         <CardContainer className="mt-[20px] flex flex-col items-center pt-[20px] md:mt-[40px] md:pt-[40px] lg:mt-[60px]">
           <div className="mb-[16px] flex w-full items-center justify-between md:mb-[24px]">
             <h1 className="text-[24px] font-semibold md:text-[32px]">
-              {id ? "게시글 수정하기" : "게시글 등록하기"}
+              {boardId ? "게시글 수정하기" : "게시글 등록하기"}
             </h1>
             <Button
               text="목록으로"
               color="white"
               type="button"
-              onClick={handleLinkButtonClick}
+              onClick={handleReturnButtonClick}
               className="h-10 w-[72px] border-[1px] border-solid border-green200 text-green200 transition-all duration-500 hover:bg-green-50 hover:text-green300 md:h-[45px] md:w-[140px]"
             />
           </div>
@@ -117,14 +108,14 @@ function ArticleEditPage() {
           <div className="mb-[20px] mt-[20px] flex w-full items-center justify-between border-b border-t border-solid border-gray-300 md:mt-[25px] lg:mt-[33px]">
             <input
               type="text"
-              value={titleContent}
-              onChange={handleInputCount}
+              value={title}
+              onChange={handleTitleChange}
               placeholder="제목을 입력해주세요"
               maxLength={30}
               className="h-auto w-full py-[12px] text-[16px] md:text-[20px]"
             />
             <p>
-              <span>{inputCount}/</span>
+              <span>{title?.length}/</span>
               <span className="text-green200">30</span>
             </p>
           </div>
@@ -134,18 +125,18 @@ function ArticleEditPage() {
               {editorRef.current?.innerText.replace(/\s/g, "").length}자
             </p>
           </div>
-          {imageContent && (
+          {image && (
             <img
-              src={imageContent}
+              src={image}
               alt="게시글 사진"
               className="mb-[15px] max-h-[40vh] self-start object-contain md:mb-[20px]"
             />
           )}
           <TextEditor
             type="article"
-            content={articleContent}
-            onChange={handleChange}
-            onClick={handleIsOpen}
+            content={content}
+            onChange={handleContentChange}
+            onClick={toggleIsOpen}
             className="relative h-[55lvh]"
             editorRef={editorRef}
           />
@@ -154,19 +145,40 @@ function ArticleEditPage() {
         <Button
           type="button"
           color="green"
-          text={id ? "수정하기" : "등록하기"}
-          onClick={id ? handleEditArticle : handlePostArticle}
+          text={boardId ? "수정하기" : "등록하기"}
+          onClick={boardId ? handleEditArticle : handlePostArticle}
           className="my-[40px] h-[45px] w-[140px] transition-all duration-500 hover:bg-green300 lg:my-[60px]"
-          disabled={!isTitleValid || !isContentValid}
+          disabled={!title || !content}
         />
       </div>
       <ImageUploadModal
         isOpen={isOpen}
-        handleIsOpen={handleIsOpen}
-        onClick={handleImagePreview}
+        toggleIsOpen={toggleIsOpen}
+        onClick={handleImageInsertClick}
       />
     </>
   );
 }
 
 export default ArticleEditPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const boardId = context.query["boardId"];
+
+  let article: ArticleType | null = null;
+  try {
+    if (boardId) {
+      article = await getArticle(boardId);
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      article,
+    },
+  };
+}

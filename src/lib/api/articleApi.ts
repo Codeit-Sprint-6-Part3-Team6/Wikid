@@ -3,11 +3,11 @@ import {
   ArticleType,
   ArticleList,
   ArticleQueryOptions,
+  PostArticleProps,
+  PatchArticleProps,
 } from "@lib/types/articleType";
 
-export const getArticle = async (
-  targetId: string | string[],
-): Promise<ArticleType> => {
+export const getArticle = async (targetId: string | string[]): Promise<ArticleType> => {
   try {
     const res = await axios.get(`articles/${targetId}`); // 프록시 설정에 따라 경로 설정
     return res.data;
@@ -17,9 +17,7 @@ export const getArticle = async (
   }
 };
 
-export const getArticleList = async (
-  options: ArticleQueryOptions,
-): Promise<ArticleList> => {
+export const getArticleList = async (options: ArticleQueryOptions): Promise<ArticleList> => {
   try {
     const res = await axios.get<ArticleList>("/articles", {
       params: {
@@ -35,9 +33,7 @@ export const getArticleList = async (
     throw error;
   }
 };
-export const deleteArticle = async (
-  targetId: string | string[],
-): Promise<ArticleType> => {
+export const deleteArticle = async (targetId: string | string[]): Promise<ArticleType> => {
   try {
     const res = await axios.delete<ArticleType>(`articles/${targetId}`);
     return res.data;
@@ -47,20 +43,18 @@ export const deleteArticle = async (
   }
 };
 
-export const editArticle = async (
-  targetId: string | string[],
-  newTitle: string,
-  newImage: string,
-  newContent: string,
-): Promise<ArticleType> => {
+export const editArticle = async ({
+  title,
+  image,
+  content,
+  id,
+}: PatchArticleProps): Promise<ArticleType> => {
   try {
-    const res = await axios.patch<ArticleType>(`articles/${targetId}`, {
-      title: newTitle,
-      image: newImage,
-      content: newContent,
+    const res = await axios.patch<ArticleType>(`articles/${id}`, {
+      title,
+      image,
+      content,
     });
-
-    console.log("게시글 수정 성공", res.data);
     return res.data;
   } catch (err: any) {
     console.error("게시글 수정 실패", err);
@@ -68,11 +62,11 @@ export const editArticle = async (
   }
 };
 
-export const postArticle = async (
-  title: string,
-  image: string,
-  content: string,
-): Promise<ArticleType> => {
+export const postArticle = async ({
+  title,
+  image,
+  content,
+}: PostArticleProps): Promise<ArticleType> => {
   try {
     const requestData: any = {
       title,
@@ -85,7 +79,6 @@ export const postArticle = async (
 
     const res = await axios.post<ArticleType>(`articles`, requestData);
 
-    console.log("게시글 등록 성공", res.data);
     return res.data;
   } catch (err: any) {
     console.error("게시글 등록 실패", err);

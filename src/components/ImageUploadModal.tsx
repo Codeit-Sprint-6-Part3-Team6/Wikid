@@ -1,20 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Camera, X } from "lucide-react";
-import Image from "next/image";
+import { Camera } from "lucide-react";
 import Button from "@components/Button";
 import Modal from "@components/Modal";
 
 type ImageUploadModalProps = {
   isOpen: boolean;
-  handleIsOpen: () => void;
+  toggleIsOpen: () => void;
   onClick: (imageSrc: string) => void;
 };
 
-export default function ImageUploadModal({
-  isOpen,
-  handleIsOpen,
-  onClick,
-}: ImageUploadModalProps) {
+export default function ImageUploadModal({ isOpen, toggleIsOpen, onClick }: ImageUploadModalProps) {
   const [previewImageUrl, setPreviewImageUrl] = useState("");
 
   const handlePreview = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +24,7 @@ export default function ImageUploadModal({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} handleIsOpen={handleIsOpen}>
+    <Modal isOpen={isOpen} handleIsOpen={toggleIsOpen}>
       <div className="flex flex-col">
         <p className="text-center text-[16px] font-semibold text-[#474D66] sm:text-[18px]">
           이미지
@@ -55,12 +50,7 @@ export default function ImageUploadModal({
             )}
           </label>
           {/* 보이지 않는 input이라서 공통 component를 사용하지 않고 기존의 input으로 남겨두겠습니다. */}
-          <input
-            id="file-input"
-            type="file"
-            className="hidden"
-            onChange={handlePreview}
-          ></input>
+          <input id="file-input" type="file" className="hidden" onChange={handlePreview}></input>
           <Button
             type="button"
             text="삽입하기"

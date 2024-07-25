@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,50 +7,42 @@ import AlarmMenu from "./AlarmMenu";
 import HeaderLoggedIn from "./HeaderLoggedIn";
 import HeaderLoggedOut from "./HeaderLoggedOut";
 import Menu from "./Menu";
+import useApiRequest from "@hooks/useApiRequest";
 import useOutsideClick from "@hooks/useOutsideClick";
-import useUserInfo from "@hooks/useUserInfo";
 import { useAuth } from "@context/AuthContext";
 import { getProfile } from "@lib/api/profileApi";
-import { getUserInfo } from "@lib/api/userApi";
+import { Code, Profile } from "@lib/types/Profile";
 import { validateImage } from "@lib/validateImage";
 import Logo from "@images/image_logo.png";
 import MenuIcon from "@icons/ic_menu.svg";
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const router = useRouter();
   const [profileIconSrc, setProfileIconSrc] = useState("/icons/ic_profile.svg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useUserInfo();
-  const code = user?.profile?.code;
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  const hamburgerMenuRef = useOutsideClick<HTMLButtonElement>(() =>
-    setIsMenuOpen(false),
-  );
-
-  const fetchProfileImage = useCallback(async () => {
-    try {
-      if (isLoggedIn) {
-        const userInfo = await getUserInfo();
-        const code = userInfo.profile?.code;
-        if (code) {
-          const profile = await getProfile(code);
-          const profileImageUrl = validateImage(profile.image);
-          setProfileIconSrc(profileImageUrl);
-          return code;
-        }
-      }
-    } catch (error) {
-      console.error("이미지를 불러오는데 실패했습니다 ", error);
+  const { data: profile, toggleTrigger: triggerGetProfile } = useApiRequest<
+    (code: Code) => Promise<Profile>,
+    Profile,
+    string
+  >(getProfile, user?.profile?.code, false, () => {
+    if (profile?.image) {
+      const profileImageUrl = validateImage(profile.image);
+      setProfileIconSrc(profileImageUrl);
     }
-  }, [isLoggedIn]);
+  });
+
+  const hamburgerMenuRef = useOutsideClick<HTMLButtonElement>(() => setIsMenuOpen(false));
 
   useEffect(() => {
-    fetchProfileImage();
-  }, [isLoggedIn]);
+    if (isLoggedIn && user?.profile) {
+      triggerGetProfile();
+    }
+  }, [isLoggedIn, user]);
 
   return (
     <div className="sticky top-0 z-40 flex h-[80px] w-full items-center justify-between bg-white pl-[20px] pr-[20px] shadow-md">
@@ -59,12 +51,9 @@ const Header = () => {
           <Image src={Logo} alt="로고이미지" className="h-[30px] w-[107px]" />
         </Link>
         <Link
-          href="/wikilist"
+          href="/wiki"
           className={`hidden text-[14px] font-normal text-gray800 md:block ${
-            router.pathname.startsWith("/wikilist") ||
-            router.pathname.startsWith("/wiki")
-              ? "font-semibold text-green200"
-              : ""
+            router.pathname.startsWith("/wiki") ? "font-semibold text-green200" : ""
           }`}
         >
           위키목록
@@ -72,8 +61,7 @@ const Header = () => {
         <Link
           href="/boards"
           className={`hidden text-[14px] font-normal text-gray800 md:block ${
-            router.pathname.startsWith("/boards") ||
-            router.pathname === "/addboard"
+            router.pathname.startsWith("/boards") || router.pathname === "/addboard"
               ? "font-semibold text-green200"
               : ""
           }`}
@@ -101,7 +89,7 @@ const Header = () => {
         />
         {isMenuOpen && (
           <div className="relative">
-            <Menu isLoggedIn={isLoggedIn} code={code} />
+            <Menu isLoggedIn={isLoggedIn} code={user?.profile.code} />
           </div>
         )}
       </div>

@@ -10,11 +10,11 @@ const AlarmMenu = () => {
   const { notificationList, totalCount, handleDeleteClick } =
     useNotificationList(isNotificationOpen);
   const toggleNotification = () => {
-    setIsNotificationOpen(!isNotificationOpen);
+    setIsNotificationOpen((prevOpen) => !prevOpen);
   };
-  const alarmRef = useOutsideClick<HTMLDivElement>(() =>
-    setIsNotificationOpen(false),
-  );
+  const alarmRef = useOutsideClick<HTMLDivElement>(() => {
+    setIsNotificationOpen(false);
+  });
 
   return (
     <>

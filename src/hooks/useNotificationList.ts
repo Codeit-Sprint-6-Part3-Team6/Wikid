@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
-import {
-  deleteNotifications,
-  getNotifications,
-} from "@lib/api/notificationListApi";
+import { useEffect, useRef, useState } from "react";
+import { deleteNotifications, getNotifications } from "@lib/api/notificationListApi";
 import { NotificationItemType } from "@lib/types/Notifications";
 
 export const useNotificationList = (isOpen: boolean) => {
-  const [notificationList, setNotificationList] = useState<
-    NotificationItemType[]
-  >([]);
+  const [notificationList, setNotificationList] = useState<NotificationItemType[]>([]);
   const totalCount = notificationList?.length;
   const [isLoading, setIsLoading] = useState(false);
+  const trigger = useRef(1);
 
   useEffect(() => {
     async function fetchData() {
@@ -24,7 +20,12 @@ export const useNotificationList = (isOpen: boolean) => {
         setIsLoading(false);
       }
     }
-    fetchData();
+    if (isOpen || trigger.current === 1) {
+      fetchData();
+      if (trigger.current === 1) {
+        trigger.current = 0;
+      }
+    }
   }, [isOpen]);
 
   const handleDeleteClick = async (id: number) => {
