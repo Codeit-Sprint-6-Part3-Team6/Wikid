@@ -16,7 +16,31 @@ export type ChangePasswordFormDataType = {
   passwordConfirmation: string;
 };
 
-export type ErrorsType =
-  | LoginFormDataType
-  | SignUpFormDataType
-  | ChangePasswordFormDataType;
+export type ErrorsType = LoginFormDataType | SignUpFormDataType | ChangePasswordFormDataType;
+
+export type User = {
+  id: number;
+  email: string;
+  image: null | string;
+  nickname: string;
+  updatedAt: string;
+  createdAt: string;
+};
+
+export type UserInfo = {
+  profile: {
+    code: string;
+    id: 1;
+  };
+  updatedAt: string;
+  createdAt: string;
+  teamId: string;
+  name: string;
+  id: number;
+};
+
+export type AuthResponseType = {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+};

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import IconButton from "./IconButton";
 import SmallCat from "./SmallCat";
-import useUserInfo from "@hooks/useUserInfo";
+import { useAuth } from "@context/AuthContext";
 import { elapsedTimeConverter } from "@lib/elapsedTimeConverter";
 import { NotificationItemType } from "@lib/types/Notifications";
 import closeIcon from "@icons/ic_small_x.svg";
@@ -22,10 +22,6 @@ export default function NotificationList({
   totalCount,
   handleDeleteClick,
 }: NotificationListProps) {
-  const handleCloseClick = () => {
-    handleIsOpen();
-  };
-
   return (
     <>
       {isOpen && (
@@ -41,7 +37,7 @@ export default function NotificationList({
               <IconButton
                 alt={closeIcon}
                 src={closeIcon}
-                onClick={handleCloseClick}
+                onClick={handleIsOpen}
                 className="cursor-pointer"
               />
             </div>
@@ -52,11 +48,7 @@ export default function NotificationList({
             <div className="my-[20px] flex flex-col items-center gap-3">
               {notificationList.length ? (
                 notificationList.map((item) => (
-                  <NotificationItem
-                    key={item.id}
-                    data={item}
-                    onClick={handleDeleteClick}
-                  />
+                  <NotificationItem key={item.id} data={item} onClick={handleDeleteClick} />
                 ))
               ) : (
                 <SmallCat />
@@ -75,7 +67,7 @@ type NotificationItemProps = {
 };
 
 function NotificationItem({ data, onClick }: NotificationItemProps) {
-  const { user } = useUserInfo();
+  const { user } = useAuth();
   const userCode = user?.profile.code;
   const handleCloseClick = () => {
     onClick(data.id);
@@ -85,11 +77,7 @@ function NotificationItem({ data, onClick }: NotificationItemProps) {
 
   return (
     <div className="group flex items-center justify-between gap-[10px] rounded-md bg-white px-[12px] py-[16px] text-[#A4A1AA] hover:scale-105 hover:opacity-95 hover:duration-100 sm:px-[15px] lg:px-[30px]">
-      <Link
-        onClick={handleCloseClick}
-        href={`/wiki/${userCode}`}
-        className="cursor-pointer"
-      >
+      <Link onClick={handleCloseClick} href={`/wiki/${userCode}`} className="cursor-pointer">
         <div className="flex items-center gap-1 sm:gap-3">
           <div className="items h-[5px] w-[5px] rounded-full bg-[#0085FF] group-hover:bg-[#FF472E]"></div>
           <p>{elapsedTime}</p>

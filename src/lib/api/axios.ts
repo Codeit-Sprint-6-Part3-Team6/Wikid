@@ -48,7 +48,9 @@ instance.interceptors.response.use(
         return instance(originalRequest);
       } catch (refreshError) {
         // 실패하면 에러 반환
-        return Promise.reject(refreshError);
+        // return Promise.reject(refreshError);
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
       }
     }
     return Promise.reject(error); // 다른 모든 에러는 그대로 반환

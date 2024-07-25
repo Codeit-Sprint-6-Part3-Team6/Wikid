@@ -55,7 +55,6 @@ export const editArticle = async ({
       image,
       content,
     });
-    console.log("게시글 수정 성공", res.data);
     return res.data;
   } catch (err: any) {
     console.error("게시글 수정 실패", err);
@@ -80,7 +79,6 @@ export const postArticle = async ({
 
     const res = await axios.post<ArticleType>(`articles`, requestData);
 
-    console.log("게시글 등록 성공", res.data);
     return res.data;
   } catch (err: any) {
     console.error("게시글 등록 실패", err);

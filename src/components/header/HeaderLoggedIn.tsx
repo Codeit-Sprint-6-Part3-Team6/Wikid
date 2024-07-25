@@ -3,7 +3,7 @@ import IconButton from "@components/IconButton";
 import AlarmMenu from "./AlarmMenu";
 import ProfileMenu from "./ProfileMenu";
 import useOutsideClick from "@hooks/useOutsideClick";
-import useUserInfo from "@hooks/useUserInfo";
+import { useAuth } from "@context/AuthContext";
 
 const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,11 +11,9 @@ const HeaderLoggedIn = ({ profileIconSrc }: { profileIconSrc: string }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const menuRef = useOutsideClick<HTMLButtonElement>(() =>
-    setIsMenuOpen(false),
-  );
+  const menuRef = useOutsideClick<HTMLButtonElement>(() => setIsMenuOpen(false));
 
-  const { user } = useUserInfo();
+  const { user } = useAuth();
   const code = user?.profile?.code;
 
   return (

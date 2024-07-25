@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { isAxiosError } from "axios";
-import { useErrorToast } from "@context/ErrorToastContext";
 import { useLoading } from "@context/LoadingContext";
+import { useToast } from "@context/ToastContext";
 
-type RequestFuncType<T, U> = (options: U) => Promise<T>;
-
-const useApiRequest = <T, U>(
-  requestFunc: RequestFuncType<T, U>,
-  options: U | undefined,
+const useApiRequest = <T, U, V = undefined>(
+  requestFunc: T,
+  options: V | undefined,
   initialExecution: boolean,
   onSuccess?: () => void,
   onError?: () => void,
 ) => {
-  const { showToast, setErrorMessage } = useErrorToast();
+  const { showToast, setToastMessage } = useToast();
   const { setIsLoading } = useLoading();
-  const [data, setData] = useState<T | null>(null);
+  const [data, setData] = useState<U | null>(null);
   const [trigger, setTrigger] = useState(initialExecution ? 1 : 0);
 
   const toggleTrigger = () => {
@@ -22,16 +20,18 @@ const useApiRequest = <T, U>(
   };
 
   useEffect(() => {
-    if (trigger && options) {
+    if (trigger) {
       const request = async () => {
         try {
           setIsLoading(true);
-          const data = await requestFunc(options);
+          let data = null;
+          if (typeof requestFunc === "function") {
+            data = await requestFunc(options);
+          }
           setData(data);
-          if (onSuccess) onSuccess();
         } catch (error) {
-          if (isAxiosError(error) && error.message !== "jwt expired") {
-            setErrorMessage(error.message);
+          if (isAxiosError(error) && error.response?.data.message !== "jwt expired") {
+            setToastMessage(error.response?.data.message);
             showToast();
             if (onError) onError();
           }
@@ -42,6 +42,12 @@ const useApiRequest = <T, U>(
       request();
     }
   }, [trigger, options]);
+
+  useEffect(() => {
+    if (trigger && data && onSuccess) {
+      onSuccess();
+    }
+  }, [data]);
 
   return { data, toggleTrigger };
 };
