@@ -41,7 +41,7 @@ const useApiRequest = <T, U, V = undefined>(
       };
       request();
     }
-  }, [trigger, options]);
+  }, [trigger]);
 
   useEffect(() => {
     if (trigger && data && onSuccess) {
