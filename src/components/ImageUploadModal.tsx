@@ -38,13 +38,13 @@ export default function ImageUploadModal({ isOpen, toggleIsOpen, onClick }: Imag
         >
           <label
             htmlFor="file-input"
-            className={`${previewImageUrl ? "max-h-[40vh] min-h-[160px] max-w-[40vw]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
+            className={`${previewImageUrl ? "mx-auto min-h-[160px]" : "h-[160px]"} relative flex cursor-pointer items-center justify-center rounded-xl bg-[#F7F7FA] text-[#C6CADA]`}
           >
             {!previewImageUrl && <Camera className="animate-bounce" />}
             {previewImageUrl && (
               <img
                 alt="image-preview"
-                className="min-h-[90%] min-w-[90%] rounded-lg"
+                className="max-h-[40vh] min-h-[90%] min-w-[90%] max-w-[40vw] rounded-lg"
                 src={previewImageUrl}
               ></img>
             )}

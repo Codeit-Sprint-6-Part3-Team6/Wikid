@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import Button from "@components/Button";
@@ -27,20 +27,20 @@ function ArticleEditPage({ article: initialArticle }: { article: ArticleType | n
   const { isOpen, toggleIsOpen } = useModal();
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const postArticleOptions = useRef({ title, content, image }).current;
-  const editArticleOptions = useRef({ title, content, image, id: boardId }).current;
-  const { toggleTrigger: togglePostTrigger } = useApiRequest<ArticleType, PostArticleProps>(
-    postArticle,
-    postArticleOptions,
-    false,
-    () => router.push("/boards"),
-  );
-  const { toggleTrigger: togglePatchTrigger } = useApiRequest<ArticleType, PatchArticleProps>(
-    editArticle,
-    editArticleOptions,
-    false,
-    () => router.push(`/boards/${boardId}`),
-  );
+  const [postArticleOptions, setPostArticleOptions] = useState<PostArticleProps>();
+  const [editArticleOptions, setEditArticleOptions] = useState<PatchArticleProps>();
+
+  const { toggleTrigger: togglePostTrigger } = useApiRequest<
+    ({ title, image, content }: PostArticleProps) => Promise<ArticleType>,
+    ArticleType,
+    PostArticleProps
+  >(postArticle, postArticleOptions, false, () => router.push("/boards"));
+
+  const { toggleTrigger: togglePatchTrigger } = useApiRequest<
+    ({ title, image, content, id }: PatchArticleProps) => Promise<ArticleType>,
+    ArticleType,
+    PatchArticleProps
+  >(editArticle, editArticleOptions, false, () => router.push(`/boards/${boardId}`));
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -54,13 +54,14 @@ function ArticleEditPage({ article: initialArticle }: { article: ArticleType | n
   const handlePostArticle = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (image) {
+    if (image && validateImage(image) !== image) {
       const imageFile = await getImageFile(image);
       const imageUrl = (await getImageUrl(imageFile)).url;
       setImage(imageUrl);
+    } else {
+      setPostArticleOptions({ title, content, image: "" });
+      togglePostTrigger();
     }
-
-    togglePostTrigger();
   };
 
   const handleEditArticle = async () => {
@@ -69,9 +70,10 @@ function ArticleEditPage({ article: initialArticle }: { article: ArticleType | n
         const imageFile = await getImageFile(image);
         const imageUrl = (await getImageUrl(imageFile)).url;
         setImage(imageUrl);
+      } else {
+        setEditArticleOptions({ title, content, image: "", id: boardId });
+        togglePatchTrigger();
       }
-
-      togglePatchTrigger();
     }
   };
 
@@ -82,6 +84,26 @@ function ArticleEditPage({ article: initialArticle }: { article: ArticleType | n
       e.preventDefault();
     }
   };
+
+  useEffect(() => {
+    if (
+      initialArticle?.content === content &&
+      initialArticle.title === title &&
+      initialArticle.image === image
+    ) {
+      return;
+    }
+
+    if (validateImage(image) === image) {
+      if (initialArticle) {
+        setEditArticleOptions({ title, content, image, id: boardId });
+        togglePatchTrigger();
+      } else {
+        setPostArticleOptions({ title, content, image });
+        togglePostTrigger();
+      }
+    }
+  }, [image]);
 
   return (
     <>

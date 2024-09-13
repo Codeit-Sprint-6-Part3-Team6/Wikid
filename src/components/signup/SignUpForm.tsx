@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import Button from "@components/Button";
 import Input from "@components/Input";
-import Toast from "@components/Toast";
 import useAuthValidation from "@hooks/useAuthValidation";
-import useToast from "@hooks/useToast";
 import { useAuth } from "@context/AuthContext";
 import { SignUpFormDataType } from "@lib/types/Auth";
 
 const SignUpForm = () => {
-  const { toastOpened, showToast } = useToast();
-  const [toastText, setToastText] = useState("");
   const { signup } = useAuth();
-  const { errors, checkValidation } =
-    useAuthValidation<SignUpFormDataType>("signup");
+  const { errors, checkValidation } = useAuthValidation<SignUpFormDataType>("signup");
   const [formData, setFormData] = useState<SignUpFormDataType>({
     name: "",
     email: "",
@@ -38,18 +33,7 @@ const SignUpForm = () => {
 
     const { name, email, password, passwordConfirmation } = formData;
 
-    const error = await signup({ name, email, password, passwordConfirmation });
-
-    if (error instanceof Error) {
-      showToast();
-
-      const errorResponse = error as any;
-      if (errorResponse.response && errorResponse.response.status === 400) {
-        setToastText(errorResponse.response.data.message);
-      } else {
-        setToastText("회원가입 실패");
-      }
-    }
+    signup({ name, email, password, passwordConfirmation });
   }
 
   const isSubmitDisabled =
@@ -114,9 +98,6 @@ const SignUpForm = () => {
           disabled={isSubmitDisabled}
         />
       </form>
-      <Toast type="red" isToastOpened={toastOpened}>
-        {toastText}
-      </Toast>
     </div>
   );
 };
