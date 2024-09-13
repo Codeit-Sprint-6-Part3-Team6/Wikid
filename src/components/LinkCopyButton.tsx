@@ -28,9 +28,7 @@ function LinkCopyButton({ link, className }: LinkCopyButtonProps) {
         className={`${className} flex max-w-[240px] items-center gap-[5px] rounded-[10px] bg-green100 px-[10px] py-[5px] leading-6 text-green200`}
       >
         <Image src={linkIcon} alt="link" />
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-          {link}
-        </p>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap">{link}</p>
       </button>
       <Toast type="green" isToastOpened={toastOpened}>
         내 위키 링크가 복사되었습니다.
