@@ -6,6 +6,7 @@
 <br>
 
 배포 URL: https://wequiz.netlify.app/<br>
+발표자료 URL: https://www.canva.com/design/DAGKEQYB-20/SPqQyEIt4o_vikeBeeTETA/view?utm_content=DAGKEQYB-20&utm_campaign=designshare&utm_medium=link&utm_source=viewer<br>
 프로젝트 기간: 2024.06.22 ~ 2024.07.09
 
 <br>
